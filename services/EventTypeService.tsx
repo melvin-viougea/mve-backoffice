@@ -1,6 +1,6 @@
 import Axios from "./AxiosService";
 
-const baseUrl = '/api/eventType';
+const baseUrl = '/eventType';
 
 const getAll = () => {
     return Axios.get(`${baseUrl}`);

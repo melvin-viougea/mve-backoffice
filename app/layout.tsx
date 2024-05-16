@@ -1,41 +1,32 @@
-import type {Metadata} from "next";
-import {Anek_Telugu} from "next/font/google";
-import "./globals.css";
-import {GeistSans} from "geist/font/sans";
-import {GeistMono} from "geist/font/mono";
-import {cn} from "@/lib/utils";
-import {ReactNode} from "react";
+export const dynamic = 'force-dynamic'
 
-const AnekTelugu = Anek_Telugu({
-  subsets: ["latin"],
-  variable: "--font-caption",
-});
+import type {Metadata} from "next";
+import {IBM_Plex_Serif, Inter} from "next/font/google";
+import "./globals.css";
+
+const inter = Inter({ subsets: ["latin"], variable: '--font-inter' });
+const ibmPlexSerif = IBM_Plex_Serif({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--font-ibm-plex-serif'
+})
 
 export const metadata: Metadata = {
-    title: "MaVieEtudiante",
-    description: "MaVieEtudiante is a platform for student to manage their university life.",
-    icons: {
-        icon: '/icons/logo.svg'
-    }
+  title: "MaVieEtudiante",
+  description: "MaVieEtudiante is a platform for student to manage their university life.",
+  icons: {
+    icon: '/icons/logo.svg'
+  }
 };
 
 export default function RootLayout({
                                      children,
                                    }: Readonly<{
-  children: ReactNode;
+  children: React.ReactNode;
 }>) {
-    return (
-        <html lang="en">
-        <body
-            className={cn(
-                GeistSans.variable,
-                GeistMono.variable,
-                AnekTelugu.variable,
-                "font-sans bg-background text-foreground"
-            )}
-        >
-        {children}
-        </body>
-        </html>
-    );
+  return (
+    <html lang="en">
+    <body className={`${inter.variable} ${ibmPlexSerif.variable}`}>{children}</body>
+    </html>
+  );
 }

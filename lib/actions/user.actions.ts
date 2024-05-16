@@ -7,7 +7,7 @@ import AuthService from "@/services/AuthService";
 export async function getLoggedInUser() {
     try {
         const cookieStore = cookies()
-        const user = cookieStore.get('user')
+        const user = cookieStore.get('auth')
         if (!user) {
             return null;
         }
@@ -19,25 +19,22 @@ export async function getLoggedInUser() {
     }
 }
 
-export const signIn = async ({ email, password }: signInProps) => {
+export const login = async ({ email, password }: signInProps) => {
     try {
-        const response = await AuthService.signUp({ email, password });
-        const { session, user } = response.data;
+        const response = await AuthService.login({ email, password });
+        const setCookieHeader = response.headers.get("Set-Cookie");
+        if (setCookieHeader) {
+            const token = setCookieHeader.split(";")[0].split("=")[1];
+            cookies().set({
+                name: "auth",
+                value: token,
+                secure: true,
+                httpOnly: true,
+                expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+            });
+        }
 
-        cookies().set("secret", session.secret, {
-            path: "/",
-            httpOnly: true,
-            sameSite: "strict",
-            secure: true,
-        });
-        cookies().set("user", user, {
-            path: "/",
-            httpOnly: true,
-            sameSite: "strict",
-            secure: true,
-        });
-
-        return parseStringify(user);
+        return parseStringify(response);
     } catch (error) {
         console.error('Error', error);
     }
@@ -60,7 +57,6 @@ export const signUp = async (userData: SignUpParams) => {
             sameSite: "strict",
             secure: true,
         });
-
         return parseStringify(user);
     } catch (error) {
         console.error('Error', error);

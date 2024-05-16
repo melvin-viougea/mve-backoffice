@@ -1,6 +1,6 @@
 import Axios from "./AxiosService";
 
-const baseUrl = '/api/displayType';
+const baseUrl = '/displayType';
 
 const getAll = () => {
     return Axios.get(`${baseUrl}`);

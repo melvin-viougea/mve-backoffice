@@ -18,9 +18,8 @@ const config = {
       },
     },
     fontFamily: {
-      sans: ["var(--font-geist-sans)"],
-      mono: ["var(--font-geist-mono)"],
-      caption: ["var(--font-anek-telugu)"],
+      inter: "var(--font-inter)",
+      "ibm-plex-serif": "var(--font-ibm-plex-serif)",
     },
     extend: {
       colors: {
