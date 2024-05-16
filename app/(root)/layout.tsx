@@ -3,7 +3,6 @@
 import { getLoggedInUser } from "@/lib/actions/user.actions";
 import Image from "next/image";
 import { redirect } from "next/navigation";
-import {cookies} from "next/headers";
 
 export default async function RootLayout({
                                            children,
