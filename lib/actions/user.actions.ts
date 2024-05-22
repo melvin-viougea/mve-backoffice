@@ -22,19 +22,19 @@ export async function getLoggedInUser() {
 export const login = async ({ email, password }: signInProps) => {
     try {
         const response = await AuthService.login({ email, password });
-        const setCookieHeader = response.headers.get("Set-Cookie");
-        if (setCookieHeader) {
-            const token = setCookieHeader.split(";")[0].split("=")[1];
-            cookies().set({
-                name: "auth",
-                value: token,
-                secure: true,
-                httpOnly: true,
-                expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
-            });
+        const { user, token } = response.data;
+
+        if (token) {
+            cookies().set('auth', token)//,  {
+                // httpOnly: true,
+                //secure: true, TESTER AVEC SECURE EN PROD
+            //})
+            // cookies().set('user', JSON.stringify(user),  {
+            //     httpOnly: true
+            // })
         }
 
-        return parseStringify(response);
+        return parseStringify(user);
     } catch (error) {
         console.error('Error', error);
     }
