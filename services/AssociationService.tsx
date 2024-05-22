@@ -1,6 +1,6 @@
 import Axios from "./AxiosService";
 
-const baseUrl = '/api/association';
+const baseUrl = '/association';
 
 const getAll = () => {
     return Axios.get(`${baseUrl}`);
