@@ -7,12 +7,26 @@ import AuthService from "@/services/AuthService";
 export async function getLoggedInUser() {
     try {
         const cookieStore = cookies()
-        const user = cookieStore.get('auth')
-        if (!user) {
+        const token = cookieStore.get('auth')
+
+        if (token) {
+            const firstnameCookie = cookieStore.get('firstname');
+            const lastnameCookie = cookieStore.get('lastname');
+            const emailCookie = cookieStore.get('email');
+
+            const firstname = firstnameCookie ? firstnameCookie.value : null;
+            const lastname = lastnameCookie ? lastnameCookie.value : null;
+            const email = emailCookie ? emailCookie.value : null
+
+            const user = {
+                firstname,
+                lastname,
+                email
+            };
+            return user;
+        } else {
             return null;
         }
-
-        return parseStringify(user);
     } catch (error) {
         console.log(error)
         return null;
@@ -22,16 +36,13 @@ export async function getLoggedInUser() {
 export const login = async ({ email, password }: signInProps) => {
     try {
         const response = await AuthService.login({ email, password });
-        const { user, token } = response.data;
+        const { token, user } = response.data;
 
         if (token) {
-            cookies().set('auth', token)//,  {
-                // httpOnly: true,
-                //secure: true, TESTER AVEC SECURE EN PROD
-            //})
-            // cookies().set('user', JSON.stringify(user),  {
-            //     httpOnly: true
-            // })
+            cookies().set('auth', token)
+            cookies().set('firstname', user.firstname)
+            cookies().set('lastname', user.lastname)
+            cookies().set('email', user.email)
         }
 
         return parseStringify(user);
@@ -43,27 +54,36 @@ export const login = async ({ email, password }: signInProps) => {
 export const signUp = async (userData: SignUpParams) => {
     try {
         const response = await AuthService.signUp(userData);
-        const { session, user } = response.data;
+        const { token, user } = response.data;
 
-        cookies().set("secret", session.secret, {
-            path: "/",
-            httpOnly: true,
-            sameSite: "strict",
-            secure: true,
-        });
-        cookies().set("user", user, {
-            path: "/",
-            httpOnly: true,
-            sameSite: "strict",
-            secure: true,
-        });
+        if (token) {
+            cookies().set('auth', token)
+            cookies().set('firstname', user.firstname)
+            cookies().set('lastname', user.lastname)
+            cookies().set('email', user.email)
+        }
+
         return parseStringify(user);
     } catch (error) {
         console.error('Error', error);
     }
 }
 
+export const logoutAccount = async () => {
+    try {
+        const cookieStore = cookies();
 
+        const allCookies = cookieStore.getAll();
+
+        allCookies.forEach(cookie => {
+            cookieStore.delete(cookie.name);
+        });
+        return true;
+    } catch (error) {
+        console.error('Error', error);
+        return null;
+    }
+}
 
 
 // import { ID, Query } from "node-appwrite";

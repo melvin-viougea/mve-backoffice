@@ -1,7 +1,7 @@
 declare type SignUpParams = {
-    firstName: string;
-    lastName: string;
-    address1: string;
+    firstname: string;
+    lastname: string;
+    address: string;
     city: string;
     postalCode: string;
     email: string;
@@ -11,10 +11,10 @@ declare type SignUpParams = {
 declare type User = {
     id: string;
     email: string;
-    firstName: string;
-    lastName: string;
+    firstname: string;
+    lastname: string;
     name: string;
-    address1: string;
+    address: string;
     city: string;
     postalCode: string;
 };

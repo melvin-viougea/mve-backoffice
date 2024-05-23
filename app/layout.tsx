@@ -4,7 +4,7 @@ import type {Metadata} from "next";
 import {IBM_Plex_Serif, Inter} from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"], variable: '--font-inter' });
+const inter = Inter({subsets: ["latin"], variable: '--font-inter'});
 const ibmPlexSerif = IBM_Plex_Serif({
   subsets: ['latin'],
   weight: ['400', '700'],
@@ -12,8 +12,8 @@ const ibmPlexSerif = IBM_Plex_Serif({
 })
 
 export const metadata: Metadata = {
-  title: "MaVieEtudiante",
-  description: "MaVieEtudiante is a platform for student to manage their university life.",
+  title: "Horizon",
+  description: "Horizon is a modern banking platform for everyone.",
   icons: {
     icon: '/icons/logo.svg'
   }
@@ -25,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="fr">
     <body className={`${inter.variable} ${ibmPlexSerif.variable}`}>{children}</body>
     </html>
   );

@@ -33,9 +33,9 @@ const AuthForm = ({ type }: { type: string }) => {
         try {
             if(type === 'sign-up') {
                 const userData = {
-                    firstName: data.firstName!,
-                    lastName: data.lastName!,
-                    address1: data.address1!,
+                    firstname: data.firstname!,
+                    lastname: data.lastname!,
+                    address: data.address!,
                     city: data.city!,
                     postalCode: data.postalCode!,
                     email: data.email,
@@ -43,6 +43,8 @@ const AuthForm = ({ type }: { type: string }) => {
                 }
                 const newUser = await signUp(userData);
                 setUser(newUser);
+
+                if(newUser) router.push('/')
             }
 
             if(type === 'sign-in') {
@@ -68,7 +70,7 @@ const AuthForm = ({ type }: { type: string }) => {
                     src="/icons/logo.svg"
                     width={34}
                     height={34}
-                    alt="MaVieEtudiante Logo"
+                    alt="MaVieEtudiante logo"
                   />
                   <h1 className="text-[26px] leading-[32px] font-ibm-plex-serif font-bold text-black-1">MaVieEtudiante</h1>
               </Link>
@@ -94,10 +96,10 @@ const AuthForm = ({ type }: { type: string }) => {
                   {type === 'sign-up' && (
                     <>
                         <div className="flex gap-4">
-                            <CustomInput control={form.control} name='firstName' label="Prénom" placeholder='Entrez votre prénom' />
-                            <CustomInput control={form.control} name='lastName' label="Nom" placeholder='Entrez votre nom' />
+                            <CustomInput control={form.control} name='firstname' label="Prénom" placeholder='Entrez votre prénom' />
+                            <CustomInput control={form.control} name='lastname' label="Nom" placeholder='Entrez votre nom' />
                         </div>
-                        <CustomInput control={form.control} name='address1' label="Adresse" placeholder='Entrez votre adresse' />
+                        <CustomInput control={form.control} name='address' label="Adresse" placeholder='Entrez votre adresse' />
                         <div className="flex gap-4">
                             <CustomInput control={form.control} name='postalCode' label="Code postal" placeholder='Exemple: 75000' />
                             <CustomInput control={form.control} name='city' label="Ville" placeholder='Entrez votre ville' />

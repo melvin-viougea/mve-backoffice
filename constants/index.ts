@@ -13,11 +13,11 @@ export const sidebarLinks = [
     {
         imgURL: "/icons/calendar.png",
         route: "/calendrier",
-        label: "Transaction History",
+        label: "Calendrier",
     },
     {
         imgURL: "/icons/plus.png",
-        route: "/",
+        route: "/evenements",
         label: "Évènements",
     },
     {
@@ -49,6 +49,11 @@ export const sidebarLinks = [
         imgURL: "/icons/help.png",
         route: "/accompagnement",
         label: "Besoin d'accompagnement",
+    },
+    {
+        imgURL: "/icons/setting.png",
+        route: "/parametre",
+        label: "Paramétrage",
     },
 ];
 

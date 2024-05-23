@@ -5,7 +5,7 @@
 // import { getAccount, getAccounts } from '@/lib/actions/bank.actions';
 // import { getLoggedInUser } from '@/lib/actions/user.actions';
 
-const Home = async ({searchParams: {id, page}}: SearchParamProps) => {
+const Marketplace = async ({searchParams: {id, page}}: SearchParamProps) => {
   // const currentPage = Number(page as string) || 1;
   // const loggedIn = await getLoggedInUser();
   // const accounts = await getAccounts({
@@ -23,7 +23,7 @@ const Home = async ({searchParams: {id, page}}: SearchParamProps) => {
     <section className="home">
       <div className="home-content">
         <header className="home-header">
-          Dashboard
+          Marketplace
           {/*<HeaderBox*/}
           {/*  type="greeting"*/}
           {/*  title="Welcome"*/}
@@ -55,4 +55,4 @@ const Home = async ({searchParams: {id, page}}: SearchParamProps) => {
   )
 }
 
-export default Home
+export default Marketplace
