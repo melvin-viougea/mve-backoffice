@@ -127,7 +127,7 @@ export const topCategoryStyles = {
     },
 };
 
-export const transactionCategoryStyles = {
+export const statusStyles = {
     "Food and Drink": {
         borderColor: "border-pink-600",
         backgroundColor: "bg-pink-500",

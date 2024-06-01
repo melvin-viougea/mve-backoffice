@@ -1,12 +1,4 @@
-declare type SignUpParams = {
-    firstname: string;
-    lastname: string;
-    address: string;
-    city: string;
-    postalCode: string;
-    email: string;
-    password: string;
-};
+// ENTITY
 
 declare type User = {
     id: string;
@@ -18,6 +10,74 @@ declare type User = {
     city: string;
     postalCode: string;
 };
+
+declare type Events = {
+    id: number;
+    associationId: number;
+    displayTypeId: number;
+    eventTypeId: number;
+    subEventTypeId: number;
+    title: string;
+    description: string;
+    logo: string;
+    isPublished: string;
+    isPlace: boolean;
+    place: string;
+    isDate: boolean;
+    date: string;
+    isEndDate: boolean;
+    endDate: string;
+    isHour: boolean;
+    hour: string;
+    isEndHour: boolean;
+    endHour: string;
+    isAddress: boolean;
+    address: string;
+    isPeopleLimit: boolean;
+    peopleLimit: number;
+};
+
+// PARAM
+
+declare type SignUpParams = {
+    firstname: string;
+    lastname: string;
+    address: string;
+    city: string;
+    postalCode: string;
+    email: string;
+    password: string;
+};
+
+declare interface getDataParams {
+    id: string;
+}
+
+declare interface createDataParams {
+    data: string;
+}
+
+declare interface updateDataParams {
+    id: string;
+    data: string;
+}
+
+declare interface deleteDataParams {
+    id: string;
+}
+
+// RESPONSE
+
+declare interface AuthResponse {
+    token: string;
+    user: {
+        firstname: string;
+        lastname: string;
+        email: string;
+    };
+}
+
+// PROPS
 
 declare type SearchParamProps = {
     params: { [key: string]: string };
@@ -69,19 +129,17 @@ declare interface getUserInfoProps {
     userId: string;
 }
 
-declare interface getDataProps {
-    id: string;
+declare interface HeaderBoxProps {
+    type?: "title" | "greeting";
+    title: string;
+    subtext: string;
+    user?: string;
 }
 
-declare interface createDataProps {
-    data: string;
+declare interface BadgeProps {
+    status: string;
 }
 
-declare interface updateDataProps {
-    id: string;
-    data: string;
-}
-
-declare interface deleteDataProps {
-    id: string;
+declare interface EventTableProps {
+    events: Events[];
 }
