@@ -14,6 +14,7 @@ import {Textarea} from "../ui/textarea";
 import {createEvent} from "@/lib/actions/event.actions";
 import {SubEventTypeDropdown} from "@/components/dropdown/SubEventTypeDropdown";
 import {DisplayTypeDropdown} from "@/components/dropdown/DisplayTypeDropdown";
+import {Switch} from "../ui/switch";
 
 const formSchema = z.object({
   association: z.number(),
@@ -247,14 +248,14 @@ const EventForm = () => {
           )}
         />
 
-        <div className="flex flex-col gap-1 border-t border-gray-200 pb-5 pt-6">
-          <h2 className="text-[18px] leading-[22px] font-semibold text-gray-900">
-            Bank account details
-          </h2>
-          <p className="text-[16px] leading-[24px] font-normal text-gray-600">
-            Enter the bank account details of the recipient
-          </p>
-        </div>
+        {/*<div className="flex flex-col gap-1 border-t border-gray-200 pb-5 pt-6">*/}
+        {/*  <h2 className="text-[18px] leading-[22px] font-semibold text-gray-900">*/}
+        {/*    Bank account details*/}
+        {/*  </h2>*/}
+        {/*  <p className="text-[16px] leading-[24px] font-normal text-gray-600">*/}
+        {/*    Enter the bank account details of the recipient*/}
+        {/*  </p>*/}
+        {/*</div>*/}
 
         <FormField
           control={form.control}
@@ -280,6 +281,91 @@ const EventForm = () => {
             </FormItem>
           )}
         />
+
+        <div className="flex w-full max-w-[850px] flex-col gap-3 md:flex-row lg:gap-8 py-5">
+          <div className="flex flex-col gap-5 w-full">
+            <div className="flex items-center gap-2">
+              <FormControl>
+                <Switch
+                  checked={form.watch('isEndHour')}
+                  onCheckedChange={(checked) => form.setValue('isEndHour', checked)}
+                />
+              </FormControl>
+              <FormLabel className="text-[14px] leading-[20px] w-full max-w-[280px] font-medium text-gray-700">
+                Heure de fin
+              </FormLabel>
+            </div>
+            <div className="flex items-center gap-2">
+              <FormControl>
+                <Switch
+                  checked={form.watch('isDate')}
+                  onCheckedChange={(checked) => form.setValue('isDate', checked)}
+                />
+              </FormControl>
+              <FormLabel className="text-[14px] leading-[20px] w-full max-w-[280px] font-medium text-gray-700">
+                Date
+              </FormLabel>
+            </div>
+            <div className="flex items-center gap-2">
+              <FormControl>
+                <Switch
+                  checked={form.watch('isEndDate')}
+                  onCheckedChange={(checked) => form.setValue('isEndDate', checked)}
+                />
+              </FormControl>
+              <FormLabel className="text-[14px] leading-[20px] w-full max-w-[280px] font-medium text-gray-700">
+                Date de fin
+              </FormLabel>
+            </div>
+            <div className="flex items-center gap-2">
+              <FormControl>
+                <Switch
+                  checked={form.watch('isHour')}
+                  onCheckedChange={(checked) => form.setValue('isHour', checked)}
+                />
+              </FormControl>
+              <FormLabel className="text-[14px] leading-[20px] w-full max-w-[280px] font-medium text-gray-700">
+                Heure
+              </FormLabel>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-5 w-full">
+            <div className="flex items-center gap-2">
+              <FormControl>
+                <Switch
+                  checked={form.watch('isPlace')}
+                  onCheckedChange={(checked) => form.setValue('isPlace', checked)}
+                />
+              </FormControl>
+              <FormLabel className="text-[14px] leading-[20px] w-full max-w-[280px] font-medium text-gray-700">
+                Lieu
+              </FormLabel>
+            </div>
+            <div className="flex items-center gap-2">
+              <FormControl>
+                <Switch
+                  checked={form.watch('isAddress')}
+                  onCheckedChange={(checked) => form.setValue('isAddress', checked)}
+                />
+              </FormControl>
+              <FormLabel className="text-[14px] leading-[20px] w-full max-w-[280px] font-medium text-gray-700">
+                Adresse
+              </FormLabel>
+            </div>
+            <div className="flex items-center gap-2">
+              <FormControl>
+                <Switch
+                  checked={form.watch('isPeopleLimit')}
+                  onCheckedChange={(checked) => form.setValue('isPeopleLimit', checked)}
+                />
+              </FormControl>
+              <FormLabel className="text-[14px] leading-[20px] w-full max-w-[280px] font-medium text-gray-700">
+                Limite de participants
+              </FormLabel>
+            </div>
+          </div>
+        </div>
 
         <div className="mt-5 flex w-full max-w-[850px] gap-3 border-gray-200 py-5">
           <Button type="submit" className="text-[14px] leading-[20px] w-full bg-primary font-semibold text-white shadow-form !important">

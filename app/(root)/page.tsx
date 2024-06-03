@@ -14,7 +14,7 @@ const Home = async ({searchParams: {id, page}}: SearchParamProps) => {
             type="greeting"
             title="Tableau de bord"
             user={loggedIn?.firstname || 'Guest'}
-            subtext="Welcome"
+            subtext="Bienvenue"
           />
         </header>
       </div>

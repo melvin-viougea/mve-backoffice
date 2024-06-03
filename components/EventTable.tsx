@@ -14,10 +14,10 @@ const StatusBadge = ({status}: BadgeProps) => {
   return (
     <div className={cn('flex items-center justify-center truncate w-fit gap-1 rounded-2xl border-[1.5px] py-[2px] pl-1.5 pr-2', borderColor, chipBackgroundColor)}>
       <div className={cn('size-2 rounded-full', backgroundColor)}/>
-      <p className={cn('text-[12px] font-medium', textColor)}>{status}</p>
+      <p className={cn('text-[12px] font-medium', textColor)}>{status ? 'Visible' : 'Brouillon'}</p>
     </div>
-  )
-}
+  );
+};
 
 const EventsTable = ({events}: EventTableProps) => {
   return (
@@ -37,19 +37,19 @@ const EventsTable = ({events}: EventTableProps) => {
           return (
             <TableRow key={e.id} className='bg-[#FFFBFA]'>
               <TableCell className="max-w-[250px] pl-2 pr-10">
-                {formatDateTime(new Date(e.date)).dateTime}
+                {e.date ? formatDateTime(new Date(e.date)).dateOnly : "-"}
               </TableCell>
               <TableCell className="min-w-32 pl-2 pr-10">
                 {e.title}
               </TableCell>
               <TableCell className="pl-2 pr-10 capitalize min-w-24">
-                {e.eventTypeId}
+                {e.eventType.name}
               </TableCell>
               <TableCell className="pl-2 pr-10">
-                {e.subEventTypeId}
+                {e.subEventType.name}
               </TableCell>
               <TableCell className="pl-2 pr-10">
-                {e.place}
+                {e.place ? e.place : "-"}
               </TableCell>
               <TableCell className="pl-2 pr-10 max-md:hidden">
                 <StatusBadge status={e.isPublished}/>

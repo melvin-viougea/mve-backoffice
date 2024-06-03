@@ -26,7 +26,7 @@ export const formatDateTime = (dateString: Date) => {
   };
 
   const dateOptions: Intl.DateTimeFormatOptions = {
-    month: "short", // abbreviated month name (e.g., "Oct")
+    month: "2-digit", // abbreviated month name (e.g., "Oct")
     year: "numeric", // numeric year (e.g., "2023")
     day: "numeric", // numeric day of the month (e.g., "25)
   };
@@ -64,16 +64,6 @@ export const formatDateTime = (dateString: Date) => {
     timeOnly: formattedTime,
   };
 };
-
-export function formatAmount(amount: number): string {
-  const formatter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 2,
-  });
-
-  return formatter.format(amount);
-}
 
 export const parseStringify = (value: any) => JSON.parse(JSON.stringify(value));
 

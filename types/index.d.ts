@@ -18,9 +18,9 @@ declare type User = {
 declare type Events = {
   id: number;
   associationId: number;
-  displayTypeId: number;
-  eventTypeId: number;
-  subEventTypeId: number;
+  displayType: DisplayType;
+  eventType: EventType;
+  subEventType: SubEventType;
   title: string;
   description: string;
   logo: string;
