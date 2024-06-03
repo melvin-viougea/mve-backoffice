@@ -26,7 +26,7 @@ export const formatDateTime = (dateString: Date) => {
   };
 
   const dateOptions: Intl.DateTimeFormatOptions = {
-    month: "short", // abbreviated month name (e.g., "Oct")
+    month: "2-digit", // abbreviated month name (e.g., "Oct")
     year: "numeric", // numeric year (e.g., "2023")
     day: "numeric", // numeric day of the month (e.g., "25)
   };
@@ -38,23 +38,23 @@ export const formatDateTime = (dateString: Date) => {
   };
 
   const formattedDateTime: string = new Date(dateString).toLocaleString(
-      "en-US",
-      dateTimeOptions
+    "en-US",
+    dateTimeOptions
   );
 
   const formattedDateDay: string = new Date(dateString).toLocaleString(
-      "en-US",
-      dateDayOptions
+    "en-US",
+    dateDayOptions
   );
 
   const formattedDate: string = new Date(dateString).toLocaleString(
-      "en-US",
-      dateOptions
+    "en-US",
+    dateOptions
   );
 
   const formattedTime: string = new Date(dateString).toLocaleString(
-      "en-US",
-      timeOptions
+    "en-US",
+    timeOptions
   );
 
   return {
@@ -64,16 +64,6 @@ export const formatDateTime = (dateString: Date) => {
     timeOnly: formattedTime,
   };
 };
-
-export function formatAmount(amount: number): string {
-  const formatter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 2,
-  });
-
-  return formatter.format(amount);
-}
 
 export const parseStringify = (value: any) => JSON.parse(JSON.stringify(value));
 
@@ -87,17 +77,17 @@ interface UrlQueryParams {
   value: string;
 }
 
-export function formUrlQuery({ params, key, value }: UrlQueryParams) {
+export function formUrlQuery({params, key, value}: UrlQueryParams) {
   const currentUrl = qs.parse(params);
 
   currentUrl[key] = value;
 
   return qs.stringifyUrl(
-      {
-        url: window.location.pathname,
-        query: currentUrl,
-      },
-      { skipNull: true }
+    {
+      url: window.location.pathname,
+      query: currentUrl,
+    },
+    {skipNull: true}
   );
 }
 
@@ -127,13 +117,11 @@ export const getTransactionStatus = (date: Date) => {
 
 export const authFormSchema = (type: string) => z.object({
   // sign up
-  firstName: type === 'sign-in' ? z.string().optional() : z.string().min(3),
-  lastName: type === 'sign-in' ? z.string().optional() : z.string().min(3),
-  address1: type === 'sign-in' ? z.string().optional() : z.string().max(50),
-  city: type === 'sign-in' ? z.string().optional() : z.string().max(50),
-  state: type === 'sign-in' ? z.string().optional() : z.string().min(2).max(2),
-  postalCode: type === 'sign-in' ? z.string().optional() : z.string().min(3).max(6),
-  ssn: type === 'sign-in' ? z.string().optional() : z.string().min(3),
+  firstname: type === 'sign-in' ? z.string().optional() : z.string().min(2).max(20),
+  lastname: type === 'sign-in' ? z.string().optional() : z.string().min(2).max(20),
+  address: type === 'sign-in' ? z.string().optional() : z.string().min(1).max(60),
+  city: type === 'sign-in' ? z.string().optional() : z.string().min(1).max(20),
+  postalCode: type === 'sign-in' ? z.string().optional() : z.string().min(5).max(5),
   // both
   email: z.string().email(),
   password: z.string().min(8),
