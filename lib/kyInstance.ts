@@ -1,4 +1,4 @@
-import { cookies } from 'next/headers';
+import {cookies} from 'next/headers';
 import ky from 'ky';
 
 const KyInstance = ky.create({

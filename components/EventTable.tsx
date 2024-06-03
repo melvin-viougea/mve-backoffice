@@ -1,8 +1,9 @@
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table"
 import {cn, formatDateTime} from "@/lib/utils"
 import {statusStyles} from "@/constants";
+import {BadgeProps, Events, EventTableProps} from "@/types";
 
-const StatusBadge = ({ status }: BadgeProps) => {
+const StatusBadge = ({status}: BadgeProps) => {
   const {
     borderColor,
     backgroundColor,
@@ -12,13 +13,13 @@ const StatusBadge = ({ status }: BadgeProps) => {
 
   return (
     <div className={cn('flex items-center justify-center truncate w-fit gap-1 rounded-2xl border-[1.5px] py-[2px] pl-1.5 pr-2', borderColor, chipBackgroundColor)}>
-      <div className={cn('size-2 rounded-full', backgroundColor)} />
+      <div className={cn('size-2 rounded-full', backgroundColor)}/>
       <p className={cn('text-[12px] font-medium', textColor)}>{status}</p>
     </div>
   )
 }
 
-const EventsTable = ({ events }: EventTableProps) => {
+const EventsTable = ({events}: EventTableProps) => {
   return (
     <Table>
       <TableHeader className="bg-[#f9fafb]">
@@ -26,7 +27,7 @@ const EventsTable = ({ events }: EventTableProps) => {
           <TableHead className="px-2">Date</TableHead>
           <TableHead className="px-2">Titre</TableHead>
           <TableHead className="px-2">Type d&apos;événement</TableHead>
-          <TableHead className="px-2">Sous type d&apos;événement</TableHead>
+          <TableHead className="px-2">Sous-type d&apos;événement</TableHead>
           <TableHead className="px-2">Lieu</TableHead>
           <TableHead className="px-2 max-md:hidden">Statut</TableHead>
         </TableRow>
@@ -51,7 +52,7 @@ const EventsTable = ({ events }: EventTableProps) => {
                 {e.place}
               </TableCell>
               <TableCell className="pl-2 pr-10 max-md:hidden">
-                <StatusBadge status={e.isPublished} />
+                <StatusBadge status={e.isPublished}/>
               </TableCell>
             </TableRow>
           )

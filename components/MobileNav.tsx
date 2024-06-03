@@ -1,22 +1,15 @@
 'use client'
 
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet"
-import { sidebarLinks } from "@/constants"
-import { cn } from "@/lib/utils"
+import {Sheet, SheetClose, SheetContent, SheetTrigger,} from "@/components/ui/sheet"
+import {sidebarLinks} from "@/constants"
+import {cn} from "@/lib/utils"
 import Image from "next/image"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import {usePathname} from "next/navigation"
 import Footer from "./Footer"
+import {MobileNavProps} from "@/types";
 
-const MobileNav = ({ user }: MobileNavProps) => {
+const MobileNav = ({user}: MobileNavProps) => {
   const pathname = usePathname();
 
   return (
@@ -49,7 +42,7 @@ const MobileNav = ({ user }: MobileNavProps) => {
                 return (
                   <SheetClose asChild key={item.route}>
                     <Link href={item.route} key={item.label}
-                          className={cn('flex gap-3 items-center p-4 rounded-lg max-w-60 w-full', { 'bg-primary': isActive })}
+                          className={cn('flex gap-3 items-center p-4 rounded-lg max-w-60 w-full', {'bg-primary': isActive})}
                     >
                       <Image
                         src={item.imgURL}
@@ -60,7 +53,7 @@ const MobileNav = ({ user }: MobileNavProps) => {
                           'brightness-[10] invert-0': isActive
                         })}
                       />
-                      <p className={cn("text-16 font-semibold text-black", { "text-white": isActive })}>
+                      <p className={cn("text-16 font-semibold text-black", {"text-white": isActive})}>
                         {item.label}
                       </p>
                     </Link>
@@ -68,7 +61,7 @@ const MobileNav = ({ user }: MobileNavProps) => {
                 );
               })}
             </nav>
-            <Footer user={user} type="mobile" />
+            <Footer user={user} type="mobile"/>
           </div>
         </SheetContent>
       </Sheet>

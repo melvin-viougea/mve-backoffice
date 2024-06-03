@@ -1,11 +1,12 @@
-"use client";
+'use client'
 
 import Image from "next/image";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { formUrlQuery } from "@/lib/utils";
+import {useRouter, useSearchParams} from "next/navigation";
+import {Button} from "@/components/ui/button";
+import {formUrlQuery} from "@/lib/utils";
+import {PaginationProps} from "@/types";
 
-export const Pagination = ({ page, totalPages }: PaginationProps) => {
+export const Pagination = ({page, totalPages}: PaginationProps) => {
   const router = useRouter();
   const searchParams = useSearchParams()!;
 
@@ -18,7 +19,7 @@ export const Pagination = ({ page, totalPages }: PaginationProps) => {
       value: pageNumber.toString(),
     });
 
-    router.push(newUrl, { scroll: false });
+    router.push(newUrl, {scroll: false});
   };
 
   return (

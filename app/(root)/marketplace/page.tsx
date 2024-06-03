@@ -5,6 +5,8 @@
 // import { getAccount, getAccounts } from '@/lib/actions/bank.actions';
 // import { getLoggedInUser } from '@/lib/actions/user.actions';
 
+import {SearchParamProps} from "@/types";
+
 const Marketplace = async ({searchParams: {id, page}}: SearchParamProps) => {
   // const currentPage = Number(page as string) || 1;
   // const loggedIn = await getLoggedInUser();

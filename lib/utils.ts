@@ -38,23 +38,23 @@ export const formatDateTime = (dateString: Date) => {
   };
 
   const formattedDateTime: string = new Date(dateString).toLocaleString(
-      "en-US",
-      dateTimeOptions
+    "en-US",
+    dateTimeOptions
   );
 
   const formattedDateDay: string = new Date(dateString).toLocaleString(
-      "en-US",
-      dateDayOptions
+    "en-US",
+    dateDayOptions
   );
 
   const formattedDate: string = new Date(dateString).toLocaleString(
-      "en-US",
-      dateOptions
+    "en-US",
+    dateOptions
   );
 
   const formattedTime: string = new Date(dateString).toLocaleString(
-      "en-US",
-      timeOptions
+    "en-US",
+    timeOptions
   );
 
   return {
@@ -87,17 +87,17 @@ interface UrlQueryParams {
   value: string;
 }
 
-export function formUrlQuery({ params, key, value }: UrlQueryParams) {
+export function formUrlQuery({params, key, value}: UrlQueryParams) {
   const currentUrl = qs.parse(params);
 
   currentUrl[key] = value;
 
   return qs.stringifyUrl(
-      {
-        url: window.location.pathname,
-        query: currentUrl,
-      },
-      { skipNull: true }
+    {
+      url: window.location.pathname,
+      query: currentUrl,
+    },
+    {skipNull: true}
   );
 }
 

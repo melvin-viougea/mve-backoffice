@@ -1,15 +1,16 @@
-import { logoutAccount } from '@/lib/actions/user.actions'
+import {logoutAccount} from '@/lib/actions/user.actions'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import {useRouter} from 'next/navigation'
 import React from 'react'
+import {FooterProps} from "@/types";
 
-const Footer = ({ user, type = 'desktop' }: FooterProps) => {
+const Footer = ({user, type = 'desktop'}: FooterProps) => {
   const router = useRouter();
 
   const handleLogOut = async () => {
     const loggedOut = await logoutAccount();
 
-    if(loggedOut) router.push('/sign-in')
+    if (loggedOut) router.push('/sign-in')
   }
 
   return (
@@ -30,7 +31,7 @@ const Footer = ({ user, type = 'desktop' }: FooterProps) => {
       </div>
 
       <div className="relative size-5 max-xl:w-full max-xl:flex max-xl:justify-center max-xl:items-center" onClick={handleLogOut}>
-        <Image src="icons/logout.svg" fill alt="MaVieEtudiante logout" />
+        <Image src="icons/logout.svg" fill alt="MaVieEtudiante logout"/>
       </div>
     </footer>
   )

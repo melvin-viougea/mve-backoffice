@@ -1,4 +1,6 @@
-const HeaderBox = ({ type = "title", title, subtext, user }: HeaderBoxProps) => {
+import {HeaderBoxProps} from "@/types";
+
+const HeaderBox = ({type = "title", title, subtext, user}: HeaderBoxProps) => {
   return (
     <div className="flex flex-col gap-1">
       <h1 className="text-[24px] leading-[30px] lg:text-[30px] lg:leading-[38px] font-semibold text-gray-900">

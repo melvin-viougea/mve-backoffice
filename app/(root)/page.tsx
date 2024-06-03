@@ -1,5 +1,6 @@
 import HeaderBox from '@/components/HeaderBox'
 import {getLoggedInUser} from '@/lib/actions/user.actions';
+import {SearchParamProps} from "@/types";
 
 const Home = async ({searchParams: {id, page}}: SearchParamProps) => {
   const currentPage = Number(page as string) || 1;

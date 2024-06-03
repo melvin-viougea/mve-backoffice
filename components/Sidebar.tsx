@@ -1,13 +1,14 @@
 'use client'
 
-import { sidebarLinks } from '@/constants'
-import { cn } from '@/lib/utils'
+import {sidebarLinks} from '@/constants'
+import {cn} from '@/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import {usePathname} from 'next/navigation'
 import Footer from './Footer'
+import {SiderbarProps} from "@/types";
 
-const Sidebar = ({ user }: SiderbarProps) => {
+const Sidebar = ({user}: SiderbarProps) => {
   const pathname = usePathname();
 
   return (
@@ -32,7 +33,7 @@ const Sidebar = ({ user }: SiderbarProps) => {
             <Link
               href={item.route}
               key={item.label}
-              className={cn('flex gap-3 items-center py-1 md:p-3 2xl:p-4 rounded-lg justify-center xl:justify-start', { 'bg-primary': isActive })}
+              className={cn('flex gap-3 items-center py-1 md:p-3 2xl:p-4 rounded-lg justify-center xl:justify-start', {'bg-primary': isActive})}
             >
               <div className="relative size-6">
                 <Image
@@ -44,14 +45,14 @@ const Sidebar = ({ user }: SiderbarProps) => {
                   })}
                 />
               </div>
-              <p className={cn("text-16 font-semibold text-black max-xl:hidden", { "!text-white": isActive })}>
+              <p className={cn("text-16 font-semibold text-black max-xl:hidden", {"!text-white": isActive})}>
                 {item.label}
               </p>
             </Link>
           )
         })}
       </nav>
-      <Footer user={user} />
+      <Footer user={user}/>
     </section>
   )
 }
