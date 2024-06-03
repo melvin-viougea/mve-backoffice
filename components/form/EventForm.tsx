@@ -197,7 +197,7 @@ const EventForm = () => {
         <FormField
           control={form.control}
           name="title"
-          render={({ field }) => (
+          render={({field}) => (
             <FormItem className="border-t border-gray-200">
               <div className="flex w-full max-w-[850px] flex-col gap-3 md:flex-row lg:gap-8 pb-5 pt-6">
                 <FormLabel className="text-[14px] leading-[20px] w-full max-w-[280px] font-medium text-gray-700">
@@ -221,7 +221,7 @@ const EventForm = () => {
         <FormField
           control={form.control}
           name="description"
-          render={({ field }) => (
+          render={({field}) => (
             <FormItem className="border-t border-gray-200">
               <div className="flex w-full max-w-[850px] flex-col gap-3 md:flex-row lg:gap-8 pb-6 pt-5">
                 <div className="flex w-full max-w-[280px] flex-col gap-2">
@@ -259,7 +259,7 @@ const EventForm = () => {
         <FormField
           control={form.control}
           name="peopleLimit"
-          render={({ field }) => (
+          render={({field}) => (
             <FormItem className="border-y border-gray-200">
               <div className="flex w-full max-w-[850px] flex-col gap-3 md:flex-row lg:gap-8 py-5">
                 <FormLabel className="text-[14px] leading-[20px] w-full max-w-[280px] font-medium text-gray-700">
