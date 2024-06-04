@@ -7,14 +7,15 @@ import {useState} from "react";
 import {useForm} from "react-hook-form";
 import * as z from "zod";
 import {EventTypeDropdown} from "../dropdown/EventTypeDropdown";
-import {Button} from "../ui/button";
-import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "../ui/form";
-import {Input} from "../ui/input";
-import {Textarea} from "../ui/textarea";
+import {Button} from "@/components/ui/button";
+import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
+import {Input} from "@/components/ui/input";
+import {Textarea} from "@/components/ui/textarea";
 import {createEvent} from "@/lib/actions/event.actions";
 import {SubEventTypeDropdown} from "@/components/dropdown/SubEventTypeDropdown";
 import {DisplayTypeDropdown} from "@/components/dropdown/DisplayTypeDropdown";
-import {Switch} from "../ui/switch";
+import {Switch} from "@/components/ui/switch";
+import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion"
 
 const formSchema = z.object({
   association: z.number(),
@@ -27,8 +28,7 @@ const formSchema = z.object({
   isPublished: z.boolean(),
   isPlace: z.boolean(),
   place: z.string().optional(),
-  isDate: z.boolean(),
-  date: z.string().optional(),
+  date: z.date(),
   isEndDate: z.boolean(),
   endDate: z.string().optional(),
   isHour: z.boolean(),
@@ -55,9 +55,9 @@ const EventForm = () => {
       title: "",
       description: "",
       logo: "",
+      date: new Date(),
       isPublished: false,
       isPlace: false,
-      isDate: false,
       isEndDate: false,
       isHour: false,
       isEndHour: false,
@@ -78,11 +78,10 @@ const EventForm = () => {
         title: data.title,
         description: data.description,
         logo: data.logo,
+        date: data.date,
         isPublished: data.isPublished,
         isPlace: data.isPlace,
         place: data.place,
-        isDate: data.isDate,
-        date: data.date,
         isEndDate: data.isEndDate,
         endDate: data.endDate,
         isHour: data.isHour,
@@ -287,28 +286,6 @@ const EventForm = () => {
             <div className="flex items-center gap-2">
               <FormControl>
                 <Switch
-                  checked={form.watch('isEndHour')}
-                  onCheckedChange={(checked) => form.setValue('isEndHour', checked)}
-                />
-              </FormControl>
-              <FormLabel className="text-[14px] leading-[20px] w-full max-w-[280px] font-medium text-gray-700">
-                Heure de fin
-              </FormLabel>
-            </div>
-            <div className="flex items-center gap-2">
-              <FormControl>
-                <Switch
-                  checked={form.watch('isDate')}
-                  onCheckedChange={(checked) => form.setValue('isDate', checked)}
-                />
-              </FormControl>
-              <FormLabel className="text-[14px] leading-[20px] w-full max-w-[280px] font-medium text-gray-700">
-                Date
-              </FormLabel>
-            </div>
-            <div className="flex items-center gap-2">
-              <FormControl>
-                <Switch
                   checked={form.watch('isEndDate')}
                   onCheckedChange={(checked) => form.setValue('isEndDate', checked)}
                 />
@@ -326,6 +303,17 @@ const EventForm = () => {
               </FormControl>
               <FormLabel className="text-[14px] leading-[20px] w-full max-w-[280px] font-medium text-gray-700">
                 Heure
+              </FormLabel>
+            </div>
+            <div className="flex items-center gap-2">
+              <FormControl>
+                <Switch
+                  checked={form.watch('isEndHour')}
+                  onCheckedChange={(checked) => form.setValue('isEndHour', checked)}
+                />
+              </FormControl>
+              <FormLabel className="text-[14px] leading-[20px] w-full max-w-[280px] font-medium text-gray-700">
+                Heure de fin
               </FormLabel>
             </div>
           </div>
@@ -365,6 +353,30 @@ const EventForm = () => {
               </FormLabel>
             </div>
           </div>
+        </div>
+
+        <div className="mt-5 max-w-[850px] gap-3 border-gray-200 py-5">
+          <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="item-1">
+              <AccordionTrigger>Is it accessible?</AccordionTrigger>
+              <AccordionContent>
+                Yes. It adheres to the WAI-ARIA design pattern.
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-2">
+              <AccordionTrigger>Is it styled?</AccordionTrigger>
+              <AccordionContent>
+                Yes. It comes with default styles that matches the other
+                components&apos; aesthetic.
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-3">
+              <AccordionTrigger>Is it animated?</AccordionTrigger>
+              <AccordionContent>
+                Yes. It&apos;s animated by default, but you can disable it if you prefer.
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </div>
 
         <div className="mt-5 flex w-full max-w-[850px] gap-3 border-gray-200 py-5">

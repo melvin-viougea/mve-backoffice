@@ -37,7 +37,7 @@ const EventsTable = ({events}: EventTableProps) => {
           return (
             <TableRow key={e.id} className='bg-[#FFFBFA]'>
               <TableCell className="max-w-[250px] pl-2 pr-10">
-                {e.date ? formatDateTime(new Date(e.date)).dateOnly : "-"}
+                {formatDateTime(new Date(e.date)).dateOnly}
               </TableCell>
               <TableCell className="min-w-32 pl-2 pr-10">
                 {e.title}

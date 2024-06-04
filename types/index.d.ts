@@ -27,7 +27,6 @@ declare type Events = {
   isPublished: string;
   isPlace: boolean;
   place: string;
-  isDate: boolean;
   date: string;
   isEndDate: boolean;
   endDate: string;
@@ -49,11 +48,10 @@ declare interface createEventProps {
   title: string;
   description: string;
   logo: string | undefined;
+  date: Date;
   isPublished: boolean;
   isPlace: boolean;
   place: string | undefined;
-  isDate: boolean;
-  date: string | undefined;
   isEndDate: boolean;
   endDate: string | undefined;
   isHour: boolean;
