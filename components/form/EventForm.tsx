@@ -15,7 +15,7 @@ import {createEvent} from "@/lib/actions/event.actions";
 import {SubEventTypeDropdown} from "@/components/dropdown/SubEventTypeDropdown";
 import {DisplayTypeDropdown} from "@/components/dropdown/DisplayTypeDropdown";
 import {Switch} from "@/components/ui/switch";
-import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion"
+import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion";
 
 const formSchema = z.object({
   association: z.number(),
@@ -294,6 +294,24 @@ const EventForm = () => {
                 Date de fin
               </FormLabel>
             </div>
+            {form.watch('isEndDate') && (
+              <FormField
+                control={form.control}
+                name="endDate"
+                render={({field}) => (
+                  <FormItem className="flex w-full flex-col gap-2">
+                    <FormControl>
+                      <Input
+                        type="date"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-[12px] leading-[16px] text-red-500"/>
+                  </FormItem>
+                )}
+              />
+            )}
+
             <div className="flex items-center gap-2">
               <FormControl>
                 <Switch
@@ -305,6 +323,24 @@ const EventForm = () => {
                 Heure
               </FormLabel>
             </div>
+            {form.watch('isHour') && (
+              <FormField
+                control={form.control}
+                name="hour"
+                render={({field}) => (
+                  <FormItem className="flex w-full flex-col gap-2">
+                    <FormControl>
+                      <Input
+                        type="time"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-[12px] leading-[16px] text-red-500"/>
+                  </FormItem>
+                )}
+              />
+            )}
+
             <div className="flex items-center gap-2">
               <FormControl>
                 <Switch
@@ -316,6 +352,23 @@ const EventForm = () => {
                 Heure de fin
               </FormLabel>
             </div>
+            {form.watch('isEndHour') && (
+              <FormField
+                control={form.control}
+                name="endHour"
+                render={({field}) => (
+                  <FormItem className="flex w-full flex-col gap-2">
+                    <FormControl>
+                      <Input
+                        type="time"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-[12px] leading-[16px] text-red-500"/>
+                  </FormItem>
+                )}
+              />
+            )}
           </div>
 
           <div className="flex flex-col gap-5 w-full">
@@ -330,6 +383,24 @@ const EventForm = () => {
                 Lieu
               </FormLabel>
             </div>
+            {form.watch('isPlace') && (
+              <FormField
+                control={form.control}
+                name="place"
+                render={({field}) => (
+                  <FormItem className="flex w-full flex-col gap-2">
+                    <FormControl>
+                      <Input
+                        placeholder="Entrez le lieu de l'événement"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-[12px] leading-[16px] text-red-500"/>
+                  </FormItem>
+                )}
+              />
+            )}
+
             <div className="flex items-center gap-2">
               <FormControl>
                 <Switch
@@ -341,6 +412,24 @@ const EventForm = () => {
                 Adresse
               </FormLabel>
             </div>
+            {form.watch('isAddress') && (
+              <FormField
+                control={form.control}
+                name="address"
+                render={({field}) => (
+                  <FormItem className="flex w-full flex-col gap-2">
+                    <FormControl>
+                      <Input
+                        placeholder="Entrez l'adresse de l'événement"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-[12px] leading-[16px] text-red-500"/>
+                  </FormItem>
+                )}
+              />
+            )}
+
             <div className="flex items-center gap-2">
               <FormControl>
                 <Switch
@@ -352,28 +441,39 @@ const EventForm = () => {
                 Limite de participants
               </FormLabel>
             </div>
+            {form.watch('isPeopleLimit') && (
+              <FormField
+                control={form.control}
+                name="peopleLimit"
+                render={({field}) => (
+                  <FormItem className="flex w-full flex-col gap-2">
+                    <FormControl>
+                      <Input
+                        type="number"
+                        placeholder="ex: 200"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-[12px] leading-[16px] text-red-500"/>
+                  </FormItem>
+                )}
+              />
+            )}
           </div>
         </div>
 
-        <div className="mt-5 max-w-[850px] gap-3 border-gray-200 py-5">
-          <Accordion type="single" collapsible className="w-full">
+        <div className="max-w-[850px] gap-3 pb-5 border-t border-gray-200">
+          <Accordion type="multiple"  className="w-full">
             <AccordionItem value="item-1">
-              <AccordionTrigger>Is it accessible?</AccordionTrigger>
+              <AccordionTrigger>Tarifs</AccordionTrigger>
               <AccordionContent>
-                Yes. It adheres to the WAI-ARIA design pattern.
+                aaa aa aaaaaa aa aaaaaa
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-2">
-              <AccordionTrigger>Is it styled?</AccordionTrigger>
+              <AccordionTrigger>Participants</AccordionTrigger>
               <AccordionContent>
-                Yes. It comes with default styles that matches the other
-                components&apos; aesthetic.
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-3">
-              <AccordionTrigger>Is it animated?</AccordionTrigger>
-              <AccordionContent>
-                Yes. It&apos;s animated by default, but you can disable it if you prefer.
+                aaa aa aaaaaa aa aaaaaa
               </AccordionContent>
             </AccordionItem>
           </Accordion>

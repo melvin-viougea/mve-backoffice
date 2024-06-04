@@ -1,87 +1,58 @@
-//TODO mettre SVG a la place des PNG
 export const sidebarLinks = [
   {
-    imgURL: "/icons/tdb.png",
+    imgURL: "/icons/sidebar/tdb.svg",
     route: "/",
     label: "Tableau de bord",
   },
   {
-    imgURL: "/icons/team.png",
+    imgURL: "/icons/sidebar/team.svg",
     route: "/equipe",
     label: "Espace d'équipe",
   },
   {
-    imgURL: "/icons/calendar.png",
+    imgURL: "/icons/sidebar/calendar.svg",
     route: "/calendrier",
     label: "Calendrier",
   },
   {
-    imgURL: "/icons/plus.png",
+    imgURL: "/icons/sidebar/plus.svg",
     route: "/evenement",
     label: "Évènement",
   },
   {
-    imgURL: "/icons/shop.png",
+    imgURL: "/icons/sidebar/shop.svg",
     route: "/marketplace",
     label: "Marketplace",
   },
   {
-    imgURL: "/icons/data.png",
+    imgURL: "/icons/sidebar/data.svg",
     route: "/partenaires",
     label: "Partenaires",
   },
   {
-    imgURL: "/icons/home.png",
+    imgURL: "/icons/sidebar/home.svg",
     route: "/communaute",
     label: "Communauté",
   },
   {
-    imgURL: "/icons/db.png",
+    imgURL: "/icons/sidebar/db.svg",
     route: "/gestion-asso",
     label: "Gestion de l'asso",
   },
   {
-    imgURL: "/icons/school.png",
+    imgURL: "/icons/sidebar/school.svg",
     route: "/formation",
     label: "Formations",
   },
   {
-    imgURL: "/icons/help.png",
+    imgURL: "/icons/sidebar/help.svg",
     route: "/accompagnement",
     label: "Besoin d'accompagnement",
   },
   {
-    imgURL: "/icons/setting.png",
+    imgURL: "/icons/sidebar/setting.svg",
     route: "/parametre",
     label: "Paramétrage",
-  },
-];
-
-// good_user / good_password - Bank of America
-export const TEST_USER_ID = "6627ed3d00267aa6fa3e";
-
-// custom_user -> Chase Bank
-// export const TEST_ACCESS_TOKEN =
-//   "access-sandbox-da44dac8-7d31-4f66-ab36-2238d63a3017";
-
-// custom_user -> Chase Bank
-export const TEST_ACCESS_TOKEN =
-  "access-sandbox-229476cf-25bc-46d2-9ed5-fba9df7a5d63";
-
-export const ITEMS = [
-  {
-    id: "6624c02e00367128945e", // appwrite item Id
-    accessToken: "access-sandbox-83fd9200-0165-4ef8-afde-65744b9d1548",
-    itemId: "VPMQJKG5vASvpX8B6JK3HmXkZlAyplhW3r9xm",
-    userId: "6627ed3d00267aa6fa3e",
-    accountId: "X7LMJkE5vnskJBxwPeXaUWDBxAyZXwi9DNEWJ",
-  },
-  {
-    id: "6627f07b00348f242ea9", // appwrite item Id
-    accessToken: "access-sandbox-74d49e15-fc3b-4d10-a5e7-be4ddae05b30",
-    itemId: "Wv7P6vNXRXiMkoKWPzeZS9Zm5JGWdXulLRNBq",
-    userId: "6627ed3d00267aa6fa3e",
-    accountId: "x1GQb1lDrDHWX4BwkqQbI4qpQP1lL6tJ3VVo9",
   },
 ];
 

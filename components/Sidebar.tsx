@@ -13,19 +13,25 @@ const Sidebar = ({user}: SiderbarProps) => {
 
   return (
     <section className="sticky left-0 top-0 flex h-screen w-fit flex-col justify-between border-r border-gray-200 bg-white pt-8 text-white max-md:hidden sm:p-4 xl:p-6 2xl:w-[355px]">
-      <div className="mb-12 flex items-center gap-2">
-        <Link href="/" className="cursor-pointer flex items-center gap-2">
+      <div className="mb-10 flex items-center gap-2 max-xl:mb-4">
+        <Link href="/" className="cursor-pointer flex mx-auto gap-2">
           <Image
             src="/icons/logo.svg"
             width={34}
             height={34}
             alt="MaVieEtudiante logo"
-            className="size-[24px] max-xl:size-14"
+            className="size-[24px] max-xl:size-14 hidden max-xl:block"
           />
-          <h1 className="2xl:text-26 font-ibm-plex-serif text-[26px] font-bold text-black max-xl:hidden">MaVieEtudiante</h1>
+          <Image
+            src="/icons/toplogo.svg"
+            width={500}
+            height={500}
+            alt="MaVieEtudiante logo"
+            className="w-[200px] h-[90px] max-xl:hidden"
+          />
         </Link>
       </div>
-      <nav className="flex flex-col gap-4 overflow-y-auto flex-1">
+      <nav className="flex flex-col gap-1 overflow-y-auto flex-1">
         {sidebarLinks.map((item) => {
           const isActive = pathname === item.route || pathname.startsWith(`${item.route}/`);
 
@@ -41,7 +47,7 @@ const Sidebar = ({user}: SiderbarProps) => {
                   alt={item.label}
                   fill
                   className={cn({
-                    'brightness-[10] invert-0': isActive
+                    'invert': isActive
                   })}
                 />
               </div>

@@ -14,7 +14,7 @@ const Footer = ({user, type = 'desktop'}: FooterProps) => {
   }
 
   return (
-    <footer className="flex cursor-pointer items-center justify-between gap-2 py-6">
+    <footer className="flex cursor-pointer items-center justify-between gap-2 pt-6 max-xl:py-6">
       <div className={type === 'mobile' ? 'flex size-10 items-center justify-center rounded-full bg-gray-200' : 'flex size-10 items-center justify-center rounded-full bg-gray-200 max-xl:hidden'}>
         <p className="text-xl font-bold text-gray-700">
           {user?.firstname[0]}

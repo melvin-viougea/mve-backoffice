@@ -65,14 +65,14 @@ const AuthForm = ({type}: { type: string }) => {
   return (
     <section className="flex min-h-screen w-full max-w-[420px] flex-col justify-center gap-5 py-10 md:gap-8">
       <header className='flex flex-col gap-5 md:gap-8'>
-        <Link href="/" className="cursor-pointer flex items-center gap-1">
+        <Link href="/" className="cursor-pointer flex mx-auto gap-2">
           <Image
-            src="/icons/logo.svg"
-            width={34}
-            height={34}
+            src="/icons/leftlogo.svg"
+            width={500}
+            height={500}
             alt="MaVieEtudiante logo"
+            className="w-[350px] h-[100px]"
           />
-          <h1 className="text-[26px] leading-[32px] font-ibm-plex-serif font-bold text-black-1">MaVieEtudiante</h1>
         </Link>
         <div className="flex flex-col gap-1 md:gap-3">
           <h1 className="text-[24px] leading-[30px] lg:text-[36px] lg:leading-[44px] font-semibold text-gray-900">

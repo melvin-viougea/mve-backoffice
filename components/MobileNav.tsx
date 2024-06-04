@@ -25,14 +25,14 @@ const MobileNav = ({user}: MobileNavProps) => {
           />
         </SheetTrigger>
         <SheetContent side="left" className="border-none bg-white flex flex-col">
-          <Link href="/" className="cursor-pointer flex items-center gap-1 px-4">
+          <Link href="/" className="cursor-pointer flex mx-auto gap-2">
             <Image
-              src="/icons/logo.svg"
-              width={34}
-              height={34}
+              src="/icons/toplogo.svg"
+              width={500}
+              height={500}
               alt="MaVieEtudiante logo"
+              className="w-[200px] h-[90px]"
             />
-            <h1 className="text-26 font-ibm-plex-serif font-bold text-black-1">MaVieEtudiante</h1>
           </Link>
           <div className="flex flex-1 flex-col justify-between overflow-y-auto">
             <nav className="flex flex-col gap-6 pt-16 text-white">
@@ -50,7 +50,7 @@ const MobileNav = ({user}: MobileNavProps) => {
                         width={20}
                         height={20}
                         className={cn({
-                          'brightness-[10] invert-0': isActive
+                          'invert': isActive
                         })}
                       />
                       <p className={cn("text-16 font-semibold text-black", {"text-white": isActive})}>
