@@ -2,27 +2,27 @@ import {prisma} from "@/lib/prisma"
 import {NextResponse} from "next/server";
 import {authenticate} from "@/middleware/auth";
 
-export async function GET (request: Request) {
-    const authResult = authenticate(request);
-    if (!authResult.authenticated) {
-        return new NextResponse(JSON.stringify({ error: authResult.message }), { status: 401 });
-    }
+export async function GET(request: Request) {
+  const authResult = authenticate(request);
+  if (!authResult.authenticated) {
+    return new NextResponse(JSON.stringify({error: authResult.message}), {status: 401});
+  }
 
-    const subEventTypes = await prisma.subEventType.findMany()
-    return NextResponse.json(subEventTypes)
+  const subEventTypes = await prisma.subEventType.findMany()
+  return NextResponse.json(subEventTypes)
 }
 
 export async function POST(request: Request) {
-    const authResult = authenticate(request);
-    if (!authResult.authenticated) {
-        return new NextResponse(JSON.stringify({ error: authResult.message }), { status: 401 });
-    }
+  const authResult = authenticate(request);
+  if (!authResult.authenticated) {
+    return new NextResponse(JSON.stringify({error: authResult.message}), {status: 401});
+  }
 
-    const json = await request.json()
+  const json = await request.json()
 
-    const created = await prisma.subEventType.create({
-        data: json
-    })
+  const created = await prisma.subEventType.create({
+    data: json
+  })
 
-    return new NextResponse(JSON.stringify(created), { status: 201 })
+  return new NextResponse(JSON.stringify(created), {status: 201})
 }

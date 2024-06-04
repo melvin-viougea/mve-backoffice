@@ -4,24 +4,24 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url = env("DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
 model User {
-  id            Int       @id @default(autoincrement())
-  firstname     String
-  lastname      String
-  address      String
-  city          String
-  postalCode    String
-  email         String    @unique
-  password      String
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id         Int      @id @default(autoincrement())
+  firstname  String
+  lastname   String
+  address    String
+  city       String
+  postalCode String
+  email      String   @unique
+  password   String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model Event {
-  id            Int       @id @default(autoincrement())
+  id             Int          @id @default(autoincrement())
   association    Association  @relation(fields: [associationId], references: [id])
   associationId  Int
   displayType    DisplayType  @relation(fields: [displayTypeId], references: [id])
@@ -30,56 +30,56 @@ model Event {
   eventTypeId    Int
   subEventType   SubEventType @relation(fields: [subEventTypeId], references: [id])
   subEventTypeId Int
-  title         String
-  description   String
-  logo         String?
-  date          DateTime @db.Date
-  isPublished   Boolean   @default(false)
-  isPlace       Boolean   @default(false)
-  place         String?
-  isEndDate     Boolean   @default(false)
-  endDate          DateTime? @db.Date
-  isHour        Boolean   @default(false)
-  hour          DateTime? @db.Time
-  isEndHour     Boolean   @default(false)
-  endHour          DateTime? @db.Time
-  isAddress     Boolean   @default(false)
-  address       String?
-  isPeopleLimit Boolean   @default(false)
-  peopleLimit   Int?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  title          String
+  description    String
+  logo           String?
+  date           DateTime     @db.Date
+  isPublished    Boolean      @default(false)
+  isPlace        Boolean      @default(false)
+  place          String?
+  isEndDate      Boolean      @default(false)
+  endDate        DateTime?    @db.Date
+  isHour         Boolean      @default(false)
+  hour           DateTime?    @db.Time
+  isEndHour      Boolean      @default(false)
+  endHour        DateTime?    @db.Time
+  isAddress      Boolean      @default(false)
+  address        String?
+  isPeopleLimit  Boolean      @default(false)
+  peopleLimit    Int?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
 }
 
 model Association {
   id        Int      @id @default(autoincrement())
-  name  String
-  image  String
-  events Event[]
+  name      String
+  image     String
+  events    Event[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model DisplayType {
   id        Int      @id @default(autoincrement())
-  name  String
-  events Event[]
+  name      String
+  events    Event[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model EventType {
   id        Int      @id @default(autoincrement())
-  name  String
-  events Event[]
+  name      String
+  events    Event[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model SubEventType {
   id        Int      @id @default(autoincrement())
-  name  String
-  events Event[]
+  name      String
+  events    Event[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
