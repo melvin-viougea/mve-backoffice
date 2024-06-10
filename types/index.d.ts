@@ -40,28 +40,32 @@ declare type Events = {
   peopleLimit: number;
 };
 
-declare interface createEventProps {
+declare interface CreateEventProps {
   associationId: number;
-  displayTypeId: number;
-  eventTypeId: number;
-  subEventTypeId: number;
+  displayTypeId: string;
+  eventTypeId: string;
+  subEventTypeId: string;
   title: string;
   description: string;
-  logo: string | undefined;
+  logo?: string;
   date: Date;
   isPublished: boolean;
   isPlace: boolean;
-  place: string | undefined;
+  place?: string;
   isEndDate: boolean;
-  endDate: string | undefined;
+  endDate?: Date;
   isHour: boolean;
-  hour: string | undefined;
+  hour?: Date;
   isEndHour: boolean;
-  endHour: string | undefined;
+  endHour?: Date;
   isAddress: boolean;
-  address: string | undefined;
+  address?: string;
   isPeopleLimit: boolean;
-  peopleLimit: number | undefined;
+  peopleLimit?: number;
+}
+
+declare interface EventFormProps {
+  event?: Events;
 }
 
 declare type EventType = {
@@ -94,8 +98,15 @@ declare type SignUpParams = {
   password: string;
 };
 
-declare interface getDataParams {
-  id: string;
+declare interface getOneParams {
+  id: number;
+}
+
+declare interface pageProps{
+  params: {
+    id: number;
+  };
+  searchParams: Record<any>;
 }
 
 declare interface createDataParams {

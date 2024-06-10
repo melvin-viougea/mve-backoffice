@@ -1,7 +1,10 @@
+'use client'
+
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table"
 import {cn, formatDateTime} from "@/lib/utils"
 import {statusStyles} from "@/constants";
 import {BadgeProps, Events, EventTableProps} from "@/types";
+import {useRouter} from "next/navigation";
 
 const StatusBadge = ({status}: BadgeProps) => {
   const {
@@ -20,6 +23,11 @@ const StatusBadge = ({status}: BadgeProps) => {
 };
 
 const EventsTable = ({events}: EventTableProps) => {
+  const router = useRouter();
+
+  const handleRowClick = (id: number) => {
+    router.push(`/evenement/${id}`);
+  };
   return (
     <Table>
       <TableHeader className="bg-[#f9fafb]">
@@ -35,7 +43,7 @@ const EventsTable = ({events}: EventTableProps) => {
       <TableBody>
         {events.map((e: Events) => {
           return (
-            <TableRow key={e.id} className='bg-[#FFFBFA]'>
+            <TableRow key={e.id} className='bg-[#FFFBFA] cursor-pointer' onClick={() => handleRowClick(e.id)}>
               <TableCell className="max-w-[250px] pl-2 pr-10">
                 {formatDateTime(new Date(e.date)).dateOnly}
               </TableCell>
