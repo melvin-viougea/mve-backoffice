@@ -33,9 +33,9 @@ export const createEvent = async (event: CreateEventProps) => {
   }
 };
 
-export const updateEvent = async ({ id, event }: UpdateEventProps) => {
+export const updateEvent = async ({id, event}: UpdateEventProps) => {
   try {
-    const response = await KyInstance.put(`${baseUrl}/${id}`, { json: event }).json();
+    const response = await KyInstance.patch(`${baseUrl}/${id}`, {json: event}).json();
     return parseStringify(response);
   } catch (error) {
     console.error('Error updating event:', error);

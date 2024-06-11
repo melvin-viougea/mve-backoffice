@@ -1,6 +1,7 @@
-import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { authenticate } from "@/middleware/auth";
+import {getEventData} from "@/lib/dataApi";
+import {prisma} from "@/lib/prisma";
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
   const authResult = authenticate(request);
@@ -8,30 +9,13 @@ export async function GET(request: Request, { params }: { params: { id: string }
     return new NextResponse(JSON.stringify({ error: authResult.message }), { status: 401 });
   }
 
-  const id = params.id;
+  const id = parseInt(params.id, 10);
   const event = await prisma.event.findUnique({
-    where: {
-      id: parseInt(id)
-    },
+    where: { id },
     include: {
-      eventType: {
-        select: {
-          id: true,
-          name: true,
-        }
-      },
-      subEventType: {
-        select: {
-          id: true,
-          name: true,
-        }
-      },
-      displayType: {
-        select: {
-          id: true,
-          name: true,
-        },
-      },
+      eventType: { select: { id: true, name: true } },
+      subEventType: { select: { id: true, name: true } },
+      displayType: { select: { id: true, name: true } },
     },
   });
 
@@ -39,42 +23,13 @@ export async function GET(request: Request, { params }: { params: { id: string }
     return new NextResponse(JSON.stringify({ error: "Event not found" }), { status: 404 });
   }
 
-  const eventWithAssociation = {
-    id: event.id,
-    title: event.title,
-    description: event.description,
-    logo: event.logo,
-    date: event.date,
-    isPublished: event.isPublished,
-    isPlace: event.isPlace,
-    place: event.place,
-    isEndDate: event.isEndDate,
-    endDate: event.endDate,
-    isHour: event.isHour,
-    hour: event.hour,
-    isEndHour: event.isEndHour,
-    endHour: event.endHour,
-    isAddress: event.isAddress,
-    address: event.address,
-    isPeopleLimit: event.isPeopleLimit,
-    peopleLimit: event.peopleLimit,
-    createdAt: event.createdAt,
-    updatedAt: event.updatedAt,
-    eventType: {
-      id: event.eventType.id,
-      name: event.eventType.name,
-    },
-    subEventType: {
-      id: event.subEventType.id,
-      name: event.subEventType.name,
-    },
-    displayType: {
-      id: event.displayType.id,
-      name: event.displayType.name,
-    },
-  };
-
-  return NextResponse.json(eventWithAssociation);
+  try {
+    const eventData = await getEventData(event);
+    return new NextResponse(JSON.stringify(eventData), { status: 200 });
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
+    return new NextResponse(JSON.stringify({ error: errorMessage }), { status: 500 });
+  }
 }
 
 export async function PUT(request: Request, { params }: { params: { id: string } }) {
@@ -83,94 +38,98 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     return new NextResponse(JSON.stringify({ error: authResult.message }), { status: 401 });
   }
 
-  const id = params.id;
+  const id = parseInt(params.id, 10);
   const json = await request.json();
 
-  const updated = await prisma.event.update({
-    where: {
-      id: parseInt(id)
-    },
-    data: {
-      title: json.title || null,
-      description: json.description || null,
-      logo: json.logo || null,
-      isPublished: json.isPublished || null,
-      isPlace: json.isPlace || null,
-      place: json.place || null,
-      date: json.date || null,
-      isEndDate: json.isEndDate || null,
-      endDate: json.endDate || null,
-      isHour: json.isHour || null,
-      hour: json.hour || null,
-      isEndHour: json.isEndHour || null,
-      endHour: json.endHour || null,
-      isAddress: json.isAddress || null,
-      address: json.address || null,
-      isPeopleLimit: json.isPeopleLimit || null,
-      peopleLimit: json.peopleLimit || null,
-      associationId: json.associationId || null,
-      displayTypeId: json.displayTypeId || null,
-      eventTypeId: json.eventTypeId || null,
-      subEventTypeId: json.subEventTypeId || null,
-    },
-    include: {
-      eventType: {
-        select: {
-          id: true,
-          name: true,
-        }
+  try {
+    const updated = await prisma.event.update({
+      where: { id },
+      data: {
+        title: json.title || null,
+        description: json.description || null,
+        logo: json.logo || null,
+        isPublished: json.isPublished || null,
+        isPlace: json.isPlace || null,
+        place: json.place || null,
+        date: json.date || null,
+        isEndDate: json.isEndDate || null,
+        endDate: json.endDate || null,
+        isHour: json.isHour || null,
+        hour: json.hour || null,
+        isEndHour: json.isEndHour || null,
+        endHour: json.endHour || null,
+        isAddress: json.isAddress || null,
+        address: json.address || null,
+        isPeopleLimit: json.isPeopleLimit || null,
+        peopleLimit: json.peopleLimit || null,
+        associationId: json.associationId || null,
+        displayTypeId: json.displayTypeId || null,
+        eventTypeId: json.eventTypeId || null,
+        subEventTypeId: json.subEventTypeId || null,
       },
-      subEventType: {
-        select: {
-          id: true,
-          name: true,
-        }
+      include: {
+        eventType: { select: { id: true, name: true } },
+        subEventType: { select: { id: true, name: true } },
+        displayType: { select: { id: true, name: true } },
       },
-      displayType: {
-        select: {
-          id: true,
-          name: true,
-        },
-      },
-    },
-  });
+    });
 
-  const updatedEvent = {
-    id: updated.id,
-    title: updated.title,
-    description: updated.description,
-    logo: updated.logo,
-    date: updated.date,
-    isPublished: updated.isPublished,
-    isPlace: updated.isPlace,
-    place: updated.place,
-    isEndDate: updated.isEndDate,
-    endDate: updated.endDate,
-    isHour: updated.isHour,
-    hour: updated.hour,
-    isEndHour: updated.isEndHour,
-    endHour: updated.endHour,
-    isAddress: updated.isAddress,
-    address: updated.address,
-    isPeopleLimit: updated.isPeopleLimit,
-    peopleLimit: updated.peopleLimit,
-    createdAt: updated.createdAt,
-    updatedAt: updated.updatedAt,
-    eventType: {
-      id: updated.eventType.id,
-      name: updated.eventType.name,
-    },
-    subEventType: {
-      id: updated.subEventType.id,
-      name: updated.subEventType.name,
-    },
-    displayType: {
-      id: updated.displayType.id,
-      name: updated.displayType.name,
-    },
-  };
+    const eventData = await getEventData(updated);
+    return new NextResponse(JSON.stringify(eventData), { status: 200 });
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
+    return new NextResponse(JSON.stringify({ error: errorMessage }), { status: 500 });
+  }
+}
 
-  return NextResponse.json(updatedEvent);
+export async function PATCH(request: Request, { params }: { params: { id: string } }) {
+  const authResult = authenticate(request);
+  if (!authResult.authenticated) {
+    return new NextResponse(JSON.stringify({ error: authResult.message }), { status: 401 });
+  }
+
+  const id = parseInt(params.id, 10);
+  const json = await request.json();
+
+  try {
+    const updated = await prisma.event.update({
+      where: { id },
+      data: {
+        ...(json.title !== undefined && { title: json.title }),
+        ...(json.description !== undefined && { description: json.description }),
+        ...(json.logo !== undefined && { logo: json.logo }),
+        ...(json.isPublished !== undefined && { isPublished: json.isPublished }),
+        ...(json.isPlace !== undefined && { isPlace: json.isPlace }),
+        ...(json.place !== undefined && { place: json.place }),
+        ...(json.date !== undefined && { date: json.date }),
+        ...(json.isEndDate !== undefined && { isEndDate: json.isEndDate }),
+        ...(json.endDate !== undefined && { endDate: json.endDate }),
+        ...(json.isHour !== undefined && { isHour: json.isHour }),
+        ...(json.hour !== undefined && { hour: json.hour }),
+        ...(json.isEndHour !== undefined && { isEndHour: json.isEndHour }),
+        ...(json.endHour !== undefined && { endHour: json.endHour }),
+        ...(json.isAddress !== undefined && { isAddress: json.isAddress }),
+        ...(json.address !== undefined && { address: json.address }),
+        ...(json.isPeopleLimit !== undefined && { isPeopleLimit: json.isPeopleLimit }),
+        ...(json.peopleLimit !== undefined && { peopleLimit: json.peopleLimit }),
+        ...(json.associationId !== undefined && { associationId: json.associationId }),
+        ...(json.displayTypeId !== undefined && { displayTypeId: json.displayTypeId }),
+        ...(json.eventTypeId !== undefined && { eventTypeId: json.eventTypeId }),
+        ...(json.subEventTypeId !== undefined && { subEventTypeId: json.subEventTypeId }),
+      },
+      include: {
+        eventType: { select: { id: true, name: true } },
+        subEventType: { select: { id: true, name: true } },
+        displayType: { select: { id: true, name: true } },
+      },
+    });
+
+    const eventData = await getEventData(updated);
+    return new NextResponse(JSON.stringify(eventData), { status: 200 });
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
+    return new NextResponse(JSON.stringify({ error: errorMessage }), { status: 500 });
+  }
 }
 
 export async function DELETE(request: Request, { params }: { params: { id: string } }) {
@@ -179,68 +138,22 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
     return new NextResponse(JSON.stringify({ error: authResult.message }), { status: 401 });
   }
 
-  const id = params.id;
+  const id = parseInt(params.id, 10);
 
-  const deleted = await prisma.event.delete({
-    where: {
-      id: parseInt(id)
-    },
-    include: {
-      eventType: {
-        select: {
-          id: true,
-          name: true,
-        }
+  try {
+    const deleted = await prisma.event.delete({
+      where: { id },
+      include: {
+        eventType: { select: { id: true, name: true } },
+        subEventType: { select: { id: true, name: true } },
+        displayType: { select: { id: true, name: true } },
       },
-      subEventType: {
-        select: {
-          id: true,
-          name: true,
-        }
-      },
-      displayType: {
-        select: {
-          id: true,
-          name: true,
-        },
-      },
-    },
-  });
+    });
 
-  const deletedEvent = {
-    id: deleted.id,
-    title: deleted.title,
-    description: deleted.description,
-    logo: deleted.logo,
-    date: deleted.date,
-    isPublished: deleted.isPublished,
-    isPlace: deleted.isPlace,
-    place: deleted.place,
-    isEndDate: deleted.isEndDate,
-    endDate: deleted.endDate,
-    isHour: deleted.isHour,
-    hour: deleted.hour,
-    isEndHour: deleted.isEndHour,
-    endHour: deleted.endHour,
-    isAddress: deleted.isAddress,
-    address: deleted.address,
-    isPeopleLimit: deleted.isPeopleLimit,
-    peopleLimit: deleted.peopleLimit,
-    createdAt: deleted.createdAt,
-    updatedAt: deleted.updatedAt,
-    eventType: {
-      id: deleted.eventType.id,
-      name: deleted.eventType.name,
-    },
-    subEventType: {
-      id: deleted.subEventType.id,
-      name: deleted.subEventType.name,
-    },
-    displayType: {
-      id: deleted.displayType.id,
-      name: deleted.displayType.name,
-    },
-  };
-
-  return NextResponse.json(deletedEvent);
+    const eventData = await getEventData(deleted);
+    return new NextResponse(JSON.stringify(eventData), { status: 200 });
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
+    return new NextResponse(JSON.stringify({ error: errorMessage }), { status: 500 });
+  }
 }
