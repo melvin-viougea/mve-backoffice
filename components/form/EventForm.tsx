@@ -11,73 +11,73 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { createEvent } from "@/lib/actions/event.actions";
+import { createEvent, updateEvent } from "@/lib/actions/event.actions";
 import { SubEventTypeDropdown } from "@/components/dropdown/SubEventTypeDropdown";
 import { DisplayTypeDropdown } from "@/components/dropdown/DisplayTypeDropdown";
 import { Switch } from "@/components/ui/switch";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { EventFormProps } from "@/types";
 
-const formSchema = z.object({
-  association: z.number(),
-  displayType: z.string(),
-  eventType: z.string(),
-  subEventType: z.string(),
-  title: z.string(),
-  description: z.string(),
-  logo: z.string(),
-  date: z.string(),
-  isPublished: z.boolean(),
-  isPlace: z.boolean(),
-  place: z.string(),
-  isEndDate: z.boolean(),
-  endDate: z.string(),
-  isHour: z.boolean(),
-  hour: z.string(),
-  isEndHour: z.boolean(),
-  endHour: z.string(),
-  isAddress: z.boolean(),
-  address: z.string(),
-  isPeopleLimit: z.boolean(),
-  peopleLimit: z.number().optional(),
-});
-
 const EventForm = ({ event }: EventFormProps) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+
+  const formSchema = z.object({
+    association: z.number(),
+    displayType: z.number(),
+    eventType: z.number(),
+    subEventType: z.number(),
+    title: z.string(),
+    description: z.string(),
+    logo: z.string(),
+    date: z.string(),
+    isPublished: z.boolean(),
+    isPlace: z.boolean(),
+    place: z.string().optional(),
+    isEndDate: z.boolean(),
+    endDate: z.string().optional(),
+    isHour: z.boolean(),
+    hour: z.string().optional(),
+    isEndHour: z.boolean(),
+    endHour: z.string().optional(),
+    isAddress: z.boolean(),
+    address: z.string().optional(),
+    isPeopleLimit: z.boolean(),
+    peopleLimit: z.number().optional(),
+  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       association: event ? event.associationId : 1,
-      displayType: event ? event.displayType.id : "0",
-      eventType: event ? event.eventType.id : "0",
-      subEventType: event ? event.subEventType.id : "0",
+      displayType: event ? parseInt(event.displayType.id) : 0,
+      eventType: event ? parseInt(event.eventType.id) : 0,
+      subEventType: event ? parseInt(event.subEventType.id) : 0,
       title: event ? event.title : "",
       description: event ? event.description : "",
       logo: event ? event.logo : "",
       date: event ? event.date : "",
       isPublished: event ? event.isPublished === "true" : false,
       isPlace: event ? event.isPlace : false,
-      place: event ? event.place : "",
+      place: event ? event.place : undefined,
       isEndDate: event ? event.isEndDate : false,
-      endDate: event ? event.endDate : "",
+      endDate: event ? event.endDate : undefined,
       isHour: event ? event.isHour : false,
-      hour: event ? event.hour : "",
+      hour: event ? event.hour : undefined,
       isEndHour: event ? event.isEndHour : false,
-      endHour: event ? event.endHour : "",
+      endHour: event ? event.endHour : undefined,
       isAddress: event ? event.isAddress : false,
-      address: event ? event.address : "",
+      address: event ? event.address : undefined,
       isPeopleLimit: event ? event.isPeopleLimit : false,
       peopleLimit: event ? event.peopleLimit : undefined,
     },
-  });
+  })
 
-  const submit = async (data: z.infer<typeof formSchema>) => {
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsLoading(true);
 
     try {
-      const eventPayload = {
+      const eventData = {
         associationId: data.association,
         displayTypeId: data.displayType,
         eventTypeId: data.eventType,
@@ -86,7 +86,6 @@ const EventForm = ({ event }: EventFormProps) => {
         description: data.description,
         logo: data.logo || "",
         date: new Date(data.date),
-        isPublished: data.isPublished,
         isPlace: data.isPlace,
         place: data.place || "",
         isEndDate: data.isEndDate,
@@ -99,24 +98,32 @@ const EventForm = ({ event }: EventFormProps) => {
         address: data.address || "",
         isPeopleLimit: data.isPeopleLimit,
         peopleLimit: data.peopleLimit ? data.peopleLimit : undefined,
-      };
+        isPublished: true,
+      }
 
-      const newEvent = await createEvent(eventPayload);
-
-      if (newEvent) {
-        form.reset();
-        router.push("/evenement");
+      if (event) {
+        const updatedEvent = await updateEvent({ id: event.id, event: eventData });
+        if (updatedEvent) {
+          form.reset();
+          router.push('/evenement');
+        }
+      } else {
+        const newEvent = await createEvent(eventData);
+        if (newEvent) {
+          form.reset();
+          router.push('/evenement');
+        }
       }
     } catch (error) {
-      console.error("Submitting create event request failed: ", error);
+      console.log(error);
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
-  };
+  }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(submit)} className="flex flex-col">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col">
 
         <FormField
           control={form.control}
@@ -136,6 +143,7 @@ const EventForm = ({ event }: EventFormProps) => {
                   <FormControl>
                     <EventTypeDropdown
                       setValue={form.setValue}
+                      defaultValue={form.watch("eventType").toString()}
                       otherStyles="!w-full"
                     />
                   </FormControl>
@@ -164,6 +172,7 @@ const EventForm = ({ event }: EventFormProps) => {
                   <FormControl>
                     <SubEventTypeDropdown
                       setValue={form.setValue}
+                      defaultValue={form.watch("subEventType").toString()}
                       otherStyles="!w-full"
                     />
                   </FormControl>
@@ -192,6 +201,7 @@ const EventForm = ({ event }: EventFormProps) => {
                   <FormControl>
                     <DisplayTypeDropdown
                       setValue={form.setValue}
+                      defaultValue={form.watch("displayType").toString()}
                       otherStyles="!w-full"
                     />
                   </FormControl>
@@ -472,10 +482,10 @@ const EventForm = ({ event }: EventFormProps) => {
         </div>
 
         <div className="max-w-[850px] gap-3 pb-5 border-t border-gray-200">
-          <Accordion type="multiple"  className="w-full">
+          <Accordion type="multiple" className="w-full">
             <AccordionItem value="item-1">
               <AccordionTrigger className="text-[14px] leading-[20px] w-full font-medium text-gray-700">
-                  Tarifs
+                Tarifs
               </AccordionTrigger>
               <AccordionContent>
                 aaa aa aaaaaa aa aaaaaa
@@ -493,13 +503,24 @@ const EventForm = ({ event }: EventFormProps) => {
         </div>
 
         <div className="mt-5 flex w-full max-w-[850px] gap-3 border-gray-200 py-5">
-          <Button type="submit" className="text-[14px] leading-[20px] w-full bg-primary font-semibold text-white shadow-form !important">
+          <Button type="submit" name="publish" className="text-[14px] leading-[20px] w-full bg-primary font-semibold text-white shadow-form !important">
             {isLoading ? (
               <>
                 <Loader2 size={20} className="animate-spin"/> &nbsp; Envoie...
               </>
             ) : (
-              "Envoyer l'événement"
+              event ? "Mettre à jour et publier l'événement" : "Publier l'événement"
+            )}
+          </Button>
+
+          <Button type="submit" name="save" className="text-[14px] leading-[20px] w-full bg-gray-200 font-semibold text-gray-700 shadow-form !important"
+          >
+            {isLoading ? (
+              <>
+                <Loader2 size={20} className="animate-spin"/> &nbsp; Envoie...
+              </>
+            ) : (
+              event ? "Mettre à jour l'événement sans le publier" : "Enregistrer l'événement sans le publier"
             )}
           </Button>
         </div>

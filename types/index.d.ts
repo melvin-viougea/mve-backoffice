@@ -42,9 +42,9 @@ declare type Events = {
 
 declare interface CreateEventProps {
   associationId: number;
-  displayTypeId: string;
-  eventTypeId: string;
-  subEventTypeId: string;
+  displayTypeId: number;
+  eventTypeId: number;
+  subEventTypeId: number;
   title: string;
   description: string;
   logo?: string;
@@ -62,6 +62,11 @@ declare interface CreateEventProps {
   address?: string;
   isPeopleLimit: boolean;
   peopleLimit?: number;
+}
+
+declare interface UpdateEventProps {
+  id: number;
+  event: CreateEventProps;
 }
 
 declare interface EventFormProps {
@@ -196,5 +201,6 @@ declare interface EventTableProps {
 
 declare interface DropdownProps {
   setValue?: UseFormSetValue<any>;
+  defaultValue: string;
   otherStyles?: string;
 }

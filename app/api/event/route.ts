@@ -12,23 +12,26 @@ export async function GET(request: Request) {
     include: {
       eventType: {
         select: {
+          id: true,
           name: true,
         }
       },
       subEventType: {
         select: {
+          id: true,
           name: true,
         }
       },
       displayType: {
         select: {
+          id: true,
           name: true,
         }
       },
     },
   });
 
-  const eventsWithAssociation = events.map(event => ({
+  const allEvents = events.map(event => ({
     id: event.id,
     title: event.title,
     description: event.description,
@@ -50,30 +53,89 @@ export async function GET(request: Request) {
     createdAt: event.createdAt,
     updatedAt: event.updatedAt,
     eventType: {
+      id: event.eventType.id,
       name: event.eventType.name,
     },
     subEventType: {
+      id: event.subEventType.id,
       name: event.subEventType.name,
     },
     displayType: {
+      id: event.displayType.id,
       name: event.displayType.name,
     },
   }));
 
-  return NextResponse.json(eventsWithAssociation);
+  return NextResponse.json(allEvents);
 }
 
 export async function POST(request: Request) {
   const authResult = authenticate(request);
   if (!authResult.authenticated) {
-    return new NextResponse(JSON.stringify({error: authResult.message}), {status: 401});
+    return new NextResponse(JSON.stringify({ error: authResult.message }), { status: 401 });
   }
 
-  const json = await request.json()
+  const json = await request.json();
 
   const created = await prisma.event.create({
-    data: json
-  })
+    data: json,
+    include: {
+      eventType: {
+        select: {
+          id: true,
+          name: true,
+        }
+      },
+      subEventType: {
+        select: {
+          id: true,
+          name: true,
+        }
+      },
+      displayType: {
+        select: {
+          id: true,
+          name: true,
+        }
+      },
+    },
+  });
 
-  return new NextResponse(JSON.stringify(created), {status: 201})
+  const createdEvent = {
+    id: created.id,
+    title: created.title,
+    description: created.description,
+    logo: created.logo,
+    date: created.date,
+    isPublished: created.isPublished,
+    isPlace: created.isPlace,
+    place: created.place,
+    isEndDate: created.isEndDate,
+    endDate: created.endDate,
+    isHour: created.isHour,
+    hour: created.hour,
+    isEndHour: created.isEndHour,
+    endHour: created.endHour,
+    isAddress: created.isAddress,
+    address: created.address,
+    isPeopleLimit: created.isPeopleLimit,
+    peopleLimit: created.peopleLimit,
+    createdAt: created.createdAt,
+    updatedAt: created.updatedAt,
+    associationId: created.associationId,
+    eventType: {
+      id: created.eventType.id,
+      name: created.eventType.name,
+    },
+    subEventType: {
+      id: created.subEventType.id,
+      name: created.subEventType.name,
+    },
+    displayType: {
+      id: created.displayType.id,
+      name: created.displayType.name,
+    },
+  };
+
+  return new NextResponse(JSON.stringify(createdEvent), { status: 201 });
 }

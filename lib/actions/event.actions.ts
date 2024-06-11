@@ -2,7 +2,7 @@
 
 import KyInstance from "@/lib/kyInstance";
 import {parseStringify} from "@/lib/utils";
-import {CreateEventProps, getOneParams} from "@/types";
+import {CreateEventProps, UpdateEventProps} from "@/types";
 
 const baseUrl = `${process.env.NEXT_PUBLIC_HOST}/api/event`;
 
@@ -30,5 +30,14 @@ export const createEvent = async (event: CreateEventProps) => {
     return parseStringify(response);
   } catch (error) {
     console.error('Error creating event:', error);
+  }
+};
+
+export const updateEvent = async ({ id, event }: UpdateEventProps) => {
+  try {
+    const response = await KyInstance.put(`${baseUrl}/${id}`, { json: event }).json();
+    return parseStringify(response);
+  } catch (error) {
+    console.error('Error updating event:', error);
   }
 };
