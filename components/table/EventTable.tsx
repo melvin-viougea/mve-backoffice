@@ -7,12 +7,13 @@ import {BadgeProps, Events, EventTableProps} from "@/types";
 import {useRouter} from "next/navigation";
 
 const StatusBadge = ({status}: BadgeProps) => {
+  const statusKey = status ? "true" : "false";
   const {
     borderColor,
     backgroundColor,
     textColor,
     chipBackgroundColor,
-  } = statusStyles[status as keyof typeof statusStyles] || statusStyles.default
+  } = statusStyles[statusKey] || statusStyles.default;
 
   return (
     <div className={cn('flex items-center justify-center truncate w-fit gap-1 rounded-2xl border-[1.5px] py-[2px] pl-1.5 pr-2', borderColor, chipBackgroundColor)}>

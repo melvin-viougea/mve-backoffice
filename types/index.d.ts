@@ -24,7 +24,7 @@ declare type Events = {
   title: string;
   description: string;
   logo: string;
-  isPublished: string;
+  isPublished: boolean;
   isPlace: boolean;
   place: string;
   date: string;
@@ -192,7 +192,7 @@ declare interface HeaderBoxProps {
 }
 
 declare interface BadgeProps {
-  status: string;
+  status: boolean;
 }
 
 declare interface EventTableProps {
