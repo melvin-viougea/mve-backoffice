@@ -107,7 +107,7 @@ declare interface getOneParams {
   id: number;
 }
 
-declare interface pageProps{
+declare interface pageProps {
   params: {
     id: number;
   };

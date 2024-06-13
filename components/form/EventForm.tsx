@@ -1,24 +1,24 @@
 'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2 } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {Loader2} from "lucide-react";
+import {useRouter} from "next/navigation";
+import {useState} from "react";
+import {useForm} from "react-hook-form";
 import * as z from "zod";
-import { EventTypeDropdown } from "../dropdown/EventTypeDropdown";
-import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { createEvent, updateEvent } from "@/lib/actions/event.actions";
-import { SubEventTypeDropdown } from "@/components/dropdown/SubEventTypeDropdown";
-import { DisplayTypeDropdown } from "@/components/dropdown/DisplayTypeDropdown";
-import { Switch } from "@/components/ui/switch";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { EventFormProps } from "@/types";
+import {EventTypeDropdown} from "../dropdown/EventTypeDropdown";
+import {Button} from "@/components/ui/button";
+import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
+import {Input} from "@/components/ui/input";
+import {Textarea} from "@/components/ui/textarea";
+import {createEvent, updateEvent} from "@/lib/actions/event.actions";
+import {SubEventTypeDropdown} from "@/components/dropdown/SubEventTypeDropdown";
+import {DisplayTypeDropdown} from "@/components/dropdown/DisplayTypeDropdown";
+import {Switch} from "@/components/ui/switch";
+import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion";
+import {EventFormProps} from "@/types";
 
-const EventForm = ({ event }: EventFormProps) => {
+const EventForm = ({event}: EventFormProps) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   console.log(event);
@@ -102,7 +102,7 @@ const EventForm = ({ event }: EventFormProps) => {
       };
 
       if (event) {
-        const updatedEvent = await updateEvent({ id: event.id, event: eventData });
+        const updatedEvent = await updateEvent({id: event.id, event: eventData});
         if (updatedEvent) {
           form.reset();
           router.push('/evenement');
