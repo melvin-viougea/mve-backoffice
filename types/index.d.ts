@@ -40,7 +40,7 @@ declare type Events = {
   peopleLimit: number;
 };
 
-declare interface CreateEventProps {
+declare interface CreateEventParams {
   associationId: number;
   displayTypeId: number;
   eventTypeId: number;
@@ -64,7 +64,7 @@ declare interface CreateEventProps {
   peopleLimit?: number;
 }
 
-declare interface UpdateEventProps {
+declare interface UpdateEventParams {
   id: number;
   event: CreateEventProps;
 }
@@ -168,6 +168,11 @@ declare interface PaginationProps {
   totalPages: number;
 }
 
+declare interface ButtonProps {
+  id: number;
+  action: any;
+}
+
 declare interface AuthFormProps {
   type: "sign-in" | "sign-up";
 }
@@ -181,7 +186,7 @@ declare interface SiderbarProps {
   user: User;
 }
 
-declare interface signInProps {
+declare interface SignInParams {
   email: string;
   password: string;
 }
