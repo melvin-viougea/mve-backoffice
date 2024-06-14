@@ -3,7 +3,7 @@ import {Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigg
 import {DropdownProps, EventType} from "@/types";
 import {getAllEventType} from "@/lib/actions/eventType.actions";
 
-export const EventTypeDropdown = ({setValue, otherStyles}: DropdownProps) => {
+export const EventTypeDropdown = ({setValue, defaultValue, otherStyles}: DropdownProps) => {
   const [eventTypes, setEventTypes] = useState<EventType[]>([]);
   const [selected, setSelected] = useState<EventType | undefined>(undefined);
 
@@ -22,7 +22,7 @@ export const EventTypeDropdown = ({setValue, otherStyles}: DropdownProps) => {
 
   useEffect(() => {
     if (eventTypes.length > 0 && !selected) {
-      const defaultEventType = eventTypes[0];
+      const defaultEventType = eventTypes.find(eventType => eventType.id == defaultValue) || eventTypes[0];
       setSelected(defaultEventType);
       if (setValue) {
         setValue("eventType", defaultEventType.id);

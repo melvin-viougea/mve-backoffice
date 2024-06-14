@@ -1,6 +1,6 @@
 import HeaderBox from '@/components/HeaderBox'
 import {Pagination} from '@/components/Pagination';
-import EventsTable from '@/components/EventTable';
+import EventsTable from '@/components/table/EventTable';
 import {getAllEvent} from "@/lib/actions/event.actions";
 import React from 'react'
 import Link from "next/link";
@@ -30,7 +30,7 @@ const Event = async ({searchParams: {id, page}}: SearchParamProps) => {
           href={"/evenement/ajout"}
           className="text-[14px] leading-[20px] rounded-lg border border-gray-300 px-4 py-2.5 font-semibold text-gray-700"
         >
-          Ajouter un événement
+          Publier un événement
         </Link>
       </div>
       <div className="space-y-6">

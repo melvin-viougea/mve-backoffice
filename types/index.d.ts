@@ -17,17 +17,16 @@ declare type User = {
 
 declare type Events = {
   id: number;
-  associationId: number;
+  association: Association;
   displayType: DisplayType;
   eventType: EventType;
   subEventType: SubEventType;
   title: string;
   description: string;
   logo: string;
-  isPublished: string;
+  isPublished: boolean;
   isPlace: boolean;
   place: string;
-  isDate: boolean;
   date: string;
   isEndDate: boolean;
   endDate: string;
@@ -41,30 +40,44 @@ declare type Events = {
   peopleLimit: number;
 };
 
-declare interface createEventProps {
+declare interface CreateEventParams {
   associationId: number;
   displayTypeId: number;
   eventTypeId: number;
   subEventTypeId: number;
   title: string;
   description: string;
-  logo: string | undefined;
+  logo?: string;
+  date: Date;
   isPublished: boolean;
   isPlace: boolean;
-  place: string | undefined;
-  isDate: boolean;
-  date: string | undefined;
+  place?: string;
   isEndDate: boolean;
-  endDate: string | undefined;
+  endDate?: Date;
   isHour: boolean;
-  hour: string | undefined;
+  hour?: Date;
   isEndHour: boolean;
-  endHour: string | undefined;
+  endHour?: Date;
   isAddress: boolean;
-  address: string | undefined;
+  address?: string;
   isPeopleLimit: boolean;
-  peopleLimit: number | undefined;
+  peopleLimit?: number;
 }
+
+declare interface UpdateEventParams {
+  id: number;
+  event: CreateEventProps;
+}
+
+declare interface EventFormProps {
+  event?: Events;
+}
+
+declare type Association = {
+  id: string;
+  $id: string;
+  name: string;
+};
 
 declare type EventType = {
   id: string;
@@ -96,8 +109,15 @@ declare type SignUpParams = {
   password: string;
 };
 
-declare interface getDataParams {
-  id: string;
+declare interface getOneParams {
+  id: number;
+}
+
+declare interface pageProps {
+  params: {
+    id: number;
+  };
+  searchParams: Record<any>;
 }
 
 declare interface createDataParams {
@@ -148,6 +168,11 @@ declare interface PaginationProps {
   totalPages: number;
 }
 
+declare interface ButtonProps {
+  id: number;
+  action: any;
+}
+
 declare interface AuthFormProps {
   type: "sign-in" | "sign-up";
 }
@@ -161,7 +186,7 @@ declare interface SiderbarProps {
   user: User;
 }
 
-declare interface signInProps {
+declare interface SignInParams {
   email: string;
   password: string;
 }
@@ -178,7 +203,7 @@ declare interface HeaderBoxProps {
 }
 
 declare interface BadgeProps {
-  status: string;
+  status: boolean;
 }
 
 declare interface EventTableProps {
@@ -187,5 +212,6 @@ declare interface EventTableProps {
 
 declare interface DropdownProps {
   setValue?: UseFormSetValue<any>;
+  defaultValue: string;
   otherStyles?: string;
 }

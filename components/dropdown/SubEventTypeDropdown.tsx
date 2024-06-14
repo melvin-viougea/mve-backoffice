@@ -3,7 +3,7 @@ import {Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigg
 import {DropdownProps, SubEventType} from "@/types";
 import {getAllSubEventType} from "@/lib/actions/subEventType.actions";
 
-export const SubEventTypeDropdown = ({setValue, otherStyles}: DropdownProps) => {
+export const SubEventTypeDropdown = ({setValue, defaultValue, otherStyles}: DropdownProps) => {
   const [subEventTypes, setSubEventTypes] = useState<SubEventType[]>([]);
   const [selected, setSelected] = useState<SubEventType | undefined>(undefined);
 
@@ -21,14 +21,14 @@ export const SubEventTypeDropdown = ({setValue, otherStyles}: DropdownProps) => 
   }, []);
 
   useEffect(() => {
-    if (subEventTypes.length > 0 && !selected) {
-      const defaultSubEventType = subEventTypes[0];
+    if (subEventTypes.length > 0) {
+      const defaultSubEventType = subEventTypes.find(subEventType => subEventType.id == defaultValue) || subEventTypes[0];
       setSelected(defaultSubEventType);
       if (setValue) {
         setValue("subEventType", defaultSubEventType.id);
       }
     }
-  }, [subEventTypes, selected, setValue]);
+  }, [subEventTypes, defaultValue, setValue]);
 
   const handleSubEventTypeChange = (id: string) => {
     const subEventType = subEventTypes.find((subEventType) => subEventType.id === id);
@@ -44,7 +44,7 @@ export const SubEventTypeDropdown = ({setValue, otherStyles}: DropdownProps) => 
   return (
     <Select
       key={selected?.id}
-      defaultValue={selected?.id}
+      defaultValue={defaultValue}
       onValueChange={(value) => handleSubEventTypeChange(value)}
     >
       <SelectTrigger className={`flex w-full bg-white gap-3 md:w-[300px] ${otherStyles}`}>
@@ -52,7 +52,7 @@ export const SubEventTypeDropdown = ({setValue, otherStyles}: DropdownProps) => 
       </SelectTrigger>
       <SelectContent className={`w-full bg-white md:w-[300px] ${otherStyles}`} align="end">
         <SelectGroup>
-          <SelectLabel className="py-2 font-normal text-gray-500">Select an event type</SelectLabel>
+          <SelectLabel className="py-2 font-normal text-gray-500">Select a sub event type</SelectLabel>
           {subEventTypes.map((subEventType: SubEventType) => (
             <SelectItem key={subEventType.id} value={subEventType.id} className="cursor-pointer border-t">
               {subEventType.name}

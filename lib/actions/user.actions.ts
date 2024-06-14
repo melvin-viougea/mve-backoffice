@@ -3,13 +3,13 @@
 import {cookies} from "next/headers";
 import {parseStringify} from "@/lib/utils";
 import KyInstance from "@/lib/kyInstance";
-import {AuthResponse, signInProps, SignUpParams} from "@/types";
+import {AuthResponse, SignInParams, SignUpParams} from "@/types";
 
 const baseUrl = `${process.env.NEXT_PUBLIC_HOST}/api/auth`;
 
 const maxAge = 24 * 60 * 60;
 
-export const login = async ({email, password}: signInProps) => {
+export const login = async ({email, password}: SignInParams) => {
   try {
     const response = await KyInstance.post(`${baseUrl}/login`, {json: {email, password}}).json<AuthResponse>();
     const {token, user} = response;
