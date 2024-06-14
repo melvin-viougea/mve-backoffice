@@ -13,6 +13,7 @@ export async function GET(request: Request, {params}: { params: { id: string } }
   const event = await prisma.event.findUnique({
     where: {id},
     include: {
+      association: {select: {id: true, name: true}},
       eventType: {select: {id: true, name: true}},
       subEventType: {select: {id: true, name: true}},
       displayType: {select: {id: true, name: true}},
@@ -68,6 +69,7 @@ export async function PUT(request: Request, {params}: { params: { id: string } }
         subEventTypeId: json.subEventTypeId || null,
       },
       include: {
+        association: {select: {id: true, name: true}},
         eventType: {select: {id: true, name: true}},
         subEventType: {select: {id: true, name: true}},
         displayType: {select: {id: true, name: true}},
@@ -118,6 +120,7 @@ export async function PATCH(request: Request, {params}: { params: { id: string }
         ...(json.subEventTypeId !== undefined && {subEventTypeId: json.subEventTypeId}),
       },
       include: {
+        association: {select: {id: true, name: true}},
         eventType: {select: {id: true, name: true}},
         subEventType: {select: {id: true, name: true}},
         displayType: {select: {id: true, name: true}},
@@ -144,6 +147,7 @@ export async function DELETE(request: Request, {params}: { params: { id: string 
     const deleted = await prisma.event.delete({
       where: {id},
       include: {
+        association: {select: {id: true, name: true}},
         eventType: {select: {id: true, name: true}},
         subEventType: {select: {id: true, name: true}},
         displayType: {select: {id: true, name: true}},

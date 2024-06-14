@@ -20,6 +20,10 @@ export async function getEventData(event: any) {
     peopleLimit: event.peopleLimit,
     createdAt: event.createdAt,
     updatedAt: event.updatedAt,
+    association: {
+      id: event.association.id,
+      name: event.association.name,
+    },
     eventType: {
       id: event.eventType.id,
       name: event.eventType.name,

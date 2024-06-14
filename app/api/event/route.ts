@@ -12,6 +12,7 @@ export async function GET(request: Request) {
   try {
     const events = await prisma.event.findMany({
       include: {
+        association: {select: {id: true, name: true}},
         eventType: {select: {id: true, name: true}},
         subEventType: {select: {id: true, name: true}},
         displayType: {select: {id: true, name: true}},
@@ -39,6 +40,7 @@ export async function POST(request: Request) {
     const created = await prisma.event.create({
       data: json,
       include: {
+        association: {select: {id: true, name: true}},
         eventType: {select: {id: true, name: true}},
         subEventType: {select: {id: true, name: true}},
         displayType: {select: {id: true, name: true}},

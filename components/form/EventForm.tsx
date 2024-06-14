@@ -21,35 +21,46 @@ import {EventFormProps} from "@/types";
 const EventForm = ({event}: EventFormProps) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  console.log(event);
+
   const formSchema = z.object({
-    association: z.number(),
-    displayType: z.number(),
-    eventType: z.number(),
-    subEventType: z.number(),
-    title: z.string(),
-    description: z.string(),
+    association: z.number().min(1, { message: "L'association n'est pas correctement définie" }),
+    displayType: z.number().min(1, { message: "Le type d'affichage n'est pas correctement défini" }),
+    eventType: z.number().min(1, { message: "Le type d'événement n'est pas correctement défini" }),
+    subEventType: z.number().min(1, { message: "Le sous-type d'événement n'est pas correctement défini" }),
+    title: z.string().min(1, { message: "Le titre doit contenir au moins 1 caractère" }).max(50, { message: "Le titre doit contenir au maximum 50 caractères" }),
+    description: z.string().min(1, { message: "La description doit contenir au moins 1 caractère" }).max(50, { message: "La description doit contenir au maximum 50 caractères" }),
     logo: z.instanceof(File).optional(),
-    date: z.string(),
+    date: z.string().refine(value => {
+      return !isNaN(Date.parse(value));
+    }, { message: "Date invalide" }),
     isPublished: z.boolean(),
     isPlace: z.boolean(),
-    place: z.string().optional(),
+    place: z.string().min(1, { message: "Le lieu doit contenir au moins 1 caractère" }).max(50, { message: "Le lieu doit contenir au maximum 50 caractères" }).optional(),
     isEndDate: z.boolean(),
-    endDate: z.string().optional(),
+    endDate: z.string().refine(value => {
+      return !isNaN(Date.parse(value));
+    }, { message: "Date invalide" }).optional(),
     isHour: z.boolean(),
     hour: z.string().optional(),
     isEndHour: z.boolean(),
     endHour: z.string().optional(),
     isAddress: z.boolean(),
-    address: z.string().optional(),
+    address: z.string().min(1, { message: "L'adresse doit contenir au moins 1 caractère" }).max(50, { message: "L'adresse doit contenir au maximum 50 caractères" }).optional(),
     isPeopleLimit: z.boolean(),
-    peopleLimit: z.string().optional(),
+    peopleLimit: z.string()
+      .min(1, { message: "Le nombre de personnes doit être au moins 1" })
+      .max(6, { message: "Le nombre de personnes ne peut pas excéder 999999" })
+      .refine(value => {
+        const numberValue = parseInt(value, 10);
+        return !isNaN(numberValue) && numberValue >= 1 && numberValue <= 999999;
+      }, { message: "Le nombre de personnes doit être un nombre valide entre 1 et 999999" })
+      .optional(),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      association: event ? event.associationId : 1,
+      association: event ? parseInt(event.association.id) : 1, // TODO changer avec la valeur de l'association de l'utilisateur
       displayType: event ? parseInt(event.displayType.id) : 0,
       eventType: event ? parseInt(event.eventType.id) : 0,
       subEventType: event ? parseInt(event.subEventType.id) : 0,
@@ -133,7 +144,8 @@ const EventForm = ({event}: EventFormProps) => {
               <div className="flex w-full max-w-[850px] flex-col gap-3 md:flex-row lg:gap-8 pb-6 pt-5">
                 <div className="flex w-full max-w-[280px] flex-col gap-2">
                   <FormLabel className="text-[14px] leading-[20px] font-medium text-gray-700">
-                    Type d&apos;événement :
+                    Type d&apos;événement
+                    <span className="text-destructive ml-1">*</span>
                   </FormLabel>
                   <FormDescription className="text-[12px] leading-[16px] font-normal text-gray-600">
                     Sélectionnez le type d&apos;événement que vous souhaitez
@@ -162,7 +174,8 @@ const EventForm = ({event}: EventFormProps) => {
               <div className="flex w-full max-w-[850px] flex-col gap-3 md:flex-row lg:gap-8 pb-6 pt-5">
                 <div className="flex w-full max-w-[280px] flex-col gap-2">
                   <FormLabel className="text-[14px] leading-[20px] font-medium text-gray-700">
-                    Sous-type d&apos;événement :
+                    Sous-type d&apos;événement
+                    <span className="text-destructive ml-1">*</span>
                   </FormLabel>
                   <FormDescription className="text-[12px] leading-[16px] font-normal text-gray-600">
                     Sélectionnez le sous-type d&apos;événement que vous souhaitez
@@ -191,7 +204,8 @@ const EventForm = ({event}: EventFormProps) => {
               <div className="flex w-full max-w-[850px] flex-col gap-3 md:flex-row lg:gap-8 pb-6 pt-5">
                 <div className="flex w-full max-w-[280px] flex-col gap-2">
                   <FormLabel className="text-[14px] leading-[20px] font-medium text-gray-700">
-                    Type d&apos;affichage :
+                    Type d&apos;affichage
+                    <span className="text-destructive ml-1">*</span>
                   </FormLabel>
                   <FormDescription className="text-[12px] leading-[16px] font-normal text-gray-600">
                     Sélectionnez le type d&apos;affichage que vous souhaitez
@@ -220,6 +234,7 @@ const EventForm = ({event}: EventFormProps) => {
               <div className="flex w-full max-w-[850px] flex-col gap-3 md:flex-row lg:gap-8 pb-5 pt-6">
                 <FormLabel className="text-[14px] leading-[20px] w-full max-w-[280px] font-medium text-gray-700">
                   Titre
+                  <span className="text-destructive ml-1">*</span>
                 </FormLabel>
                 <div className="flex w-full flex-col">
                   <FormControl>
@@ -245,10 +260,8 @@ const EventForm = ({event}: EventFormProps) => {
                 <div className="flex w-full max-w-[280px] flex-col gap-2">
                   <FormLabel className="text-[14px] leading-[20px] font-medium text-gray-700">
                     Description
+                    <span className="text-destructive ml-1">*</span>
                   </FormLabel>
-                  <FormDescription className="text-[12px] leading-[16px] font-normal text-gray-600">
-                    Saisissez une description de l&apos;événement
-                  </FormDescription>
                 </div>
                 <div className="flex w-full flex-col">
                   <FormControl>
@@ -275,44 +288,12 @@ const EventForm = ({event}: EventFormProps) => {
                   <FormLabel className="text-[14px] leading-[20px] font-medium text-gray-700">
                     Logo de l&apos;événement :
                   </FormLabel>
-                  <FormDescription className="text-[12px] leading-[16px] font-normal text-gray-600">
-                    Téléchargez un logo pour l&apos;événement
-                  </FormDescription>
                 </div>
                 <div className="flex w-full flex-col">
                   <FormControl>
                     <Input
                       type="file"
                       onChange={(e) => field.onChange(e.target.files ? e.target.files[0] : null)}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-[12px] leading-[16px] text-red-500"/>
-                </div>
-              </div>
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="date"
-          render={({field}) => (
-            <FormItem className="border-t border-gray-200">
-              <div className="flex w-full max-w-[850px] flex-col gap-3 md:flex-row lg:gap-8 pb-6 pt-5">
-                <div className="flex w-full max-w-[280px] flex-col gap-2">
-                  <FormLabel className="text-[14px] leading-[20px] font-medium text-gray-700">
-                    Date
-                  </FormLabel>
-                  <FormDescription className="text-[12px] leading-[16px] font-normal text-gray-600">
-                    Entrez la date
-                  </FormDescription>
-                </div>
-                <div className="flex flex-col">
-                  <FormControl>
-                    <Input
-                      type="date"
-                      className="text-[16px] leading-[24px] placeholder:text-[16px] placeholder:leading-[24px] rounded-lg border border-gray-300 text-gray-900 placeholder:text-gray-500"
-                      {...field}
                     />
                   </FormControl>
                   <FormMessage className="text-[12px] leading-[16px] text-red-500"/>
@@ -331,9 +312,10 @@ const EventForm = ({event}: EventFormProps) => {
                 <div className="flex w-full max-w-[280px] flex-col gap-2">
                   <FormLabel className="text-[14px] leading-[20px] font-medium text-gray-700">
                     Publier
+                    <span className="text-destructive ml-1">*</span>
                   </FormLabel>
                   <FormDescription className="text-[12px] leading-[16px] font-normal text-gray-600">
-                    Publier maintenant l&apos;événement ou enregistrer le en tant que brouillon
+                    Publier maintenant l&apos;événement ou le garder en tant que brouillon
                   </FormDescription>
                 </div>
                 <div className="flex flex-col">
@@ -350,192 +332,370 @@ const EventForm = ({event}: EventFormProps) => {
           )}
         />
 
-        <div className="flex w-full max-w-[850px] flex-col gap-3 md:flex-row lg:gap-8 py-5 border-t border-gray-200">
-          <div className="flex flex-col gap-5 w-full">
-            <div className="flex items-center gap-2">
-              <FormControl>
-                <Switch
-                  checked={form.watch('isEndDate')}
-                  onCheckedChange={(checked) => form.setValue('isEndDate', checked)}
-                />
-              </FormControl>
-              <FormLabel className="text-[14px] leading-[20px] w-full max-w-[280px] font-medium text-gray-700">
-                Date de fin
-              </FormLabel>
-              {form.watch('isEndDate') && (
-                <FormField
-                  control={form.control}
-                  name="endDate"
-                  render={({field}) => (
-                    <FormItem className="flex flex-col gap-2">
-                      <FormControl>
-                        <Input
-                          type="date"
-                          className="text-[16px] leading-[24px] placeholder:text-[16px] placeholder:leading-[24px] rounded-lg border border-gray-300 text-gray-900 placeholder:text-gray-500"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage className="text-[12px] leading-[16px] text-red-500"/>
-                    </FormItem>
-                  )}
-                />
-              )}
-            </div>
+        <FormField
+          control={form.control}
+          name="date"
+          render={({field}) => (
+            <FormItem className="border-t border-gray-200">
+              <div className="flex w-full max-w-[850px] flex-col gap-3 md:flex-row lg:gap-8 pb-6 pt-5">
+                <div className="flex w-full max-w-[280px] flex-col gap-2">
+                  <FormLabel className="text-[14px] leading-[20px] font-medium text-gray-700">
+                    Date
+                    <span className="text-destructive ml-1">*</span>
+                  </FormLabel>
+                </div>
+                <div className="flex flex-col">
+                  <FormControl>
+                    <Input
+                      type="date"
+                      className="text-[16px] leading-[24px] placeholder:text-[16px] placeholder:leading-[24px] rounded-lg border border-gray-300 text-gray-900 placeholder:text-gray-500"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-[12px] leading-[16px] text-red-500"/>
+                </div>
+              </div>
+            </FormItem>
+          )}
+        />
 
-            <div className="flex items-center gap-2">
-              <FormControl>
-                <Switch
-                  checked={form.watch('isHour')}
-                  onCheckedChange={(checked) => form.setValue('isHour', checked)}
-                />
-              </FormControl>
-              <FormLabel className="text-[14px] leading-[20px] w-full max-w-[280px] font-medium text-gray-700">
-                Heure
-              </FormLabel>
-              {form.watch('isHour') && (
-                <FormField
-                  control={form.control}
-                  name="hour"
-                  render={({field}) => (
-                    <FormItem className="flex flex-col gap-2">
-                      <FormControl>
-                        <Input
-                          type="time"
-                          className="text-[16px] leading-[24px] placeholder:text-[16px] placeholder:leading-[24px] rounded-lg border border-gray-300 text-gray-900 placeholder:text-gray-500"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage className="text-[12px] leading-[16px] text-red-500"/>
-                    </FormItem>
-                  )}
-                />
-              )}
-            </div>
+        <FormField
+          control={form.control}
+          name="endDate"
+          render={({field}) => (
+            <FormItem className="border-t border-gray-200">
+              <div className="flex w-full max-w-[850px] flex-col gap-3 md:flex-row lg:gap-8 pb-6 pt-5">
+                <div className="flex w-full max-w-[280px] flex-col gap-2">
+                  <FormLabel className="text-[14px] leading-[20px] font-medium text-gray-700">
+                    Date de fin
+                  </FormLabel>
+                </div>
+                <div className="flex flex-col">
+                  <FormControl>
+                    <Input
+                      type="date"
+                      className="text-[16px] leading-[24px] placeholder:text-[16px] placeholder:leading-[24px] rounded-lg border border-gray-300 text-gray-900 placeholder:text-gray-500"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-[12px] leading-[16px] text-red-500"/>
+                </div>
+              </div>
+            </FormItem>
+          )}
+        />
 
-            <div className="flex items-center gap-2">
-              <FormControl>
-                <Switch
-                  checked={form.watch('isEndHour')}
-                  onCheckedChange={(checked) => form.setValue('isEndHour', checked)}
-                />
-              </FormControl>
-              <FormLabel className="text-[14px] leading-[20px] w-full max-w-[280px] font-medium text-gray-700">
-                Heure de fin
-              </FormLabel>
-              {form.watch('isEndHour') && (
-                <FormField
-                  control={form.control}
-                  name="endHour"
-                  render={({field}) => (
-                    <FormItem className="flex flex-col gap-2">
-                      <FormControl>
-                        <Input
-                          type="time"
-                          className="text-[16px] leading-[24px] placeholder:text-[16px] placeholder:leading-[24px] rounded-lg border border-gray-300 text-gray-900 placeholder:text-gray-500"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage className="text-[12px] leading-[16px] text-red-500"/>
-                    </FormItem>
-                  )}
-                />
-              )}
-            </div>
-          </div>
+        <FormField
+          control={form.control}
+          name="hour"
+          render={({field}) => (
+            <FormItem className="border-t border-gray-200">
+              <div className="flex w-full max-w-[850px] flex-col gap-3 md:flex-row lg:gap-8 pb-6 pt-5">
+                <div className="flex w-full max-w-[280px] flex-col gap-2">
+                  <FormLabel className="text-[14px] leading-[20px] font-medium text-gray-700">
+                    Hour
+                  </FormLabel>
+                </div>
+                <div className="flex flex-col">
+                  <FormControl>
+                    <Input
+                      type="time"
+                      className="text-[16px] leading-[24px] placeholder:text-[16px] placeholder:leading-[24px] rounded-lg border border-gray-300 text-gray-900 placeholder:text-gray-500"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-[12px] leading-[16px] text-red-500"/>
+                </div>
+              </div>
+            </FormItem>
+          )}
+        />
 
-          <div className="flex flex-col gap-5 w-full">
-            <div className="flex items-center gap-2">
-              <FormControl>
-                <Switch
-                  checked={form.watch('isPlace')}
-                  onCheckedChange={(checked) => form.setValue('isPlace', checked)}
-                />
-              </FormControl>
-              <FormLabel className="text-[14px] leading-[20px] w-full [280px] font-medium text-gray-700">
-                Lieu
-              </FormLabel>
-              {form.watch('isPlace') && (
-                <FormField
-                  control={form.control}
-                  name="place"
-                  render={({field}) => (
-                    <FormItem className="flex flex-col gap-2">
-                      <FormControl>
-                        <Input
-                          placeholder="Entrez le lieu"
-                          className="text-[16px] leading-[24px] placeholder:text-[16px] placeholder:leading-[24px] rounded-lg border border-gray-300 text-gray-900 placeholder:text-gray-500"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage className="text-[12px] leading-[16px] text-red-500"/>
-                    </FormItem>
-                  )}
-                />
-              )}
-            </div>
+        <FormField
+          control={form.control}
+          name="endHour"
+          render={({field}) => (
+            <FormItem className="border-t border-gray-200">
+              <div className="flex w-full max-w-[850px] flex-col gap-3 md:flex-row lg:gap-8 pb-6 pt-5">
+                <div className="flex w-full max-w-[280px] flex-col gap-2">
+                  <FormLabel className="text-[14px] leading-[20px] font-medium text-gray-700">
+                    Heure de fin
+                  </FormLabel>
+                </div>
+                <div className="flex flex-col">
+                  <FormControl>
+                    <Input
+                      type="time"
+                      className="text-[16px] leading-[24px] placeholder:text-[16px] placeholder:leading-[24px] rounded-lg border border-gray-300 text-gray-900 placeholder:text-gray-500"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-[12px] leading-[16px] text-red-500"/>
+                </div>
+              </div>
+            </FormItem>
+          )}
+        />
 
-            <div className="flex items-center gap-2">
-              <FormControl>
-                <Switch
-                  checked={form.watch('isAddress')}
-                  onCheckedChange={(checked) => form.setValue('isAddress', checked)}
-                />
-              </FormControl>
-              <FormLabel className="text-[14px] leading-[20px] font-medium text-gray-700">
-                Adresse
-              </FormLabel>
-              {form.watch('isAddress') && (
-                <FormField
-                  control={form.control}
-                  name="address"
-                  render={({field}) => (
-                    <FormItem className="flex w-full flex-col gap-2">
-                      <FormControl>
-                        <Input
-                          placeholder="Entrez l'adresse"
-                          className="text-[16px] leading-[24px] placeholder:text-[16px] placeholder:leading-[24px] rounded-lg border border-gray-300 text-gray-900 placeholder:text-gray-500"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage className="text-[12px] leading-[16px] text-red-500"/>
-                    </FormItem>
-                  )}
-                />
-              )}
-            </div>
+        <FormField
+          control={form.control}
+          name="place"
+          render={({field}) => (
+            <FormItem className="border-t border-gray-200">
+              <div className="flex w-full max-w-[850px] flex-col gap-3 md:flex-row lg:gap-8 pb-5 pt-6">
+                <FormLabel className="text-[14px] leading-[20px] w-full max-w-[280px] font-medium text-gray-700">
+                  Lieu
+                </FormLabel>
+                <div className="flex w-full flex-col">
+                  <FormControl>
+                    <Input
+                      placeholder="Entrez le lieu"
+                      className="text-[16px] leading-[24px] placeholder:text-[16px] placeholder:leading-[24px] rounded-lg border border-gray-300 text-gray-900 placeholder:text-gray-500"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-[12px] leading-[16px] text-red-500"/>
+                </div>
+              </div>
+            </FormItem>
+          )}
+        />
 
-            <div className="flex items-center gap-2">
-              <FormControl>
-                <Switch
-                  checked={form.watch('isPeopleLimit')}
-                  onCheckedChange={(checked) => form.setValue('isPeopleLimit', checked)}
-                />
-              </FormControl>
-              <FormLabel className="text-[14px] leading-[20px] w-full max-w-[280px] font-medium text-gray-700">
-                Limite de participants
-              </FormLabel>
-              {form.watch('isPeopleLimit') && (
-                <FormField
-                  control={form.control}
-                  name="peopleLimit"
-                  render={({field}) => (
-                    <FormItem className="flex flex-col gap-2">
-                      <FormControl>
-                        <Input
-                          type="number"
-                          placeholder="ex: 200"
-                          className="text-[16px] leading-[24px] placeholder:text-[16px] placeholder:leading-[24px] rounded-lg border border-gray-300 text-gray-900 placeholder:text-gray-500"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage className="text-[12px] leading-[16px] text-red-500"/>
-                    </FormItem>
-                  )}
-                />
-              )}
-            </div>
-          </div>
-        </div>
+        <FormField
+          control={form.control}
+          name="address"
+          render={({field}) => (
+            <FormItem className="border-t border-gray-200">
+              <div className="flex w-full max-w-[850px] flex-col gap-3 md:flex-row lg:gap-8 pb-5 pt-6">
+                <FormLabel className="text-[14px] leading-[20px] w-full max-w-[280px] font-medium text-gray-700">
+                  Adresse
+                </FormLabel>
+                <div className="flex w-full flex-col">
+                  <FormControl>
+                    <Input
+                      placeholder="Entrez l'adresse"
+                      className="text-[16px] leading-[24px] placeholder:text-[16px] placeholder:leading-[24px] rounded-lg border border-gray-300 text-gray-900 placeholder:text-gray-500"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-[12px] leading-[16px] text-red-500"/>
+                </div>
+              </div>
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="peopleLimit"
+          render={({field}) => (
+            <FormItem className="border-t border-gray-200">
+              <div className="flex w-full max-w-[850px] flex-col gap-3 md:flex-row lg:gap-8 pb-5 pt-6">
+                <FormLabel className="text-[14px] leading-[20px] w-full max-w-[280px] font-medium text-gray-700">
+                  Limite de participants
+                </FormLabel>
+                <div className="flex w-full flex-col">
+                  <FormControl>
+                    <Input
+                      type="number"
+                      placeholder="ex: 200"
+                      className="text-[16px] leading-[24px] placeholder:text-[16px] placeholder:leading-[24px] rounded-lg border border-gray-300 text-gray-900 placeholder:text-gray-500"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-[12px] leading-[16px] text-red-500"/>
+                </div>
+              </div>
+            </FormItem>
+          )}
+        />
+
+        {/*<div className="flex w-full max-w-[850px] flex-col gap-3 md:flex-row lg:gap-8 py-5 border-t border-gray-200">*/}
+        {/*  <div className="flex flex-col gap-5 w-full">*/}
+        {/*    <div className="flex items-center gap-2">*/}
+        {/*      <FormControl>*/}
+        {/*        <Switch*/}
+        {/*          checked={form.watch('isEndDate')}*/}
+        {/*          onCheckedChange={(checked) => form.setValue('isEndDate', checked)}*/}
+        {/*        />*/}
+        {/*      </FormControl>*/}
+        {/*      <FormLabel className="text-[14px] leading-[20px] w-full max-w-[280px] font-medium text-gray-700">*/}
+        {/*        Date de fin*/}
+        {/*      </FormLabel>*/}
+        {/*      {form.watch('isEndDate') && (*/}
+        {/*        <FormField*/}
+        {/*          control={form.control}*/}
+        {/*          name="endDate"*/}
+        {/*          render={({field}) => (*/}
+        {/*            <FormItem className="flex flex-col gap-2">*/}
+        {/*              <FormControl>*/}
+        {/*                <Input*/}
+        {/*                  type="date"*/}
+        {/*                  className="text-[16px] leading-[24px] placeholder:text-[16px] placeholder:leading-[24px] rounded-lg border border-gray-300 text-gray-900 placeholder:text-gray-500"*/}
+        {/*                  {...field}*/}
+        {/*                />*/}
+        {/*              </FormControl>*/}
+        {/*              <FormMessage className="text-[12px] leading-[16px] text-red-500"/>*/}
+        {/*            </FormItem>*/}
+        {/*          )}*/}
+        {/*        />*/}
+        {/*      )}*/}
+        {/*    </div>*/}
+
+        {/*    <div className="flex items-center gap-2">*/}
+        {/*      <FormControl>*/}
+        {/*        <Switch*/}
+        {/*          checked={form.watch('isHour')}*/}
+        {/*          onCheckedChange={(checked) => form.setValue('isHour', checked)}*/}
+        {/*        />*/}
+        {/*      </FormControl>*/}
+        {/*      <FormLabel className="text-[14px] leading-[20px] w-full max-w-[280px] font-medium text-gray-700">*/}
+        {/*        Heure*/}
+        {/*      </FormLabel>*/}
+        {/*      {form.watch('isHour') && (*/}
+        {/*        <FormField*/}
+        {/*          control={form.control}*/}
+        {/*          name="hour"*/}
+        {/*          render={({field}) => (*/}
+        {/*            <FormItem className="flex flex-col gap-2">*/}
+        {/*              <FormControl>*/}
+        {/*                <Input*/}
+        {/*                  type="time"*/}
+        {/*                  className="text-[16px] leading-[24px] placeholder:text-[16px] placeholder:leading-[24px] rounded-lg border border-gray-300 text-gray-900 placeholder:text-gray-500"*/}
+        {/*                  {...field}*/}
+        {/*                />*/}
+        {/*              </FormControl>*/}
+        {/*              <FormMessage className="text-[12px] leading-[16px] text-red-500"/>*/}
+        {/*            </FormItem>*/}
+        {/*          )}*/}
+        {/*        />*/}
+        {/*      )}*/}
+        {/*    </div>*/}
+
+        {/*    <div className="flex items-center gap-2">*/}
+        {/*      <FormControl>*/}
+        {/*        <Switch*/}
+        {/*          checked={form.watch('isEndHour')}*/}
+        {/*          onCheckedChange={(checked) => form.setValue('isEndHour', checked)}*/}
+        {/*        />*/}
+        {/*      </FormControl>*/}
+        {/*      <FormLabel className="text-[14px] leading-[20px] w-full max-w-[280px] font-medium text-gray-700">*/}
+        {/*        Heure de fin*/}
+        {/*      </FormLabel>*/}
+        {/*      {form.watch('isEndHour') && (*/}
+        {/*        <FormField*/}
+        {/*          control={form.control}*/}
+        {/*          name="endHour"*/}
+        {/*          render={({field}) => (*/}
+        {/*            <FormItem className="flex flex-col gap-2">*/}
+        {/*              <FormControl>*/}
+        {/*                <Input*/}
+        {/*                  type="time"*/}
+        {/*                  className="text-[16px] leading-[24px] placeholder:text-[16px] placeholder:leading-[24px] rounded-lg border border-gray-300 text-gray-900 placeholder:text-gray-500"*/}
+        {/*                  {...field}*/}
+        {/*                />*/}
+        {/*              </FormControl>*/}
+        {/*              <FormMessage className="text-[12px] leading-[16px] text-red-500"/>*/}
+        {/*            </FormItem>*/}
+        {/*          )}*/}
+        {/*        />*/}
+        {/*      )}*/}
+        {/*    </div>*/}
+        {/*  </div>*/}
+
+        {/*  <div className="flex flex-col gap-5 w-full">*/}
+        {/*    <div className="flex items-center gap-2">*/}
+        {/*      <FormControl>*/}
+        {/*        <Switch*/}
+        {/*          checked={form.watch('isPlace')}*/}
+        {/*          onCheckedChange={(checked) => form.setValue('isPlace', checked)}*/}
+        {/*        />*/}
+        {/*      </FormControl>*/}
+        {/*      <FormLabel className="text-[14px] leading-[20px] w-full [280px] font-medium text-gray-700">*/}
+        {/*        Lieu*/}
+        {/*      </FormLabel>*/}
+        {/*      {form.watch('isPlace') && (*/}
+        {/*        <FormField*/}
+        {/*          control={form.control}*/}
+        {/*          name="place"*/}
+        {/*          render={({field}) => (*/}
+        {/*            <FormItem className="flex flex-col gap-2">*/}
+        {/*              <FormControl>*/}
+        {/*                <Input*/}
+        {/*                  placeholder="Entrez le lieu"*/}
+        {/*                  className="text-[16px] leading-[24px] placeholder:text-[16px] placeholder:leading-[24px] rounded-lg border border-gray-300 text-gray-900 placeholder:text-gray-500"*/}
+        {/*                  {...field}*/}
+        {/*                />*/}
+        {/*              </FormControl>*/}
+        {/*              <FormMessage className="text-[12px] leading-[16px] text-red-500"/>*/}
+        {/*            </FormItem>*/}
+        {/*          )}*/}
+        {/*        />*/}
+        {/*      )}*/}
+        {/*    </div>*/}
+
+        {/*    <div className="flex items-center gap-2">*/}
+        {/*      <FormControl>*/}
+        {/*        <Switch*/}
+        {/*          checked={form.watch('isAddress')}*/}
+        {/*          onCheckedChange={(checked) => form.setValue('isAddress', checked)}*/}
+        {/*        />*/}
+        {/*      </FormControl>*/}
+        {/*      <FormLabel className="text-[14px] leading-[20px] font-medium text-gray-700">*/}
+        {/*        Adresse*/}
+        {/*      </FormLabel>*/}
+        {/*      {form.watch('isAddress') && (*/}
+        {/*        <FormField*/}
+        {/*          control={form.control}*/}
+        {/*          name="address"*/}
+        {/*          render={({field}) => (*/}
+        {/*            <FormItem className="flex w-full flex-col gap-2">*/}
+        {/*              <FormControl>*/}
+        {/*                <Input*/}
+        {/*                  placeholder="Entrez l'adresse"*/}
+        {/*                  className="text-[16px] leading-[24px] placeholder:text-[16px] placeholder:leading-[24px] rounded-lg border border-gray-300 text-gray-900 placeholder:text-gray-500"*/}
+        {/*                  {...field}*/}
+        {/*                />*/}
+        {/*              </FormControl>*/}
+        {/*              <FormMessage className="text-[12px] leading-[16px] text-red-500"/>*/}
+        {/*            </FormItem>*/}
+        {/*          )}*/}
+        {/*        />*/}
+        {/*      )}*/}
+        {/*    </div>*/}
+
+        {/*    <div className="flex items-center gap-2">*/}
+        {/*      <FormControl>*/}
+        {/*        <Switch*/}
+        {/*          checked={form.watch('isPeopleLimit')}*/}
+        {/*          onCheckedChange={(checked) => form.setValue('isPeopleLimit', checked)}*/}
+        {/*        />*/}
+        {/*      </FormControl>*/}
+        {/*      <FormLabel className="text-[14px] leading-[20px] w-full max-w-[280px] font-medium text-gray-700">*/}
+        {/*        Limite de participants*/}
+        {/*      </FormLabel>*/}
+        {/*      {form.watch('isPeopleLimit') && (*/}
+        {/*        <FormField*/}
+        {/*          control={form.control}*/}
+        {/*          name="peopleLimit"*/}
+        {/*          render={({field}) => (*/}
+        {/*            <FormItem className="flex flex-col gap-2">*/}
+        {/*              <FormControl>*/}
+        {/*                <Input*/}
+        {/*                  type="number"*/}
+        {/*                  placeholder="ex: 200"*/}
+        {/*                  className="text-[16px] leading-[24px] placeholder:text-[16px] placeholder:leading-[24px] rounded-lg border border-gray-300 text-gray-900 placeholder:text-gray-500"*/}
+        {/*                  {...field}*/}
+        {/*                />*/}
+        {/*              </FormControl>*/}
+        {/*              <FormMessage className="text-[12px] leading-[16px] text-red-500"/>*/}
+        {/*            </FormItem>*/}
+        {/*          )}*/}
+        {/*        />*/}
+        {/*      )}*/}
+        {/*    </div>*/}
+        {/*  </div>*/}
+        {/*</div>*/}
 
         <div className="max-w-[850px] gap-3 pb-5 border-t border-gray-200">
           <Accordion type="multiple" className="w-full">
@@ -565,7 +725,9 @@ const EventForm = ({event}: EventFormProps) => {
                 <Loader2 size={20} className="animate-spin"/> &nbsp; Envoie...
               </>
             ) : (
-              "Enregistrer l'événement"
+              <>
+                {event ? "Éditer l'événement" : "Enregistrer l'événement"}
+              </>
             )}
           </Button>
         </div>

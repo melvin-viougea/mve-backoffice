@@ -17,7 +17,7 @@ declare type User = {
 
 declare type Events = {
   id: number;
-  associationId: number;
+  association: Association;
   displayType: DisplayType;
   eventType: EventType;
   subEventType: SubEventType;
@@ -72,6 +72,12 @@ declare interface UpdateEventProps {
 declare interface EventFormProps {
   event?: Events;
 }
+
+declare type Association = {
+  id: string;
+  $id: string;
+  name: string;
+};
 
 declare type EventType = {
   id: string;
