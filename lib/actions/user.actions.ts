@@ -4,6 +4,7 @@ import {cookies} from "next/headers";
 import {parseStringify} from "@/lib/utils";
 import KyInstance from "@/lib/kyInstance";
 import {AuthResponse, SignInParams, SignUpParams} from "@/types";
+import jwt from "jsonwebtoken";
 
 const baseUrl = `${process.env.NEXT_PUBLIC_HOST}/api/auth`;
 
@@ -55,6 +56,9 @@ export async function getLoggedInUser(): Promise<any> {
     const token = cookieStore.get('auth');
 
     if (token) {
+      const { isSuperAdmin } = jwt.verify(token.value, process.env.JWT_SECRET || "") as any;
+
+
       const firstnameCookie = cookieStore.get('firstname');
       const lastnameCookie = cookieStore.get('lastname');
       const emailCookie = cookieStore.get('email');
@@ -66,7 +70,8 @@ export async function getLoggedInUser(): Promise<any> {
       const user = {
         firstname,
         lastname,
-        email
+        email,
+        isSuperAdmin,
       };
       return parseStringify(user);
     } else {

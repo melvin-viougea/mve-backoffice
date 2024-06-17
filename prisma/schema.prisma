@@ -20,6 +20,19 @@ model User {
   updatedAt  DateTime @updatedAt
 }
 
+model SuperUser {
+  id         Int      @id @default(autoincrement())
+  firstname  String
+  lastname   String
+  address    String
+  city       String
+  postalCode String
+  email      String   @unique
+  password   String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
 model Event {
   id             Int          @id @default(autoincrement())
   association    Association  @relation(fields: [associationId], references: [id])
@@ -58,6 +71,8 @@ model Association {
   events    Event[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Campus    Campus?  @relation(fields: [campusId], references: [id])
+  campusId  Int?
 }
 
 model DisplayType {
@@ -82,4 +97,12 @@ model SubEventType {
   events    Event[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Campus {
+  id          Int           @id @default(autoincrement())
+  name        String
+  association Association[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
 }
