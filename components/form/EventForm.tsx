@@ -138,6 +138,35 @@ const EventForm = ({event}: EventFormProps) => {
 
         <FormField
           control={form.control}
+          name="isPublished"
+          render={({field}) => (
+            <FormItem className="border-t border-gray-200">
+              <div className="flex w-full max-w-[850px] flex-col gap-3 md:flex-row lg:gap-8 pb-6 pt-5">
+                <div className="flex w-full max-w-[280px] flex-col gap-2">
+                  <FormLabel className="text-[14px] leading-[20px] font-medium text-gray-700">
+                    Publier sur l&apos;application
+                    <span className="text-destructive ml-1">*</span>
+                  </FormLabel>
+                  <FormDescription className="text-[12px] leading-[16px] font-normal text-gray-600">
+                    Publier maintenant l&apos;événement ou le garder en tant que brouillon
+                  </FormDescription>
+                </div>
+                <div className="flex flex-col">
+                  <FormControl>
+                    <Switch
+                      checked={form.watch('isPublished')}
+                      onCheckedChange={(checked) => form.setValue('isPublished', checked)}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-[12px] leading-[16px] text-red-500"/>
+                </div>
+              </div>
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
           name="eventType"
           render={() => (
             <FormItem className="border-t border-gray-200">
@@ -294,35 +323,6 @@ const EventForm = ({event}: EventFormProps) => {
                     <Input
                       type="file"
                       onChange={(e) => field.onChange(e.target.files ? e.target.files[0] : null)}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-[12px] leading-[16px] text-red-500"/>
-                </div>
-              </div>
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="isPublished"
-          render={({field}) => (
-            <FormItem className="border-t border-gray-200">
-              <div className="flex w-full max-w-[850px] flex-col gap-3 md:flex-row lg:gap-8 pb-6 pt-5">
-                <div className="flex w-full max-w-[280px] flex-col gap-2">
-                  <FormLabel className="text-[14px] leading-[20px] font-medium text-gray-700">
-                    Publier
-                    <span className="text-destructive ml-1">*</span>
-                  </FormLabel>
-                  <FormDescription className="text-[12px] leading-[16px] font-normal text-gray-600">
-                    Publier maintenant l&apos;événement ou le garder en tant que brouillon
-                  </FormDescription>
-                </div>
-                <div className="flex flex-col">
-                  <FormControl>
-                    <Switch
-                      checked={form.watch('isPublished')}
-                      onCheckedChange={(checked) => form.setValue('isPublished', checked)}
                     />
                   </FormControl>
                   <FormMessage className="text-[12px] leading-[16px] text-red-500"/>
