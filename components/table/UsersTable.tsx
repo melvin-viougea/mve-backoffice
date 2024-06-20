@@ -5,12 +5,6 @@ import {Association, User, UserTableProps} from "@/types";
 import {useRouter} from "next/navigation";
 
 const UsersTable = ({ users }: UserTableProps) => {
-  const router = useRouter();
-
-  const handleRowClick = (id: number) => {
-    router.push(`/admin/user/${id}`);
-  };
-
   return (
     <Table>
       <TableHeader className="bg-[#f9fafb]">
@@ -26,7 +20,7 @@ const UsersTable = ({ users }: UserTableProps) => {
           const addedCampusIds: number[] = [];
 
           return (
-            <TableRow key={user.id} className='bg-[#FFFBFA] cursor-pointer' onClick={() => handleRowClick(parseInt(user.id, 10))}>
+            <TableRow key={user.id} className='bg-[#FFFBFA]'>
               <TableCell className="max-w-[250px] pl-2 pr-10">
                 {user.lastname}
               </TableCell>
