@@ -3,7 +3,7 @@
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Loader2} from "lucide-react";
 import {useRouter} from "next/navigation";
-import {useState} from "react";
+import React, {useState} from "react";
 import {useForm} from "react-hook-form";
 import * as z from "zod";
 import {Button} from "@/components/ui/button";
@@ -12,6 +12,7 @@ import {Input} from "@/components/ui/input";
 import {AssociationFormProps} from "@/types";
 import {createAssociation, updateAssociation} from "@/lib/actions/association.actions";
 import {CampusDropdown} from "@/components/dropdown/CampusDropdown";
+import Link from "next/link";
 
 const AssociationForm = ({association}: AssociationFormProps) => {
   const router = useRouter();
@@ -91,6 +92,12 @@ const AssociationForm = ({association}: AssociationFormProps) => {
                   </FormControl>
                   <FormMessage className="text-12 text-red-500"/>
                 </div>
+                <Link
+                  href={"/admin/campus/ajout"}
+                  className="text-[14px] leading-[20px] rounded-lg border border-gray-300 px-4 py-2.5 font-semibold text-gray-700 w-full"
+                >
+                  Ajouter un campus
+                </Link>
               </div>
             </FormItem>
           )}
