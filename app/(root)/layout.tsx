@@ -1,6 +1,6 @@
 import MobileNav from "@/components/MobileNav";
 import Sidebar from "@/components/Sidebar";
-import {getLoggedInUser} from "@/lib/actions/user.actions";
+import {getLoggedInUser} from "@/lib/actions/auth.actions";
 import Image from "next/image";
 import {redirect} from "next/navigation";
 
@@ -15,7 +15,7 @@ export default async function RootLayout({
     redirect('/sign-in');
   }
   if (loggedIn.isSuperAdmin) {
-    redirect('/admin');
+    redirect('/admin/dashboard');
   }
 
   return (

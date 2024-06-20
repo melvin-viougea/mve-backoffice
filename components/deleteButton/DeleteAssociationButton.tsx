@@ -3,22 +3,22 @@
 import React from 'react';
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import {deleteEvent} from "@/lib/actions/event.actions";
+import {deleteAssociation} from "@/lib/actions/association.actions";
 import {useRouter} from "next/navigation";
 
-const DeleteButton = ({ event }: any) => {
+const DeleteAssociationButton = ({ association }: any) => {
   const router = useRouter();
 
   const handleDelete = async (id: number) => {
-    const deletedEvent = await deleteEvent(id);
-    if (deletedEvent) {
-      router.push('/evenement');
+    const deletedAssociation = await deleteAssociation(id);
+    if (deletedAssociation) {
+      router.push('/admin/association');
     }
   };
 
   return (
     <div className="flex items-center justify-between">
-      <Button onClick={() => handleDelete(event.id)} className="text-[14px] leading-[20px] w-full bg-destructive font-semibold text-destructive-foreground hover:bg-destructive/80 shadow-form !important">
+      <Button onClick={() => handleDelete(association.id)} className="text-[14px] leading-[20px] w-full bg-destructive font-semibold text-destructive-foreground hover:bg-destructive/80 shadow-form !important">
         <div className="flex items-center gap-2">
           <Image src="/icons/delete.svg" alt="delete" width={20} height={20} className="cursor-pointer invert"/>
           <span>Supprimer</span>
@@ -28,4 +28,4 @@ const DeleteButton = ({ event }: any) => {
   );
 };
 
-export default DeleteButton;
+export default DeleteAssociationButton;

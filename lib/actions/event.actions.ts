@@ -20,7 +20,7 @@ export const getOneEvent = async (id: number) => {
     const response = await KyInstance.get(`${baseUrl}/${id}`).json();
     return parseStringify(response);
   } catch (error) {
-    console.error('Error fetching all events:', error);
+    console.error('Error fetching one events:', error);
   }
 };
 

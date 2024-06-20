@@ -11,12 +11,50 @@ declare type User = {
   address: string;
   city: string;
   postalCode: string;
+  associations: Association[];
 };
+
+declare type SignUpParams = {
+  firstname: string;
+  lastname: string;
+  address: string;
+  city: string;
+  postalCode: string;
+  email: string;
+  password: string;
+};
+
+declare interface AuthResponse {
+  token: string;
+  user: {
+    firstname: string;
+    lastname: string;
+    email: string;
+  };
+}
+
+declare interface SignInParams {
+  email: string;
+  password: string;
+}
+
+declare interface UpdateUserParams {
+  id: string;
+  user: CreateUserProps;
+}
+
+declare interface UserFormProps {
+  user?: User;
+}
+
+declare interface UserTableProps {
+  users: User[];
+}
 
 // EVENT
 
 declare type Events = {
-  id: number;
+  id: string;
   association: Association;
   displayType: DisplayType;
   eventType: EventType;
@@ -65,19 +103,71 @@ declare interface CreateEventParams {
 }
 
 declare interface UpdateEventParams {
-  id: number;
-  event: CreateEventProps;
+  id: string;
+  event: CreateEventParams;
 }
 
 declare interface EventFormProps {
   event?: Events;
 }
 
+declare interface EventTableProps {
+  events: Events[];
+}
+
+// ASSOCIATION
+
 declare type Association = {
   id: string;
-  $id: string;
+  name: string;
+  image: string;
+  campus: Campus;
+};
+
+declare interface CreateAssociationParams {
+  name: string;
+  image?: string;
+  campusId: number;
+}
+
+declare interface UpdateAssociationParams {
+  id: string;
+  association: CreateAssociationParams;
+}
+
+declare interface AssociationFormProps {
+  association?: Association;
+}
+
+declare interface AssociationTableProps {
+  associations: Association[];
+}
+
+// CAMPUS
+
+declare type Campus = {
+  id: string;
   name: string;
 };
+
+declare interface CreateCampusParams {
+  name: string;
+}
+
+declare interface UpdateCampusParams {
+  id: string;
+  campus: CreateCampusParams;
+}
+
+declare interface CampusFormProps {
+  campus?: Campus;
+}
+
+declare interface CampusTableProps {
+  campuses: Campus[];
+}
+
+// EVENT TYPE
 
 declare type EventType = {
   id: string;
@@ -85,11 +175,15 @@ declare type EventType = {
   name: string;
 };
 
+// SUB EVENT TYPE
+
 declare type SubEventType = {
   id: string;
   $id: string;
   name: string;
 };
+
+//DISPLAY TYPE
 
 declare type DisplayType = {
   id: string;
@@ -97,54 +191,14 @@ declare type DisplayType = {
   name: string;
 };
 
-// PARAM
-
-declare type SignUpParams = {
-  firstname: string;
-  lastname: string;
-  address: string;
-  city: string;
-  postalCode: string;
-  email: string;
-  password: string;
-};
-
-declare interface getOneParams {
-  id: number;
-}
+// OTHER
 
 declare interface pageProps {
   params: {
-    id: number;
+    id: string;
   };
   searchParams: Record<any>;
 }
-
-declare interface createDataParams {
-  data: string;
-}
-
-declare interface updateDataParams {
-  id: string;
-  data: string;
-}
-
-declare interface deleteDataParams {
-  id: string;
-}
-
-// RESPONSE
-
-declare interface AuthResponse {
-  token: string;
-  user: {
-    firstname: string;
-    lastname: string;
-    email: string;
-  };
-}
-
-// PROPS
 
 declare type SearchParamProps = {
   params: { [key: string]: string };
@@ -169,12 +223,8 @@ declare interface PaginationProps {
 }
 
 declare interface ButtonProps {
-  id: number;
+  id: string;
   action: any;
-}
-
-declare interface AuthFormProps {
-  type: "sign-in" | "sign-up";
 }
 
 declare interface FooterProps {
@@ -186,15 +236,6 @@ declare interface SiderbarProps {
   user: User;
 }
 
-declare interface SignInParams {
-  email: string;
-  password: string;
-}
-
-declare interface getUserInfoProps {
-  userId: string;
-}
-
 declare interface HeaderBoxProps {
   type?: "title" | "greeting";
   title: string;
@@ -204,10 +245,6 @@ declare interface HeaderBoxProps {
 
 declare interface BadgeProps {
   status: boolean;
-}
-
-declare interface EventTableProps {
-  events: Events[];
 }
 
 declare interface DropdownProps {

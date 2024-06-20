@@ -1,42 +1,42 @@
 import HeaderBox from '@/components/HeaderBox'
 import {Pagination} from '@/components/Pagination';
-import EventsTable from '@/components/table/EventsTable';
-import {getAllEvent} from "@/lib/actions/event.actions";
+import AssociationsTable from "@/components/table/AssociationsTable";
+import {getAllAssociation} from "@/lib/actions/association.actions";
 import React from 'react'
 import Link from "next/link";
 import {SearchParamProps} from "@/types";
 
-const Event = async ({searchParams: {id, page}}: SearchParamProps) => {
+const Association = async ({searchParams: {id, page}}: SearchParamProps) => {
   const currentPage = Number(page as string) || 1;
-  const events = await getAllEvent();
+  const associations = await getAllAssociation();
 
   const rowsPerPage = 10;
-  const totalPages = Math.ceil(events.length / rowsPerPage);
+  const totalPages = Math.ceil(associations.length / rowsPerPage);
 
-  const indexOfLastEvent = currentPage * rowsPerPage;
-  const indexOfFirstEvent = indexOfLastEvent - rowsPerPage;
+  const indexOfLastAssociation = currentPage * rowsPerPage;
+  const indexOfFirstAssociation = indexOfLastAssociation - rowsPerPage;
 
-  const currentEvents = events.slice(
-    indexOfFirstEvent, indexOfLastEvent
+  const currentAssociations = associations.slice(
+    indexOfFirstAssociation, indexOfLastAssociation
   )
   return (
     <div className="flex max-h-screen w-full flex-col gap-8 overflow-y-scroll bg-gray-25 p-8 xl:py-12">
       <div className="flex w-full flex-col items-start justify-between gap-8 md:flex-row">
         <HeaderBox
-          title="Événement"
-          subtext="Voir tous les événements."
+          title="Assos"
+          subtext="Voir tous les associations."
         />
         <Link
-          href={"/evenement/ajout"}
+          href={"/admin/association/ajout"}
           className="text-[14px] leading-[20px] rounded-lg border border-gray-300 px-4 py-2.5 font-semibold text-gray-700"
         >
-          Publier un événement
+          Ajouter une association
         </Link>
       </div>
       <div className="space-y-6">
         <section className="flex w-full flex-col gap-6">
-          <EventsTable
-            events={currentEvents}
+          <AssociationsTable
+            associations={currentAssociations}
           />
           {totalPages > 1 && (
             <div className="my-4 w-full">
@@ -49,4 +49,4 @@ const Event = async ({searchParams: {id, page}}: SearchParamProps) => {
   )
 }
 
-export default Event
+export default Association

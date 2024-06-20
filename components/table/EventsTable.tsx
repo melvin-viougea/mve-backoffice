@@ -44,7 +44,7 @@ const EventsTable = ({events}: EventTableProps) => {
       <TableBody>
         {events.map((e: Events) => {
           return (
-            <TableRow key={e.id} className='bg-[#FFFBFA] cursor-pointer' onClick={() => handleRowClick(e.id)}>
+            <TableRow key={e.id} className='bg-[#FFFBFA] cursor-pointer' onClick={() => handleRowClick(parseInt(e.id, 10))}>
               <TableCell className="max-w-[250px] pl-2 pr-10">
                 {formatDateTime(new Date(e.date)).dateOnly}
               </TableCell>

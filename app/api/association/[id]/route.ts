@@ -1,73 +1,115 @@
-import {prisma} from "@/lib/prisma";
 import {NextResponse} from "next/server";
 import {authenticate} from "@/middleware/auth";
+import {getAssociationData} from "@/lib/dataApi";
+import {prisma} from "@/lib/prisma";
 
 export async function GET(request: Request, {params}: { params: { id: string } }) {
-  const authResult = authenticate(request);
+  const authResult = authenticate(request, true);
   if (!authResult.authenticated) {
     return new NextResponse(JSON.stringify({error: authResult.message}), {status: 401});
   }
 
-  const id = params.id
-  const associations = await prisma.association.findUnique({
-    where: {
-      id: parseInt(id)
-    }
-  })
-  return NextResponse.json(associations)
+  const id = parseInt(params.id, 10);
+  const association = await prisma.association.findUnique({
+    where: {id},
+    include: {
+      campus: {select: {id: true, name: true}},
+    },
+  });
+
+  if (!association) {
+    return new NextResponse(JSON.stringify({error: "Association not found"}), {status: 404});
+  }
+
+  try {
+    const associationData = await getAssociationData(association);
+    return new NextResponse(JSON.stringify(associationData), {status: 200});
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
+    return new NextResponse(JSON.stringify({error: errorMessage}), {status: 500});
+  }
 }
 
 export async function PUT(request: Request, {params}: { params: { id: string } }) {
-  const authResult = authenticate(request);
+  const authResult = authenticate(request, true);
   if (!authResult.authenticated) {
     return new NextResponse(JSON.stringify({error: authResult.message}), {status: 401});
   }
 
-  const id = params.id
-  const json = await request.json()
+  const id = parseInt(params.id, 10);
+  const json = await request.json();
 
-  const updated = await prisma.association.update({
-    where: {
-      id: parseInt(id)
-    },
-    data: {
-      name: json.name || null,
-      image: json.image || null,
-    }
-  })
-  return NextResponse.json(updated)
+  try {
+    const updated = await prisma.association.update({
+      where: {id},
+      data: {
+        name: json.name || null,
+        image: json.image || null,
+        campusId: json.campusId || null,
+      },
+      include: {
+        campus: {select: {id: true, name: true}},
+      },
+    });
+
+    const associationData = await getAssociationData(updated);
+    return new NextResponse(JSON.stringify(associationData), {status: 200});
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
+    return new NextResponse(JSON.stringify({error: errorMessage}), {status: 500});
+  }
 }
 
 export async function PATCH(request: Request, {params}: { params: { id: string } }) {
-  const authResult = authenticate(request);
+  const authResult = authenticate(request, true);
   if (!authResult.authenticated) {
     return new NextResponse(JSON.stringify({error: authResult.message}), {status: 401});
   }
 
-  const id = params.id
-  const json = await request.json()
+  const id = parseInt(params.id, 10);
+  const json = await request.json();
 
-  const updated = await prisma.association.update({
-    where: {
-      id: parseInt(id)
-    },
-    data: json
-  })
-  return NextResponse.json(updated)
+  try {
+    const updated = await prisma.association.update({
+      where: {id},
+      data: {
+        ...(json.name !== undefined && {name: json.name}),
+        ...(json.image !== undefined && {image: json.image}),
+        ...(json.campusId !== undefined && {campusId: json.campusId}),
+      },
+      include: {
+        campus: {select: {id: true, name: true}},
+      },
+    });
+
+    const associationData = await getAssociationData(updated);
+    return new NextResponse(JSON.stringify(associationData), {status: 200});
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
+    return new NextResponse(JSON.stringify({error: errorMessage}), {status: 500});
+  }
 }
 
 export async function DELETE(request: Request, {params}: { params: { id: string } }) {
-  const authResult = authenticate(request);
+  const authResult = authenticate(request, true);
   if (!authResult.authenticated) {
     return new NextResponse(JSON.stringify({error: authResult.message}), {status: 401});
   }
 
-  const id = params.id
+  const id = parseInt(params.id, 10);
 
-  const deleted = await prisma.association.delete({
-    where: {
-      id: parseInt(id)
-    }
-  })
-  return NextResponse.json(deleted)
+  try {
+    const deleted = await prisma.association.delete({
+      where: {id},
+      include: {
+        campus: {select: {id: true, name: true}},
+      },
+    });
+
+    const associationData = await getAssociationData(deleted);
+    return new NextResponse(JSON.stringify(associationData), {status: 200});
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
+    return new NextResponse(JSON.stringify({error: errorMessage}), {status: 500});
+  }
 }
