@@ -82,7 +82,7 @@ const AssociationForm = ({association}: AssociationFormProps) => {
                     Sélectionnez le campus a associer
                   </FormDescription>
                 </div>
-                <div className="flex w-full flex-col">
+                <div className="flex w-full flex-col m-auto">
                   <FormControl>
                     <CampusDropdown
                       setValue={form.setValue}
@@ -94,7 +94,7 @@ const AssociationForm = ({association}: AssociationFormProps) => {
                 </div>
                 <Link
                   href={"/admin/campus/ajout"}
-                  className="text-[14px] leading-[20px] rounded-lg border border-gray-300 px-4 py-2.5 font-semibold text-gray-700 w-full"
+                  className="text-[14px] leading-[20px] rounded-lg border border-gray-300 px-4 py-2.5 font-semibold text-gray-700 w-full text-center"
                 >
                   Ajouter un campus
                 </Link>

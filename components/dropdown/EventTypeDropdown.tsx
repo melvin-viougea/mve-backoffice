@@ -52,7 +52,7 @@ export const EventTypeDropdown = ({setValue, defaultValue, otherStyles}: Dropdow
       </SelectTrigger>
       <SelectContent className={`w-full bg-white md:w-[300px] ${otherStyles}`} align="end">
         <SelectGroup>
-          <SelectLabel className="py-2 font-normal text-gray-500">Select an event type</SelectLabel>
+          <SelectLabel className="py-2 font-normal text-gray-500">Séléctionner un type d&apos;événement</SelectLabel>
           {eventTypes.map((eventType: EventType) => (
             <SelectItem key={eventType.id} value={eventType.id} className="cursor-pointer border-t">
               {eventType.name}

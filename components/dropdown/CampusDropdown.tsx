@@ -52,7 +52,7 @@ export const CampusDropdown = ({setValue, defaultValue, otherStyles}: DropdownPr
       </SelectTrigger>
       <SelectContent className={`w-full bg-white md:w-[300px] ${otherStyles}`} align="end">
         <SelectGroup>
-          <SelectLabel className="py-2 font-normal text-gray-500">Select an event type</SelectLabel>
+          <SelectLabel className="py-2 font-normal text-gray-500">Selectionné un Campus</SelectLabel>
           {campuses.map((campus: Campus) => (
             <SelectItem key={campus.id} value={campus.id} className="cursor-pointer border-t">
               {campus.name}
