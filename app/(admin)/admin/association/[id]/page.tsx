@@ -6,7 +6,7 @@ import {getOneAssociation} from "@/lib/actions/association.actions";
 import DeleteAssociationButton from "@/components/deleteButton/DeleteAssociationButton";
 
 const AssociationUpdate = async (props: pageProps) => {
-  const association = await getOneAssociation(parseInt(props.params.id, 10));
+  const association = await getOneAssociation(props.params.id);
 
   return (
     <section className="no-scrollbar flex flex-col overflow-y-scroll bg-gray-25 p-8 md:max-h-screen xl:py-12">

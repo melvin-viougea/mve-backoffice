@@ -13,12 +13,14 @@ import {AssociationFormProps} from "@/types";
 import {createAssociation, updateAssociation} from "@/lib/actions/association.actions";
 import {CampusDropdown} from "@/components/dropdown/CampusDropdown";
 import Link from "next/link";
+import {AssociationTypeDropdown} from "@/components/dropdown/AssociationTypeDropdown";
 
 const AssociationForm = ({association}: AssociationFormProps) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
   const formSchema = z.object({
+    associationType: z.number().min(1, { message: "Le type d'association n'est pas correctement défini" }),
     campus: z.number().min(1, { message: "Le campus n'est pas correctement défini" }),
     name: z.string().min(1, { message: "Le nom doit contenir au moins 1 caractère" }).max(50, { message: "Le nom doit contenir au maximum 50 caractères" }),
     image: z.instanceof(File).optional(),
@@ -27,7 +29,8 @@ const AssociationForm = ({association}: AssociationFormProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      campus: association ? parseInt(association.campus.id, 10) : 0,
+      associationType: association ? association.associationType.id : 0,
+      campus: association ? association.campus.id : 0,
       name: association ? association.name : "",
       image: undefined,
     },
@@ -38,6 +41,7 @@ const AssociationForm = ({association}: AssociationFormProps) => {
 
     try {
       const associationData = {
+        associationTypeId: data.associationType,
         campusId: data.campus,
         name: data.name,
         image: data.image ? URL.createObjectURL(data.image) : undefined,
@@ -66,6 +70,61 @@ const AssociationForm = ({association}: AssociationFormProps) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col">
+
+        <FormField
+          control={form.control}
+          name="name"
+          render={({field}) => (
+            <FormItem className="border-t border-gray-200">
+              <div className="flex w-full max-w-[850px] flex-col gap-3 md:flex-row lg:gap-8 pb-5 pt-6">
+                <FormLabel className="text-[14px] leading-[20px] w-full max-w-[280px] font-medium text-gray-700">
+                  Nom
+                  <span className="text-destructive ml-1">*</span>
+                </FormLabel>
+                <div className="flex w-full flex-col">
+                  <FormControl>
+                    <Input
+                      placeholder="Entrez le nom"
+                      className="text-[16px] leading-[24px] placeholder:text-[16px] placeholder:leading-[24px] rounded-lg border border-gray-300 text-gray-900 placeholder:text-gray-500"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-[12px] leading-[16px] text-red-500"/>
+                </div>
+              </div>
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="associationType"
+          render={() => (
+            <FormItem className="border-t border-gray-200">
+              <div className="flex w-full max-w-[850px] flex-col gap-3 md:flex-row lg:gap-8 pb-6 pt-5">
+                <div className="flex w-full max-w-[280px] flex-col gap-2">
+                  <FormLabel className="text-[14px] leading-[20px] font-medium text-gray-700">
+                    Type d&apos;association
+                    <span className="text-destructive ml-1">*</span>
+                  </FormLabel>
+                  <FormDescription className="text-[12px] leading-[16px] font-normal text-gray-600">
+                    Sélectionnez le type d&apos;association que vous souhaitez
+                  </FormDescription>
+                </div>
+                <div className="flex w-full flex-col">
+                  <FormControl>
+                    <AssociationTypeDropdown
+                      setValue={form.setValue}
+                      defaultValue={form.watch("associationType").toString()}
+                      otherStyles="!w-full"
+                    />
+                  </FormControl>
+                  <FormMessage className="text-12 text-red-500"/>
+                </div>
+              </div>
+            </FormItem>
+          )}
+        />
 
         <FormField
           control={form.control}
@@ -98,31 +157,6 @@ const AssociationForm = ({association}: AssociationFormProps) => {
                 >
                   Ajouter un campus
                 </Link>
-              </div>
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="name"
-          render={({field}) => (
-            <FormItem className="border-t border-gray-200">
-              <div className="flex w-full max-w-[850px] flex-col gap-3 md:flex-row lg:gap-8 pb-5 pt-6">
-                <FormLabel className="text-[14px] leading-[20px] w-full max-w-[280px] font-medium text-gray-700">
-                  Nom
-                  <span className="text-destructive ml-1">*</span>
-                </FormLabel>
-                <div className="flex w-full flex-col">
-                  <FormControl>
-                    <Input
-                      placeholder="Entrez le nom"
-                      className="text-[16px] leading-[24px] placeholder:text-[16px] placeholder:leading-[24px] rounded-lg border border-gray-300 text-gray-900 placeholder:text-gray-500"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-[12px] leading-[16px] text-red-500"/>
-                </div>
               </div>
             </FormItem>
           )}

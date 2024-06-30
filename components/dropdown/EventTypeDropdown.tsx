@@ -22,7 +22,7 @@ export const EventTypeDropdown = ({setValue, defaultValue, otherStyles}: Dropdow
 
   useEffect(() => {
     if (eventTypes.length > 0 && !selected) {
-      const defaultEventType = eventTypes.find(eventType => eventType.id == defaultValue) || eventTypes[0];
+      const defaultEventType = eventTypes.find(eventType => eventType.id.toString() == defaultValue) || eventTypes[0];
       setSelected(defaultEventType);
       if (setValue) {
         setValue("eventType", defaultEventType.id);
@@ -31,12 +31,12 @@ export const EventTypeDropdown = ({setValue, defaultValue, otherStyles}: Dropdow
   }, [eventTypes, selected, setValue]);
 
   const handleEventTypeChange = (id: string) => {
-    const eventType = eventTypes.find((eventType) => eventType.id === id);
+    const eventType = eventTypes.find((eventType) => eventType.id.toString() === id);
 
     if (eventType) {
       setSelected(eventType);
       if (setValue) {
-        setValue("eventType", id);
+        setValue("eventType", parseInt(id, 10));
       }
     }
   };
@@ -44,7 +44,7 @@ export const EventTypeDropdown = ({setValue, defaultValue, otherStyles}: Dropdow
   return (
     <Select
       key={selected?.id}
-      defaultValue={selected?.id}
+      defaultValue={selected?.id.toString()}
       onValueChange={(value) => handleEventTypeChange(value)}
     >
       <SelectTrigger className={`flex w-full bg-white gap-3 md:w-[300px] ${otherStyles}`}>
@@ -54,7 +54,7 @@ export const EventTypeDropdown = ({setValue, defaultValue, otherStyles}: Dropdow
         <SelectGroup>
           <SelectLabel className="py-2 font-normal text-gray-500">Séléctionner un type d&apos;événement</SelectLabel>
           {eventTypes.map((eventType: EventType) => (
-            <SelectItem key={eventType.id} value={eventType.id} className="cursor-pointer border-t">
+            <SelectItem key={eventType.id} value={eventType.id.toString()} className="cursor-pointer border-t">
               {eventType.name}
             </SelectItem>
           ))}

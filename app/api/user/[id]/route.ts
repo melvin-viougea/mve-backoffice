@@ -13,19 +13,15 @@ export async function GET(request: Request, {params}: { params: { id: string } }
   const user = await prisma.user.findUnique({
     where: {id},
     include: {
-      associations: {
-        include: {
-          association: {
+      association: {
+        select: {
+          id: true,
+          name: true,
+          image: true,
+          campus: {
             select: {
               id: true,
-              name: true,
-              image: true,
-              campus: {
-                select: {
-                  id: true,
-                  name: true
-                }
-              }
+              name: true
             }
           }
         }
@@ -68,19 +64,15 @@ export async function PUT(request: Request, {params}: { params: { id: string } }
         password: json.password || null,
       },
       include: {
-        associations: {
-          include: {
-            association: {
+        association: {
+          select: {
+            id: true,
+            name: true,
+            image: true,
+            campus: {
               select: {
                 id: true,
-                name: true,
-                image: true,
-                campus: {
-                  select: {
-                    id: true,
-                    name: true
-                  }
-                }
+                name: true
               }
             }
           }
@@ -118,19 +110,15 @@ export async function PATCH(request: Request, {params}: { params: { id: string }
         ...(json.password !== undefined && {password: json.password}),
       },
       include: {
-        associations: {
-          include: {
-            association: {
+        association: {
+          select: {
+            id: true,
+            name: true,
+            image: true,
+            campus: {
               select: {
                 id: true,
-                name: true,
-                image: true,
-                campus: {
-                  select: {
-                    id: true,
-                    name: true
-                  }
-                }
+                name: true
               }
             }
           }
@@ -158,19 +146,15 @@ export async function DELETE(request: Request, {params}: { params: { id: string 
     const deleted = await prisma.user.delete({
       where: {id},
       include: {
-        associations: {
-          include: {
-            association: {
+        association: {
+          select: {
+            id: true,
+            name: true,
+            image: true,
+            campus: {
               select: {
                 id: true,
-                name: true,
-                image: true,
-                campus: {
-                  select: {
-                    id: true,
-                    name: true
-                  }
-                }
+                name: true
               }
             }
           }

@@ -22,7 +22,7 @@ export const CampusDropdown = ({setValue, defaultValue, otherStyles}: DropdownPr
 
   useEffect(() => {
     if (campuses.length > 0 && !selected) {
-      const defaultCampus = campuses.find(campus => campus.id == defaultValue) || campuses[0];
+      const defaultCampus = campuses.find(campus => campus.id.toString() == defaultValue) || campuses[0];
       setSelected(defaultCampus);
       if (setValue) {
         setValue("campus", defaultCampus.id);
@@ -31,12 +31,12 @@ export const CampusDropdown = ({setValue, defaultValue, otherStyles}: DropdownPr
   }, [campuses, selected, setValue]);
 
   const handleCampusChange = (id: string) => {
-    const campus = campuses.find((campus) => campus.id === id);
+    const campus = campuses.find((campus) => campus.id.toString() === id);
 
     if (campus) {
       setSelected(campus);
       if (setValue) {
-        setValue("campus", id);
+        setValue("campus", parseInt(id, 10));
       }
     }
   };
@@ -44,7 +44,7 @@ export const CampusDropdown = ({setValue, defaultValue, otherStyles}: DropdownPr
   return (
     <Select
       key={selected?.id}
-      defaultValue={selected?.id}
+      defaultValue={selected?.id.toString()}
       onValueChange={(value) => handleCampusChange(value)}
     >
       <SelectTrigger className={`flex w-full bg-white gap-3 md:w-[300px] ${otherStyles}`}>
@@ -54,7 +54,7 @@ export const CampusDropdown = ({setValue, defaultValue, otherStyles}: DropdownPr
         <SelectGroup>
           <SelectLabel className="py-2 font-normal text-gray-500">Selectionné un Campus</SelectLabel>
           {campuses.map((campus: Campus) => (
-            <SelectItem key={campus.id} value={campus.id} className="cursor-pointer border-t">
+            <SelectItem key={campus.id} value={campus.id.toString()} className="cursor-pointer border-t">
               {campus.name}
             </SelectItem>
           ))}

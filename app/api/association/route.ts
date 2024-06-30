@@ -7,22 +7,23 @@ import {hash} from "bcrypt";
 export async function GET(request: Request) {
   const authResult = authenticate(request, true);
   if (!authResult.authenticated) {
-    return new NextResponse(JSON.stringify({error: authResult.message}), {status: 401});
+    return new NextResponse(JSON.stringify({ error: authResult.message }), { status: 401 });
   }
 
   try {
     const associations = await prisma.association.findMany({
       include: {
-        campus: {select: {id: true, name: true}},
+        campus: { select: { id: true, name: true } },
+        associationType: { select: { id: true, name: true } },
       },
     });
 
     const allAssociations = await Promise.all(associations.map(async (association) => await getAssociationData(association)));
 
-    return new NextResponse(JSON.stringify(allAssociations), {status: 200});
+    return new NextResponse(JSON.stringify(allAssociations), { status: 200 });
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-    return new NextResponse(JSON.stringify({error: errorMessage}), {status: 500});
+    return new NextResponse(JSON.stringify({ error: errorMessage }), { status: 500 });
   }
 }
 
@@ -35,11 +36,11 @@ export async function POST(request: Request) {
   const json = await request.json();
 
   try {
-    // Create the association
     const created = await prisma.association.create({
       data: json,
       include: {
-        campus: { select: { id: true, name: true } },
+        campus: {select: {id: true, name: true}},
+        associationType: {select: {id: true, name: true}},
       },
     });
 
@@ -58,12 +59,6 @@ export async function POST(request: Request) {
         address: "support",
         city: "support",
         postalCode: "00000",
-      },
-    });
-
-    await prisma.userAssociation.create({
-      data: {
-        userId: supportUser.id,
         associationId: created.id,
       },
     });

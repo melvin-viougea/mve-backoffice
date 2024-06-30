@@ -27,6 +27,8 @@ export async function POST(request: Request) {
       firstname,
       lastname,
       postalCode,
+      //TODO add associationId
+      associationId: 1,
     }
   })
 

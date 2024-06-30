@@ -20,7 +20,7 @@ const CampusesTable = ({campuses}: CampusTableProps) => {
       <TableBody>
         {campuses.map((campus: Campus) => {
           return (
-            <TableRow key={campus.id} className='bg-[#FFFBFA] cursor-pointer' onClick={() => handleRowClick(parseInt(campus.id, 10))}>
+            <TableRow key={campus.id} className='bg-[#FFFBFA] cursor-pointer' onClick={() => handleRowClick(campus.id)}>
               <TableCell className="max-w-[250px] pl-2 pr-10">
                 {campus.name}
               </TableCell>

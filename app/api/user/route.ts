@@ -12,26 +12,22 @@ export async function GET(request: Request) {
   try {
     const users = await prisma.user.findMany({
       include: {
-        associations: {
-          include: {
-            association: {
+        association: {
+          select: {
+            id: true,
+            name: true,
+            image: true,
+            campus: {
               select: {
                 id: true,
-                name: true,
-                image: true,
-                campus: {
-                  select: {
-                    id: true,
-                    name: true
-                  }
-                }
+                name: true
               }
             }
           }
         }
       }
     });
-
+    console.log(users);
     const allUsers = await Promise.all(users.map(async (user) => await getUserData(user)));
 
     return new NextResponse(JSON.stringify(allUsers), { status: 200 });
@@ -53,19 +49,15 @@ export async function POST(request: Request) {
     const created = await prisma.user.create({
       data: json,
       include: {
-        associations: {
-          include: {
-            association: {
+        association: {
+          select: {
+            id: true,
+            name: true,
+            image: true,
+            campus: {
               select: {
                 id: true,
-                name: true,
-                image: true,
-                campus: {
-                  select: {
-                    id: true,
-                    name: true
-                  }
-                }
+                name: true
               }
             }
           }

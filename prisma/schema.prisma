@@ -8,42 +8,32 @@ datasource db {
 }
 
 model User {
-  id           Int               @id @default(autoincrement())
-  firstname    String
-  lastname     String
-  address      String
-  city         String
-  postalCode   String
-  email        String            @unique
-  password     String
-  createdAt    DateTime          @default(now())
-  updatedAt    DateTime          @updatedAt
-  associations UserAssociation[]
+  id            Int         @id @default(autoincrement())
+  firstname     String
+  lastname      String
+  address       String
+  city          String
+  postalCode    String
+  email         String      @unique
+  password      String
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  association   Association @relation(fields: [associationId], references: [id])
+  associationId Int
 }
 
 model SuperUser {
-  id         Int      @id @default(autoincrement())
-  firstname  String
-  lastname   String
-  address    String
-  city       String
-  postalCode String
-  email      String   @unique
-  password   String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  firstname String
+  lastname  String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Event {
   id             Int          @id @default(autoincrement())
-  association    Association  @relation(fields: [associationId], references: [id])
-  associationId  Int
-  displayType    DisplayType  @relation(fields: [displayTypeId], references: [id])
-  displayTypeId  Int
-  eventType      EventType    @relation(fields: [eventTypeId], references: [id])
-  eventTypeId    Int
-  subEventType   SubEventType @relation(fields: [subEventTypeId], references: [id])
-  subEventTypeId Int
   title          String
   description    String
   logo           String?
@@ -63,59 +53,79 @@ model Event {
   peopleLimit    Int?
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
+  association    Association  @relation(fields: [associationId], references: [id])
+  associationId  Int
+  displayType    DisplayType  @relation(fields: [displayTypeId], references: [id])
+  displayTypeId  Int
+  eventType      EventType    @relation(fields: [eventTypeId], references: [id])
+  eventTypeId    Int
+  subEventType   SubEventType @relation(fields: [subEventTypeId], references: [id])
+  subEventTypeId Int
 }
 
 model Association {
-  id        Int               @id @default(autoincrement())
-  name      String
-  image     String?
-  events    Event[]
-  campus    Campus?           @relation(fields: [campusId], references: [id])
-  campusId  Int?
-  createdAt DateTime          @default(now())
-  updatedAt DateTime          @updatedAt
-  users     UserAssociation[]
+  id                Int             @id @default(autoincrement())
+  name              String
+  image             String?
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  associationType   AssociationType @relation(fields: [associationTypeId], references: [id])
+  associationTypeId Int
+  campus            Campus          @relation(fields: [campusId], references: [id])
+  campusId          Int
+  events            Event[]
+  users             User[]
 }
 
 model DisplayType {
   id        Int      @id @default(autoincrement())
   name      String
-  events    Event[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  events    Event[]
 }
 
 model EventType {
   id        Int      @id @default(autoincrement())
   name      String
-  events    Event[]
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+  events    Event[]
 }
 
 model SubEventType {
   id        Int      @id @default(autoincrement())
   name      String
-  events    Event[]
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+  events    Event[]
+}
+
+model AssociationType {
+  id          Int           @id @default(autoincrement())
+  name        String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @default(now())
+  association Association[]
 }
 
 model Campus {
-  id          Int           @id @default(autoincrement())
-  name        String
-  association Association[]
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  id           Int           @id @default(autoincrement())
+  name         String
+  description  String
+  address      String
+  city         String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  campusType   CampusType    @relation(fields: [campusTypeId], references: [id])
+  campusTypeId Int
+  association  Association[]
 }
 
-model UserAssociation {
-  userId        Int
-  associationId Int
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-  user          User        @relation(fields: [userId], references: [id])
-  association   Association @relation(fields: [associationId], references: [id])
-
-  @@id([userId, associationId])
+model CampusType {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  campus    Campus[]
 }

@@ -17,8 +17,6 @@ const UsersTable = ({ users }: UserTableProps) => {
       </TableHeader>
       <TableBody>
         {users.map((user: User) => {
-          const addedCampusIds: number[] = [];
-
           return (
             <TableRow key={user.id} className='bg-[#FFFBFA]'>
               <TableCell className="max-w-[250px] pl-2 pr-10">
@@ -28,17 +26,10 @@ const UsersTable = ({ users }: UserTableProps) => {
                 {user.firstname}
               </TableCell>
               <TableCell className="max-w-[250px] pl-2 pr-10">
-                {user.associations.map((association: Association) => association.name).join(', ')}
+                {user.association.name}
               </TableCell>
               <TableCell className="max-w-[250px] pl-2 pr-10">
-                {user.associations.map((association: Association) => {
-                    if (!addedCampusIds.includes(Number(association.campus.id))) {
-                      addedCampusIds.push(Number(association.campus.id));
-                      return association.campus.name;
-                    }
-                    return '';
-                  })
-                }
+                {user.association.campus.name}
               </TableCell>
             </TableRow>
           );

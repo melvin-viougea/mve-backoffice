@@ -2,13 +2,14 @@ import { compare } from "bcrypt";
 import { sign } from "jsonwebtoken";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import {AuthUser} from "@/types";
 
 const maxAge = 24 * 60 * 60;
 
 export async function POST(request: Request) {
   const { email, password } = await request.json();
 
-  let user = await prisma.user.findUnique({
+  let user: AuthUser | null = await prisma.user.findUnique({
     where: { email }
   });
 
@@ -16,7 +17,7 @@ export async function POST(request: Request) {
 
   if (!user) {
     user = await prisma.superUser.findUnique({
-      where: { email }
+      where: { email },
     });
     isSuperAdmin = !!user;
   }

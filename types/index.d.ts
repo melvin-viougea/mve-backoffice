@@ -3,15 +3,15 @@ import {UseFormSetValue} from "react-hook-form";
 // USER
 
 declare type User = {
-  id: string;
+  id: number;
   email: string;
+  password: string;
   firstname: string;
   lastname: string;
-  name: string;
   address: string;
   city: string;
   postalCode: string;
-  associations: Association[];
+  association: Association;
 };
 
 declare type SignUpParams = {
@@ -30,6 +30,7 @@ declare interface AuthResponse {
     firstname: string;
     lastname: string;
     email: string;
+    associationId: number;
   };
 }
 
@@ -39,7 +40,7 @@ declare interface SignInParams {
 }
 
 declare interface UpdateUserParams {
-  id: string;
+  id: number;
   user: CreateUserProps;
 }
 
@@ -51,10 +52,22 @@ declare interface UserTableProps {
   users: User[];
 }
 
+declare type AuthUser = User | SuperUser;
+
+// SUPER USER
+
+declare type SuperUser = {
+  id: number;
+  email: string;
+  firstname: string;
+  lastname: string;
+  password: string;
+};
+
 // EVENT
 
 declare type Events = {
-  id: string;
+  id: number;
   association: Association;
   displayType: DisplayType;
   eventType: EventType;
@@ -103,12 +116,13 @@ declare interface CreateEventParams {
 }
 
 declare interface UpdateEventParams {
-  id: string;
+  id: number;
   event: CreateEventParams;
 }
 
 declare interface EventFormProps {
   event?: Events;
+  associationId: number;
 }
 
 declare interface EventTableProps {
@@ -118,7 +132,8 @@ declare interface EventTableProps {
 // ASSOCIATION
 
 declare type Association = {
-  id: string;
+  associationType: AssociationType;
+  id: number;
   name: string;
   image: string;
   campus: Campus;
@@ -131,7 +146,7 @@ declare interface CreateAssociationParams {
 }
 
 declare interface UpdateAssociationParams {
-  id: string;
+  id: number;
   association: CreateAssociationParams;
 }
 
@@ -146,8 +161,12 @@ declare interface AssociationTableProps {
 // CAMPUS
 
 declare type Campus = {
-  id: string;
+  id: number;
+  campusType: CampusType;
   name: string;
+  description: string;
+  city: string;
+  address: string;
 };
 
 declare interface CreateCampusParams {
@@ -155,7 +174,7 @@ declare interface CreateCampusParams {
 }
 
 declare interface UpdateCampusParams {
-  id: string;
+  id: number;
   campus: CreateCampusParams;
 }
 
@@ -167,27 +186,43 @@ declare interface CampusTableProps {
   campuses: Campus[];
 }
 
+// ASSOCIATION TYPE
+
+declare type AssociationType = {
+  id: number;
+  $id: number;
+  name: string;
+};
+
+// CAMPUS TYPE
+
+declare type CampusType = {
+  id: number;
+  $id: number;
+  name: string;
+};
+
 // EVENT TYPE
 
 declare type EventType = {
-  id: string;
-  $id: string;
+  id: number;
+  $id: number;
   name: string;
 };
 
 // SUB EVENT TYPE
 
 declare type SubEventType = {
-  id: string;
-  $id: string;
+  id: number;
+  $id: number;
   name: string;
 };
 
 //DISPLAY TYPE
 
 declare type DisplayType = {
-  id: string;
-  $id: string;
+  id: number;
+  $id: number;
   name: string;
 };
 
@@ -195,7 +230,7 @@ declare type DisplayType = {
 
 declare interface pageProps {
   params: {
-    id: string;
+    id: number;
   };
   searchParams: Record<any>;
 }
@@ -223,7 +258,7 @@ declare interface PaginationProps {
 }
 
 declare interface ButtonProps {
-  id: string;
+  id: number;
   action: any;
 }
 

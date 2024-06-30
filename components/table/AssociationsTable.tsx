@@ -21,7 +21,7 @@ const AssociationsTable = ({associations}: AssociationTableProps) => {
       <TableBody>
         {associations.map((association: Association) => {
           return (
-            <TableRow key={association.id} className='bg-[#FFFBFA] cursor-pointer' onClick={() => handleRowClick(parseInt(association.id, 10))}>
+            <TableRow key={association.id} className='bg-[#FFFBFA] cursor-pointer' onClick={() => handleRowClick(association.id)}>
               <TableCell className="max-w-[250px] pl-2 pr-10">
                 {association.name}
               </TableCell>

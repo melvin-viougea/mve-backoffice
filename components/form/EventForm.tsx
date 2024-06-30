@@ -18,7 +18,7 @@ import {Switch} from "@/components/ui/switch";
 import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion";
 import {EventFormProps} from "@/types";
 
-const EventForm = ({event}: EventFormProps) => {
+const EventForm = ({event, associationId}: EventFormProps) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -60,10 +60,10 @@ const EventForm = ({event}: EventFormProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      association: event ? parseInt(event.association.id) : 1, // TODO changer avec la valeur de l'association de l'utilisateur
-      displayType: event ? parseInt(event.displayType.id) : 0,
-      eventType: event ? parseInt(event.eventType.id) : 0,
-      subEventType: event ? parseInt(event.subEventType.id) : 0,
+      association: event ? event.association.id : associationId,
+      displayType: event ? event.displayType.id : 0,
+      eventType: event ? event.eventType.id : 0,
+      subEventType: event ? event.subEventType.id : 0,
       title: event ? event.title : "",
       description: event ? event.description : "",
       logo: undefined,

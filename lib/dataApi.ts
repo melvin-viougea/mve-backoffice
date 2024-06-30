@@ -48,6 +48,10 @@ export async function getAssociationData(association: any) {
       id: association.campus.id,
       name: association.campus.name,
     },
+    associationType: {
+      id: association.associationType.id,
+      name: association.associationType.name,
+    },
   };
 }
 
@@ -60,15 +64,28 @@ export async function getUserData(user: any) {
     city: user.city,
     postalCode: user.postalCode,
     email: user.email,
-    associations: user.associations.map((assoc: any) => ({
-      id: assoc.association.id,
-      name: assoc.association.name,
-      image: assoc.association.image,
+    association: {
+      id: user.association.id,
+      name: user.association.name,
+      image: user.association.image,
       campus: {
-          id: assoc.association.campus.id,
-          name: assoc.association.campus.name
-        }
-    }))
+        id: user.association.campus.id,
+        name: user.association.campus.name
+      }
+    },
   };
 }
 
+export async function getCampusData(campus: any) {
+  return {
+    id: campus.id,
+    name: campus.name,
+    description: campus.description,
+    city: campus.city,
+    address: campus.address,
+    campusType: {
+      id: campus.campusType.id,
+      name: campus.campusType.name,
+    },
+  };
+}

@@ -22,7 +22,7 @@ export const SubEventTypeDropdown = ({setValue, defaultValue, otherStyles}: Drop
 
   useEffect(() => {
     if (subEventTypes.length > 0) {
-      const defaultSubEventType = subEventTypes.find(subEventType => subEventType.id == defaultValue) || subEventTypes[0];
+      const defaultSubEventType = subEventTypes.find(subEventType => subEventType.id.toString() == defaultValue) || subEventTypes[0];
       setSelected(defaultSubEventType);
       if (setValue) {
         setValue("subEventType", defaultSubEventType.id);
@@ -31,12 +31,12 @@ export const SubEventTypeDropdown = ({setValue, defaultValue, otherStyles}: Drop
   }, [subEventTypes, defaultValue, setValue]);
 
   const handleSubEventTypeChange = (id: string) => {
-    const subEventType = subEventTypes.find((subEventType) => subEventType.id === id);
+    const subEventType = subEventTypes.find((subEventType) => subEventType.id.toString() === id);
 
     if (subEventType) {
       setSelected(subEventType);
       if (setValue) {
-        setValue("subEventType", id);
+        setValue("subEventType", parseInt(id, 10));
       }
     }
   };
@@ -54,7 +54,7 @@ export const SubEventTypeDropdown = ({setValue, defaultValue, otherStyles}: Drop
         <SelectGroup>
           <SelectLabel className="py-2 font-normal text-gray-500">Select a sub event type</SelectLabel>
           {subEventTypes.map((subEventType: SubEventType) => (
-            <SelectItem key={subEventType.id} value={subEventType.id} className="cursor-pointer border-t">
+            <SelectItem key={subEventType.id} value={subEventType.id.toString()} className="cursor-pointer border-t">
               {subEventType.name}
             </SelectItem>
           ))}
