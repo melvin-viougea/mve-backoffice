@@ -89,6 +89,8 @@ declare type Events = {
   address: string;
   isPeopleLimit: boolean;
   peopleLimit: number;
+  price: EventPrice[];
+  people: EventPeople[];
 };
 
 declare interface CreateEventParams {
@@ -131,6 +133,10 @@ declare interface EventTableProps {
 
 declare interface EventPriceTableProps {
   eventPrice: EventPrice[];
+}
+
+declare interface EventPeopleTableProps {
+  eventPeople: EventPeople[];
 }
 
 // ASSOCIATION
@@ -243,15 +249,6 @@ declare type EventType = {
   name: string;
 };
 
-// EVENT PRICE
-
-declare type EventPrice = {
-  id: number;
-  $id: number;
-  name: string;
-  price: string;
-};
-
 // SUB EVENT TYPE
 
 declare type SubEventType = {
@@ -263,6 +260,35 @@ declare type SubEventType = {
 //DISPLAY TYPE
 
 declare type DisplayType = {
+  id: number;
+  $id: number;
+  name: string;
+};
+
+// EVENT PRICE
+
+declare type EventPrice = {
+  id: number;
+  $id: number;
+  name: string;
+  price: string;
+};
+
+// EVENT PEOPLE
+
+declare type EventPeople = {
+  id: number;
+  $id: number;
+  firstname: string;
+  lastname: string;
+  email: string;
+  ticket: EventPrice;
+  payment: Payment;
+};
+
+// EVENT PEOPLE
+
+declare type Payment = {
   id: number;
   $id: number;
   name: string;
