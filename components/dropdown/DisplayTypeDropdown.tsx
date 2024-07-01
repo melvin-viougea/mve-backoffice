@@ -22,7 +22,7 @@ export const DisplayTypeDropdown = ({setValue, defaultValue, otherStyles}: Dropd
 
   useEffect(() => {
     if (displayTypes.length > 0) {
-      const defaultDisplayType = displayTypes.find(displayType => displayType.id == defaultValue) || displayTypes[0];
+      const defaultDisplayType = displayTypes.find(displayType => displayType.id.toString() == defaultValue) || displayTypes[0];
       setSelected(defaultDisplayType);
       if (setValue) {
         setValue("displayType", defaultDisplayType.id);
@@ -31,12 +31,12 @@ export const DisplayTypeDropdown = ({setValue, defaultValue, otherStyles}: Dropd
   }, [displayTypes, defaultValue, setValue]);
 
   const handleDisplayTypeChange = (id: string) => {
-    const displayType = displayTypes.find((displayType) => displayType.id === id);
+    const displayType = displayTypes.find((displayType) => displayType.id.toString() === id);
 
     if (displayType) {
       setSelected(displayType);
       if (setValue) {
-        setValue("displayType", id);
+        setValue("displayType", parseInt(id, 10));
       }
     }
   };
@@ -54,7 +54,7 @@ export const DisplayTypeDropdown = ({setValue, defaultValue, otherStyles}: Dropd
         <SelectGroup>
           <SelectLabel className="py-2 font-normal text-gray-500">Select a display type</SelectLabel>
           {displayTypes.map((displayType: DisplayType) => (
-            <SelectItem key={displayType.id} value={displayType.id} className="cursor-pointer border-t">
+            <SelectItem key={displayType.id} value={displayType.id.toString()} className="cursor-pointer border-t">
               {displayType.name}
             </SelectItem>
           ))}

@@ -3,7 +3,7 @@
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Loader2} from "lucide-react";
 import {useRouter} from "next/navigation";
-import {useState} from "react";
+import React, {useState} from "react";
 import {useForm} from "react-hook-form";
 import * as z from "zod";
 import {EventTypeDropdown} from "../dropdown/EventTypeDropdown";
@@ -11,14 +11,20 @@ import {Button} from "@/components/ui/button";
 import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
 import {Textarea} from "@/components/ui/textarea";
-import {createEvent, updateEvent} from "@/lib/actions/event.actions";
+import {createEvent, getAllEvent, updateEvent} from "@/lib/actions/event.actions";
 import {SubEventTypeDropdown} from "@/components/dropdown/SubEventTypeDropdown";
 import {DisplayTypeDropdown} from "@/components/dropdown/DisplayTypeDropdown";
 import {Switch} from "@/components/ui/switch";
 import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion";
 import {EventFormProps} from "@/types";
+import EventsTable from "@/components/table/EventsTable";
+import {Pagination} from "@/components/Pagination";
+import EventPriceTable from "@/components/table/form/EventPriceTable";
+import EventPeopleTable from "@/components/table/form/EventPeopleTable";
+import Link from "next/link";
+import HeaderBox from "@/components/HeaderBox";
 
-const EventForm = ({event}: EventFormProps) => {
+const EventForm = ({event, associationId}: EventFormProps) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -60,10 +66,10 @@ const EventForm = ({event}: EventFormProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      association: event ? parseInt(event.association.id) : 1, // TODO changer avec la valeur de l'association de l'utilisateur
-      displayType: event ? parseInt(event.displayType.id) : 0,
-      eventType: event ? parseInt(event.eventType.id) : 0,
-      subEventType: event ? parseInt(event.subEventType.id) : 0,
+      association: event ? event.association.id : associationId,
+      displayType: event ? event.displayType.id : 0,
+      eventType: event ? event.eventType.id : 0,
+      subEventType: event ? event.subEventType.id : 0,
       title: event ? event.title : "",
       description: event ? event.description : "",
       logo: undefined,
@@ -132,9 +138,64 @@ const EventForm = ({event}: EventFormProps) => {
     }
   }
 
+  const currentPagePrice = 1;
+  const eventPrice = event ? event.price : [];
+
+  const rowsPerPagePrice = 10;
+  const totalPagesPrice = Math.ceil(eventPrice.length / rowsPerPagePrice);
+
+  const indexOfLastEventPrice = currentPagePrice * rowsPerPagePrice;
+  const indexOfFirstEventPrice = indexOfLastEventPrice - rowsPerPagePrice;
+
+  const currentEventPrice = eventPrice.slice(
+    indexOfFirstEventPrice, indexOfLastEventPrice
+  )
+
+  const currentPagePeople = 1;
+  const eventPeople = event ? event.people : [];
+
+  const rowsPerPagePeople = 10;
+  const totalPagesPeople = Math.ceil(eventPeople.length / rowsPerPagePeople);
+
+  const indexOfLastEventPeople = currentPagePeople * rowsPerPagePeople;
+  const indexOfFirstEventPeople = indexOfLastEventPeople - rowsPerPagePeople;
+
+  const currentEventPeople = eventPeople.slice(
+    indexOfFirstEventPeople, indexOfLastEventPeople
+  )
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col">
+
+        <FormField
+          control={form.control}
+          name="isPublished"
+          render={({field}) => (
+            <FormItem className="border-t border-gray-200">
+              <div className="flex w-full max-w-[850px] flex-col gap-3 md:flex-row lg:gap-8 pb-6 pt-5">
+                <div className="flex w-full max-w-[280px] flex-col gap-2">
+                  <FormLabel className="text-[14px] leading-[20px] font-medium text-gray-700">
+                    Publier sur l&apos;application
+                    <span className="text-destructive ml-1">*</span>
+                  </FormLabel>
+                  <FormDescription className="text-[12px] leading-[16px] font-normal text-gray-600">
+                    Publier maintenant l&apos;événement ou le garder en tant que brouillon
+                  </FormDescription>
+                </div>
+                <div className="flex flex-col">
+                  <FormControl>
+                    <Switch
+                      checked={form.watch('isPublished')}
+                      onCheckedChange={(checked) => form.setValue('isPublished', checked)}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-[12px] leading-[16px] text-red-500"/>
+                </div>
+              </div>
+            </FormItem>
+          )}
+        />
 
         <FormField
           control={form.control}
@@ -294,35 +355,6 @@ const EventForm = ({event}: EventFormProps) => {
                     <Input
                       type="file"
                       onChange={(e) => field.onChange(e.target.files ? e.target.files[0] : null)}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-[12px] leading-[16px] text-red-500"/>
-                </div>
-              </div>
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="isPublished"
-          render={({field}) => (
-            <FormItem className="border-t border-gray-200">
-              <div className="flex w-full max-w-[850px] flex-col gap-3 md:flex-row lg:gap-8 pb-6 pt-5">
-                <div className="flex w-full max-w-[280px] flex-col gap-2">
-                  <FormLabel className="text-[14px] leading-[20px] font-medium text-gray-700">
-                    Publier
-                    <span className="text-destructive ml-1">*</span>
-                  </FormLabel>
-                  <FormDescription className="text-[12px] leading-[16px] font-normal text-gray-600">
-                    Publier maintenant l&apos;événement ou le garder en tant que brouillon
-                  </FormDescription>
-                </div>
-                <div className="flex flex-col">
-                  <FormControl>
-                    <Switch
-                      checked={form.watch('isPublished')}
-                      onCheckedChange={(checked) => form.setValue('isPublished', checked)}
                     />
                   </FormControl>
                   <FormMessage className="text-[12px] leading-[16px] text-red-500"/>
@@ -510,193 +542,6 @@ const EventForm = ({event}: EventFormProps) => {
           )}
         />
 
-        {/*<div className="flex w-full max-w-[850px] flex-col gap-3 md:flex-row lg:gap-8 py-5 border-t border-gray-200">*/}
-        {/*  <div className="flex flex-col gap-5 w-full">*/}
-        {/*    <div className="flex items-center gap-2">*/}
-        {/*      <FormControl>*/}
-        {/*        <Switch*/}
-        {/*          checked={form.watch('isEndDate')}*/}
-        {/*          onCheckedChange={(checked) => form.setValue('isEndDate', checked)}*/}
-        {/*        />*/}
-        {/*      </FormControl>*/}
-        {/*      <FormLabel className="text-[14px] leading-[20px] w-full max-w-[280px] font-medium text-gray-700">*/}
-        {/*        Date de fin*/}
-        {/*      </FormLabel>*/}
-        {/*      {form.watch('isEndDate') && (*/}
-        {/*        <FormField*/}
-        {/*          control={form.control}*/}
-        {/*          name="endDate"*/}
-        {/*          render={({field}) => (*/}
-        {/*            <FormItem className="flex flex-col gap-2">*/}
-        {/*              <FormControl>*/}
-        {/*                <Input*/}
-        {/*                  type="date"*/}
-        {/*                  className="text-[16px] leading-[24px] placeholder:text-[16px] placeholder:leading-[24px] rounded-lg border border-gray-300 text-gray-900 placeholder:text-gray-500"*/}
-        {/*                  {...field}*/}
-        {/*                />*/}
-        {/*              </FormControl>*/}
-        {/*              <FormMessage className="text-[12px] leading-[16px] text-red-500"/>*/}
-        {/*            </FormItem>*/}
-        {/*          )}*/}
-        {/*        />*/}
-        {/*      )}*/}
-        {/*    </div>*/}
-
-        {/*    <div className="flex items-center gap-2">*/}
-        {/*      <FormControl>*/}
-        {/*        <Switch*/}
-        {/*          checked={form.watch('isHour')}*/}
-        {/*          onCheckedChange={(checked) => form.setValue('isHour', checked)}*/}
-        {/*        />*/}
-        {/*      </FormControl>*/}
-        {/*      <FormLabel className="text-[14px] leading-[20px] w-full max-w-[280px] font-medium text-gray-700">*/}
-        {/*        Heure*/}
-        {/*      </FormLabel>*/}
-        {/*      {form.watch('isHour') && (*/}
-        {/*        <FormField*/}
-        {/*          control={form.control}*/}
-        {/*          name="hour"*/}
-        {/*          render={({field}) => (*/}
-        {/*            <FormItem className="flex flex-col gap-2">*/}
-        {/*              <FormControl>*/}
-        {/*                <Input*/}
-        {/*                  type="time"*/}
-        {/*                  className="text-[16px] leading-[24px] placeholder:text-[16px] placeholder:leading-[24px] rounded-lg border border-gray-300 text-gray-900 placeholder:text-gray-500"*/}
-        {/*                  {...field}*/}
-        {/*                />*/}
-        {/*              </FormControl>*/}
-        {/*              <FormMessage className="text-[12px] leading-[16px] text-red-500"/>*/}
-        {/*            </FormItem>*/}
-        {/*          )}*/}
-        {/*        />*/}
-        {/*      )}*/}
-        {/*    </div>*/}
-
-        {/*    <div className="flex items-center gap-2">*/}
-        {/*      <FormControl>*/}
-        {/*        <Switch*/}
-        {/*          checked={form.watch('isEndHour')}*/}
-        {/*          onCheckedChange={(checked) => form.setValue('isEndHour', checked)}*/}
-        {/*        />*/}
-        {/*      </FormControl>*/}
-        {/*      <FormLabel className="text-[14px] leading-[20px] w-full max-w-[280px] font-medium text-gray-700">*/}
-        {/*        Heure de fin*/}
-        {/*      </FormLabel>*/}
-        {/*      {form.watch('isEndHour') && (*/}
-        {/*        <FormField*/}
-        {/*          control={form.control}*/}
-        {/*          name="endHour"*/}
-        {/*          render={({field}) => (*/}
-        {/*            <FormItem className="flex flex-col gap-2">*/}
-        {/*              <FormControl>*/}
-        {/*                <Input*/}
-        {/*                  type="time"*/}
-        {/*                  className="text-[16px] leading-[24px] placeholder:text-[16px] placeholder:leading-[24px] rounded-lg border border-gray-300 text-gray-900 placeholder:text-gray-500"*/}
-        {/*                  {...field}*/}
-        {/*                />*/}
-        {/*              </FormControl>*/}
-        {/*              <FormMessage className="text-[12px] leading-[16px] text-red-500"/>*/}
-        {/*            </FormItem>*/}
-        {/*          )}*/}
-        {/*        />*/}
-        {/*      )}*/}
-        {/*    </div>*/}
-        {/*  </div>*/}
-
-        {/*  <div className="flex flex-col gap-5 w-full">*/}
-        {/*    <div className="flex items-center gap-2">*/}
-        {/*      <FormControl>*/}
-        {/*        <Switch*/}
-        {/*          checked={form.watch('isPlace')}*/}
-        {/*          onCheckedChange={(checked) => form.setValue('isPlace', checked)}*/}
-        {/*        />*/}
-        {/*      </FormControl>*/}
-        {/*      <FormLabel className="text-[14px] leading-[20px] w-full [280px] font-medium text-gray-700">*/}
-        {/*        Lieu*/}
-        {/*      </FormLabel>*/}
-        {/*      {form.watch('isPlace') && (*/}
-        {/*        <FormField*/}
-        {/*          control={form.control}*/}
-        {/*          name="place"*/}
-        {/*          render={({field}) => (*/}
-        {/*            <FormItem className="flex flex-col gap-2">*/}
-        {/*              <FormControl>*/}
-        {/*                <Input*/}
-        {/*                  placeholder="Entrez le lieu"*/}
-        {/*                  className="text-[16px] leading-[24px] placeholder:text-[16px] placeholder:leading-[24px] rounded-lg border border-gray-300 text-gray-900 placeholder:text-gray-500"*/}
-        {/*                  {...field}*/}
-        {/*                />*/}
-        {/*              </FormControl>*/}
-        {/*              <FormMessage className="text-[12px] leading-[16px] text-red-500"/>*/}
-        {/*            </FormItem>*/}
-        {/*          )}*/}
-        {/*        />*/}
-        {/*      )}*/}
-        {/*    </div>*/}
-
-        {/*    <div className="flex items-center gap-2">*/}
-        {/*      <FormControl>*/}
-        {/*        <Switch*/}
-        {/*          checked={form.watch('isAddress')}*/}
-        {/*          onCheckedChange={(checked) => form.setValue('isAddress', checked)}*/}
-        {/*        />*/}
-        {/*      </FormControl>*/}
-        {/*      <FormLabel className="text-[14px] leading-[20px] font-medium text-gray-700">*/}
-        {/*        Adresse*/}
-        {/*      </FormLabel>*/}
-        {/*      {form.watch('isAddress') && (*/}
-        {/*        <FormField*/}
-        {/*          control={form.control}*/}
-        {/*          name="address"*/}
-        {/*          render={({field}) => (*/}
-        {/*            <FormItem className="flex w-full flex-col gap-2">*/}
-        {/*              <FormControl>*/}
-        {/*                <Input*/}
-        {/*                  placeholder="Entrez l'adresse"*/}
-        {/*                  className="text-[16px] leading-[24px] placeholder:text-[16px] placeholder:leading-[24px] rounded-lg border border-gray-300 text-gray-900 placeholder:text-gray-500"*/}
-        {/*                  {...field}*/}
-        {/*                />*/}
-        {/*              </FormControl>*/}
-        {/*              <FormMessage className="text-[12px] leading-[16px] text-red-500"/>*/}
-        {/*            </FormItem>*/}
-        {/*          )}*/}
-        {/*        />*/}
-        {/*      )}*/}
-        {/*    </div>*/}
-
-        {/*    <div className="flex items-center gap-2">*/}
-        {/*      <FormControl>*/}
-        {/*        <Switch*/}
-        {/*          checked={form.watch('isPeopleLimit')}*/}
-        {/*          onCheckedChange={(checked) => form.setValue('isPeopleLimit', checked)}*/}
-        {/*        />*/}
-        {/*      </FormControl>*/}
-        {/*      <FormLabel className="text-[14px] leading-[20px] w-full max-w-[280px] font-medium text-gray-700">*/}
-        {/*        Limite de participants*/}
-        {/*      </FormLabel>*/}
-        {/*      {form.watch('isPeopleLimit') && (*/}
-        {/*        <FormField*/}
-        {/*          control={form.control}*/}
-        {/*          name="peopleLimit"*/}
-        {/*          render={({field}) => (*/}
-        {/*            <FormItem className="flex flex-col gap-2">*/}
-        {/*              <FormControl>*/}
-        {/*                <Input*/}
-        {/*                  type="number"*/}
-        {/*                  placeholder="ex: 200"*/}
-        {/*                  className="text-[16px] leading-[24px] placeholder:text-[16px] placeholder:leading-[24px] rounded-lg border border-gray-300 text-gray-900 placeholder:text-gray-500"*/}
-        {/*                  {...field}*/}
-        {/*                />*/}
-        {/*              </FormControl>*/}
-        {/*              <FormMessage className="text-[12px] leading-[16px] text-red-500"/>*/}
-        {/*            </FormItem>*/}
-        {/*          )}*/}
-        {/*        />*/}
-        {/*      )}*/}
-        {/*    </div>*/}
-        {/*  </div>*/}
-        {/*</div>*/}
-
         <div className="max-w-[850px] gap-3 pb-5 border-t border-gray-200">
           <Accordion type="multiple" className="w-full">
             <AccordionItem value="item-1">
@@ -704,7 +549,24 @@ const EventForm = ({event}: EventFormProps) => {
                 Tarifs
               </AccordionTrigger>
               <AccordionContent>
-                aaa aa aaaaaa aa aaaaaa
+                <div className="flex w-full flex-col items-start justify-between gap-8 md:flex-row mb-3">
+                  <Link
+                    href={"/evenement/ajout/ticket"}
+                    className="text-[14px] leading-[20px] rounded-lg border border-gray-300 px-4 py-2.5 font-semibold text-gray-700"
+                  >
+                    Ajouter un ticket
+                  </Link>
+                </div>
+                <section className="flex w-full flex-col gap-6">
+                  <EventPriceTable
+                    eventPrice={currentEventPrice}
+                  />
+                  {totalPagesPrice > 1 && (
+                    <div className="my-4 w-full">
+                      <Pagination totalPages={totalPagesPrice} page={currentPagePrice}/>
+                    </div>
+                  )}
+                </section>
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-2">
@@ -712,7 +574,24 @@ const EventForm = ({event}: EventFormProps) => {
                 Participants
               </AccordionTrigger>
               <AccordionContent>
-                aaa aa aaaaaa aa aaaaaa
+                <div className="flex w-full flex-col items-start justify-between gap-8 md:flex-row mb-3">
+                  <Link
+                    href={"/evenement/ajout/participant"}
+                    className="text-[14px] leading-[20px] rounded-lg border border-gray-300 px-4 py-2.5 font-semibold text-gray-700"
+                  >
+                    Ajouter un participant
+                  </Link>
+                </div>
+                <section className="flex w-full flex-col gap-6">
+                  <EventPeopleTable
+                    eventPeople={currentEventPeople}
+                  />
+                  {totalPagesPeople > 1 && (
+                    <div className="my-4 w-full">
+                      <Pagination totalPages={totalPagesPeople} page={currentPagePeople}/>
+                    </div>
+                  )}
+                </section>
               </AccordionContent>
             </AccordionItem>
           </Accordion>

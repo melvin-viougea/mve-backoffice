@@ -3,14 +3,65 @@ import {UseFormSetValue} from "react-hook-form";
 // USER
 
 declare type User = {
-  id: string;
+  id: number;
   email: string;
+  password: string;
   firstname: string;
   lastname: string;
-  name: string;
   address: string;
   city: string;
   postalCode: string;
+  association: Association;
+};
+
+declare type SignUpParams = {
+  firstname: string;
+  lastname: string;
+  address: string;
+  city: string;
+  postalCode: string;
+  email: string;
+  password: string;
+};
+
+declare interface AuthResponse {
+  token: string;
+  user: {
+    firstname: string;
+    lastname: string;
+    email: string;
+    associationId: number;
+  };
+}
+
+declare interface SignInParams {
+  email: string;
+  password: string;
+}
+
+declare interface UpdateUserParams {
+  id: number;
+  user: CreateUserProps;
+}
+
+declare interface UserFormProps {
+  user?: User;
+}
+
+declare interface UserTableProps {
+  users: User[];
+}
+
+declare type AuthUser = User | SuperUser;
+
+// SUPER USER
+
+declare type SuperUser = {
+  id: number;
+  email: string;
+  firstname: string;
+  lastname: string;
+  password: string;
 };
 
 // EVENT
@@ -38,6 +89,8 @@ declare type Events = {
   address: string;
   isPeopleLimit: boolean;
   peopleLimit: number;
+  price: EventPrice[];
+  people: EventPeople[];
 };
 
 declare interface CreateEventParams {
@@ -66,52 +119,182 @@ declare interface CreateEventParams {
 
 declare interface UpdateEventParams {
   id: number;
-  event: CreateEventProps;
+  event: CreateEventParams;
 }
 
 declare interface EventFormProps {
   event?: Events;
+  associationId: number;
 }
+
+declare interface EventTableProps {
+  events: Events[];
+}
+
+declare interface EventPriceTableProps {
+  eventPrice: EventPrice[];
+}
+
+declare interface EventPeopleTableProps {
+  eventPeople: EventPeople[];
+}
+
+// ASSOCIATION
 
 declare type Association = {
-  id: string;
-  $id: string;
+  associationType: AssociationType;
+  id: number;
   name: string;
-};
-
-declare type EventType = {
-  id: string;
-  $id: string;
-  name: string;
-};
-
-declare type SubEventType = {
-  id: string;
-  $id: string;
-  name: string;
-};
-
-declare type DisplayType = {
-  id: string;
-  $id: string;
-  name: string;
-};
-
-// PARAM
-
-declare type SignUpParams = {
+  image: string;
+  campus: Campus;
+  title: string;
+  description: string;
   firstname: string;
   lastname: string;
-  address: string;
-  city: string;
-  postalCode: string;
   email: string;
-  password: string;
+  phone: string;
+  role: string;
 };
 
-declare interface getOneParams {
-  id: number;
+declare interface CreateAssociationParams {
+  name: string;
+  title: string;
+  description: string;
+  firstname: string;
+  lastname: string;
+  phone: string;
+  email: string;
+  role: string;
+  image?: string;
+  campusId: number;
+  associationTypeId: number;
 }
+
+declare interface UpdateAssociationParams {
+  id: number;
+  association: CreateAssociationParams;
+}
+
+declare interface AssociationFormProps {
+  association?: Association;
+}
+
+declare interface AssociationTableProps {
+  associations: Association[];
+}
+
+// CAMPUS
+
+declare type Campus = {
+  id: number;
+  campusType: CampusType;
+  nbStudent: NbStudent;
+  name: string;
+  description: string;
+  city: string;
+  address: string;
+  firstname: string;
+  lastname: string;
+  email: string;
+  phone: string;
+  role: string;
+};
+
+declare interface CreateCampusParams {
+  name: string;
+}
+
+declare interface UpdateCampusParams {
+  id: number;
+  campus: CreateCampusParams;
+}
+
+declare interface CampusFormProps {
+  campus?: Campus;
+}
+
+declare interface CampusTableProps {
+  campuses: Campus[];
+}
+
+// ASSOCIATION TYPE
+
+declare type AssociationType = {
+  id: number;
+  $id: number;
+  name: string;
+};
+
+// CAMPUS TYPE
+
+declare type CampusType = {
+  id: number;
+  $id: number;
+  name: string;
+};
+
+// NB STUDENT
+
+declare type NbStudent = {
+  id: number;
+  $id: number;
+  number: string;
+};
+
+// EVENT TYPE
+
+declare type EventType = {
+  id: number;
+  $id: number;
+  name: string;
+};
+
+// SUB EVENT TYPE
+
+declare type SubEventType = {
+  id: number;
+  $id: number;
+  name: string;
+};
+
+//DISPLAY TYPE
+
+declare type DisplayType = {
+  id: number;
+  $id: number;
+  name: string;
+};
+
+// EVENT PRICE
+
+declare type EventPrice = {
+  id: number;
+  $id: number;
+  name: string;
+  price: string;
+};
+
+// EVENT PEOPLE
+
+declare type EventPeople = {
+  id: number;
+  $id: number;
+  firstname: string;
+  lastname: string;
+  email: string;
+  ticket: EventPrice;
+  payment: Payment;
+};
+
+// EVENT PEOPLE
+
+declare type Payment = {
+  id: number;
+  $id: number;
+  name: string;
+};
+
+// OTHER
 
 declare interface pageProps {
   params: {
@@ -119,32 +302,6 @@ declare interface pageProps {
   };
   searchParams: Record<any>;
 }
-
-declare interface createDataParams {
-  data: string;
-}
-
-declare interface updateDataParams {
-  id: string;
-  data: string;
-}
-
-declare interface deleteDataParams {
-  id: string;
-}
-
-// RESPONSE
-
-declare interface AuthResponse {
-  token: string;
-  user: {
-    firstname: string;
-    lastname: string;
-    email: string;
-  };
-}
-
-// PROPS
 
 declare type SearchParamProps = {
   params: { [key: string]: string };
@@ -173,10 +330,6 @@ declare interface ButtonProps {
   action: any;
 }
 
-declare interface AuthFormProps {
-  type: "sign-in" | "sign-up";
-}
-
 declare interface FooterProps {
   user: User;
   type?: 'mobile' | 'desktop'
@@ -184,15 +337,6 @@ declare interface FooterProps {
 
 declare interface SiderbarProps {
   user: User;
-}
-
-declare interface SignInParams {
-  email: string;
-  password: string;
-}
-
-declare interface getUserInfoProps {
-  userId: string;
 }
 
 declare interface HeaderBoxProps {
@@ -204,10 +348,6 @@ declare interface HeaderBoxProps {
 
 declare interface BadgeProps {
   status: boolean;
-}
-
-declare interface EventTableProps {
-  events: Events[];
 }
 
 declare interface DropdownProps {

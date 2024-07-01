@@ -1,6 +1,6 @@
 import MobileNav from "@/components/MobileNav";
 import Sidebar from "@/components/Sidebar";
-import {getLoggedInUser} from "@/lib/actions/user.actions";
+import {getLoggedInUser} from "@/lib/actions/auth.actions";
 import Image from "next/image";
 import {redirect} from "next/navigation";
 
@@ -11,7 +11,12 @@ export default async function RootLayout({
 }>) {
   const loggedIn = await getLoggedInUser();
 
-  if (!loggedIn) redirect('/sign-in')
+  if (!loggedIn) {
+    redirect('/sign-in');
+  }
+  if (loggedIn.isSuperAdmin) {
+    redirect('/admin/dashboard');
+  }
 
   return (
     <main className="flex h-screen w-full font-inter">

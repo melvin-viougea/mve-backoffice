@@ -38,3 +38,70 @@ export async function getEventData(event: any) {
     },
   };
 }
+
+export async function getAssociationData(association: any) {
+  return {
+    id: association.id,
+    name: association.name,
+    image: association.image,
+    title: association.title,
+    description: association.description,
+    firstname: association.firstname,
+    lastname: association.lastname,
+    email: association.email,
+    phone: association.phone,
+    role: association.role,
+    campus: {
+      id: association.campus.id,
+      name: association.campus.name,
+    },
+    associationType: {
+      id: association.associationType.id,
+      name: association.associationType.name,
+    },
+  };
+}
+
+export async function getUserData(user: any) {
+  return {
+    id: user.id,
+    firstname: user.firstname,
+    lastname: user.lastname,
+    address: user.address,
+    city: user.city,
+    postalCode: user.postalCode,
+    email: user.email,
+    association: {
+      id: user.association.id,
+      name: user.association.name,
+      image: user.association.image,
+      campus: {
+        id: user.association.campus.id,
+        name: user.association.campus.name
+      }
+    },
+  };
+}
+
+export async function getCampusData(campus: any) {
+  return {
+    id: campus.id,
+    name: campus.name,
+    description: campus.description,
+    city: campus.city,
+    address: campus.address,
+    firstname: campus.firstname,
+    lastname: campus.lastname,
+    email: campus.email,
+    phone: campus.phone,
+    role: campus.role,
+    campusType: {
+      id: campus.campusType.id,
+      name: campus.campusType.name,
+    },
+    nbStudent: {
+      id: campus.nbStudent.id,
+      name: campus.nbStudent.name,
+    },
+  };
+}

@@ -3,49 +3,10 @@ import {PrismaClient} from '@prisma/client'
 const prisma = new PrismaClient()
 
 async function main() {
-  // await prisma.user.createMany({
-  //   data: [
-  //     {
-  //       firstname: 'John',
-  //       lastname: 'Doe',
-  //       address: '123 Main St',
-  //       city: 'New York',
-  //       postalCode: '10001',
-  //       email: 'user1@example.com',
-  //       password: 'password1',
-  //     },
-  //     {
-  //       firstname: 'Jane',
-  //       lastname: 'Doe',
-  //       address: '456 Elm St',
-  //       city: 'Los Angeles',
-  //       postalCode: '90001',
-  //       email: 'user2@example.com',
-  //       password: 'password2',
-  //     },
-  //   ],
-  // });
-
-  await prisma.association.createMany({
-    data: [
-      {
-        name: 'Association 1',
-        image: 'image1.jpg',
-      },
-      {
-        name: 'Association 2',
-        image: 'image2.jpg',
-      },
-    ],
-  });
-
   await prisma.displayType.createMany({
     data: [
       {
-        name: 'Type d\'affichage 1',
-      },
-      {
-        name: 'Type d\'affichage 2',
+        name: 'Affichage 1',
       },
     ],
   });
@@ -53,10 +14,22 @@ async function main() {
   await prisma.eventType.createMany({
     data: [
       {
-        name: 'Type d\'événement 1',
+        name: 'Soirée',
       },
       {
-        name: 'Type d\'événement 2',
+        name: 'Séminaire',
+      },
+      {
+        name: 'Évènement social',
+      },
+      {
+        name: 'Évènement sportif',
+      },
+      {
+        name: 'Jeu',
+      },
+      {
+        name: 'Autres',
       },
     ],
   });
@@ -64,10 +37,234 @@ async function main() {
   await prisma.subEventType.createMany({
     data: [
       {
-        name: 'Sous-type d\'événement 1',
+        name: 'Soirée boîte',
       },
       {
-        name: 'Sous-type d\'événement 2',
+        name: 'Soirée bar',
+      },
+      {
+        name: 'Gala',
+      },
+      {
+        name: 'Soirée jeu',
+      },
+      {
+        name: 'Soirée karaoké',
+      },
+      {
+        name: 'Week-end d’intégration',
+      },
+      {
+        name: 'Week-end de désintégration',
+      },
+      {
+        name: 'Week-end ski',
+      },
+      {
+        name: 'Week-end mer',
+      },
+      {
+        name: 'Atelier de formation',
+      },
+      {
+        name: 'Soirée caritative',
+      },
+      {
+        name: 'Journée caritative',
+      },
+      {
+        name: 'Goûter',
+      },
+      {
+        name: 'Journée bien être',
+      },
+      {
+        name: 'Petit déjeuner',
+      },
+      {
+        name: 'Brunch',
+      },
+      {
+        name: 'Collecte de vêtements',
+      },
+      {
+        name: 'Journée portes ouvertes',
+      },
+      {
+        name: 'Tournois de foot',
+      },
+      {
+        name: 'Tournois de rugby',
+      },
+      {
+        name: 'Tournoi de basket',
+      },
+      {
+        name: 'Tournoi de volley',
+      },
+      {
+        name: 'Course à pied',
+      },
+      {
+        name: 'Randonnée',
+      },
+      {
+        name: 'Cours de fitness/yoga collectif',
+      },
+      {
+        name: 'Soirée jeu',
+      },
+      {
+        name: 'Journée jeu',
+      },
+      {
+        name: 'Tournoi de jeux vidéo',
+      },
+      {
+        name: 'Escape game',
+      },
+      {
+        name: 'Quiz culturel',
+      },
+      {
+        name: 'Ventes de goodies',
+      },
+      {
+        name: 'Bourse aux livres',
+      },
+      {
+        name: 'Conférences/débats',
+      },
+      {
+        name: 'Projections de films/documentaires',
+      },
+      {
+        name: 'Expositions artistiques',
+      },
+      {
+        name: 'Ateliers créatifs',
+      },
+    ],
+  });
+
+  await prisma.associationType.createMany({
+    data: [
+      {
+        name: 'BDE',
+      },
+      {
+        name: 'BDA',
+      },
+      {
+        name: 'BDS',
+      },
+      {
+        name: 'Communication',
+      },
+      {
+        name: 'Sport',
+      },
+      {
+        name: 'Bar',
+      },
+      {
+        name: 'Food',
+      },
+      {
+        name: 'Humanitaire',
+      },
+      {
+        name: 'Musique',
+      },
+    ],
+  });
+
+  await prisma.campusType.createMany({
+    data: [
+      {
+        name: 'IUT tech de co',
+      },
+      {
+        name: 'Ecole d’ingénieur',
+      },
+      {
+        name: 'Ifsi',
+      },
+      {
+        name: 'Ecole de commerce',
+      },
+      {
+        name: 'Staps',
+      },
+      {
+        name: 'Ecole d’informatique',
+      },
+      {
+        name: 'Sciences Po',
+      },
+      {
+        name: 'Fac de droit',
+      },
+      {
+        name: 'Fac de lettres',
+      },
+      {
+        name: 'Fac d’histoires',
+      },
+      {
+        name: 'Ecole de musique',
+      },
+      {
+        name: 'ecole d’art',
+      },
+      {
+        name: 'Ecole de design',
+      },
+      {
+        name: 'Ecole immobiliere',
+      },
+    ],
+  });
+
+  await prisma.superUser.createMany({
+    data: [
+      {
+        firstname: 'Melvin',
+        lastname: 'Viougea',
+        email: 'mviougea@icloud.com',
+        password: 'azeazeaze',
+      },
+    ],
+  });
+
+  await prisma.nbStudent.createMany({
+    data: [
+      {
+        number: '1 - 250',
+      },
+      {
+        number: '250 - 500',
+      },
+      {
+        number: '500 - 750',
+      },
+      {
+        number: '750 - 1000',
+      },
+      {
+        number: '1000 - 1500',
+      },
+      {
+        number: '1500 - 2000',
+      },
+      {
+        number: '2000 - 3000',
+      },
+      {
+        number: '3000 - 4000',
+      },
+      {
+        number: '4000 - 5000',
       },
     ],
   });

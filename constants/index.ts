@@ -56,6 +56,29 @@ export const sidebarLinks = [
   },
 ];
 
+export const sidebarAdminLinks = [
+  {
+    imgURL: "/icons/sidebar/tdb.svg",
+    route: "/admin/dashboard",
+    label: "Tableau de bord",
+  },
+  {
+    imgURL: "/icons/sidebar/team.svg",
+    route: "/admin/utilisateurs",
+    label: "Utilisateurs",
+  },
+  {
+    imgURL: "/icons/sidebar/shop.svg",
+    route: "/admin/association",
+    label: "Assos",
+  },
+  {
+    imgURL: "/icons/sidebar/plus.svg",
+    route: "/admin/campus",
+    label: "Campus",
+  },
+];
+
 export const topCategoryStyles = {
   "Food and Drink": {
     bg: "bg-blue-25",

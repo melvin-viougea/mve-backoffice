@@ -1,95 +1,43 @@
 'use server'
 
-import {cookies} from "next/headers";
-import {parseStringify} from "@/lib/utils";
 import KyInstance from "@/lib/kyInstance";
-import {AuthResponse, SignInParams, SignUpParams} from "@/types";
+import {parseStringify} from "@/lib/utils";
+import {UpdateUserParams} from "@/types";
 
-const baseUrl = `${process.env.NEXT_PUBLIC_HOST}/api/auth`;
+const baseUrl = `${process.env.NEXT_PUBLIC_HOST}/api/user`;
 
-const maxAge = 24 * 60 * 60;
-
-export const login = async ({email, password}: SignInParams) => {
+export const getAllUser = async () => {
   try {
-    const response = await KyInstance.post(`${baseUrl}/login`, {json: {email, password}}).json<AuthResponse>();
-    const {token, user} = response;
-
-    if (token) {
-      const cookieStore = cookies();
-      cookieStore.set('auth', token, {maxAge});
-      cookieStore.set('firstname', user.firstname, {maxAge});
-      cookieStore.set('lastname', user.lastname, {maxAge});
-      cookieStore.set('email', user.email, {maxAge});
-    }
-
-    return parseStringify(user);
+    const response = await KyInstance.get(baseUrl).json();
+    return parseStringify(response);
   } catch (error) {
-    console.error('Error', error);
-    return null;
+    console.error('Error fetching all users:', error);
   }
-}
+};
 
-export const signUp = async (userData: SignUpParams) => {
+export const getOneUser = async (id: number) => {
   try {
-    const response = await KyInstance.post(`${baseUrl}/signup`, {json: userData}).json<AuthResponse>();
-    const {token, user} = response;
-
-    if (token) {
-      const cookieStore = cookies();
-      cookieStore.set('auth', token, {maxAge});
-      cookieStore.set('firstname', user.firstname, {maxAge});
-      cookieStore.set('lastname', user.lastname, {maxAge});
-      cookieStore.set('email', user.email, {maxAge});
-    }
-
-    return parseStringify(user);
+    const response = await KyInstance.get(`${baseUrl}/${id}`).json();
+    return parseStringify(response);
   } catch (error) {
-    console.error('Error', error);
-    return null;
+    console.error('Error fetching all users:', error);
   }
-}
+};
 
-export async function getLoggedInUser(): Promise<any> {
+export const updateUser = async ({id, user}: UpdateUserParams) => {
   try {
-    const cookieStore = cookies();
-    const token = cookieStore.get('auth');
-
-    if (token) {
-      const firstnameCookie = cookieStore.get('firstname');
-      const lastnameCookie = cookieStore.get('lastname');
-      const emailCookie = cookieStore.get('email');
-
-      const firstname = firstnameCookie ? firstnameCookie.value : null;
-      const lastname = lastnameCookie ? lastnameCookie.value : null;
-      const email = emailCookie ? emailCookie.value : null;
-
-      const user = {
-        firstname,
-        lastname,
-        email
-      };
-      return parseStringify(user);
-    } else {
-      return null;
-    }
+    const response = await KyInstance.patch(`${baseUrl}/${id}`, {json: user}).json();
+    return parseStringify(response);
   } catch (error) {
-    console.log(error);
-    return null;
+    console.error('Error updating user:', error);
   }
-}
+};
 
-export const logoutAccount = async () => {
+export const deleteUser = async (id: number) => {
   try {
-    const cookieStore = cookies();
-
-    const allCookies = cookieStore.getAll();
-
-    allCookies.forEach(cookie => {
-      cookieStore.delete(cookie.name);
-    });
-    return true;
+    const response = await KyInstance.delete(`${baseUrl}/${id}`).json();
+    return parseStringify(response);
   } catch (error) {
-    console.error('Error', error);
-    return null;
+    console.error(`Error deleting user with id ${id}:`, error);
   }
-}
+};

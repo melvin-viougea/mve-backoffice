@@ -1,6 +1,6 @@
 import HeaderBox from '@/components/HeaderBox'
 import {Pagination} from '@/components/Pagination';
-import EventsTable from '@/components/table/EventTable';
+import EventsTable from '@/components/table/EventsTable';
 import {getAllEvent} from "@/lib/actions/event.actions";
 import React from 'react'
 import Link from "next/link";
