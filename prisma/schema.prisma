@@ -67,6 +67,13 @@ model Association {
   id                Int             @id @default(autoincrement())
   name              String
   image             String?
+  title             String
+  description       String
+  firstname         String
+  lastname          String
+  role              String
+  email             String
+  phone             String
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
   associationType   AssociationType @relation(fields: [associationTypeId], references: [id])
@@ -115,16 +122,32 @@ model Campus {
   description  String
   address      String
   city         String
+  image        String?
+  firstname    String
+  lastname     String
+  role         String
+  email        String
+  phone        String
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   campusType   CampusType    @relation(fields: [campusTypeId], references: [id])
   campusTypeId Int
+  nbStudent    NbStudent     @relation(fields: [nbStudentId], references: [id])
+  nbStudentId  Int
   association  Association[]
 }
 
 model CampusType {
   id        Int      @id @default(autoincrement())
   name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  campus    Campus[]
+}
+
+model NbStudent {
+  id        Int      @id @default(autoincrement())
+  number    String
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
   campus    Campus[]

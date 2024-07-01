@@ -129,6 +129,10 @@ declare interface EventTableProps {
   events: Events[];
 }
 
+declare interface EventPriceTableProps {
+  eventPrice: EventPrice[];
+}
+
 // ASSOCIATION
 
 declare type Association = {
@@ -137,12 +141,27 @@ declare type Association = {
   name: string;
   image: string;
   campus: Campus;
+  title: string;
+  description: string;
+  firstname: string;
+  lastname: string;
+  email: string;
+  phone: string;
+  role: string;
 };
 
 declare interface CreateAssociationParams {
   name: string;
+  title: string;
+  description: string;
+  firstname: string;
+  lastname: string;
+  phone: string;
+  email: string;
+  role: string;
   image?: string;
   campusId: number;
+  associationTypeId: number;
 }
 
 declare interface UpdateAssociationParams {
@@ -163,10 +182,16 @@ declare interface AssociationTableProps {
 declare type Campus = {
   id: number;
   campusType: CampusType;
+  nbStudent: NbStudent;
   name: string;
   description: string;
   city: string;
   address: string;
+  firstname: string;
+  lastname: string;
+  email: string;
+  phone: string;
+  role: string;
 };
 
 declare interface CreateCampusParams {
@@ -202,12 +227,29 @@ declare type CampusType = {
   name: string;
 };
 
+// NB STUDENT
+
+declare type NbStudent = {
+  id: number;
+  $id: number;
+  number: string;
+};
+
 // EVENT TYPE
 
 declare type EventType = {
   id: number;
   $id: number;
   name: string;
+};
+
+// EVENT PRICE
+
+declare type EventPrice = {
+  id: number;
+  $id: number;
+  name: string;
+  price: string;
 };
 
 // SUB EVENT TYPE

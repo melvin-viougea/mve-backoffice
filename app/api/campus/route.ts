@@ -13,6 +13,7 @@ export async function GET(request: Request) {
     const campuses = await prisma.campus.findMany({
       include: {
         campusType: {select: {id: true, name: true}},
+        nbStudent: {select: {id: true, number: true}},
       },
     });
 
@@ -38,6 +39,7 @@ export async function POST(request: Request) {
       data: json,
       include: {
         campusType: {select: {id: true, name: true}},
+        nbStudent: {select: {id: true, number: true}},
       },
     });
 

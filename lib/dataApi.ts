@@ -44,6 +44,13 @@ export async function getAssociationData(association: any) {
     id: association.id,
     name: association.name,
     image: association.image,
+    title: association.title,
+    description: association.description,
+    firstname: association.firstname,
+    lastname: association.lastname,
+    email: association.email,
+    phone: association.phone,
+    role: association.role,
     campus: {
       id: association.campus.id,
       name: association.campus.name,
@@ -83,9 +90,18 @@ export async function getCampusData(campus: any) {
     description: campus.description,
     city: campus.city,
     address: campus.address,
+    firstname: campus.firstname,
+    lastname: campus.lastname,
+    email: campus.email,
+    phone: campus.phone,
+    role: campus.role,
     campusType: {
       id: campus.campusType.id,
       name: campus.campusType.name,
+    },
+    nbStudent: {
+      id: campus.nbStudent.id,
+      name: campus.nbStudent.name,
     },
   };
 }

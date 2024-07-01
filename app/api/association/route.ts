@@ -34,7 +34,7 @@ export async function POST(request: Request) {
   }
 
   const json = await request.json();
-
+  console.log(json)
   try {
     const created = await prisma.association.create({
       data: json,
@@ -46,7 +46,7 @@ export async function POST(request: Request) {
 
     const associationName = created.name;
     const campusName = created.campus?.name || '';
-    const supportPassword = `support${associationName.toLowerCase()}${campusName.toLowerCase()}`;
+    const supportPassword = `${associationName.toLowerCase()}${campusName.toLowerCase()}`;
 
     const hashedPassword = await hash(supportPassword, 10);
 

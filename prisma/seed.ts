@@ -237,6 +237,38 @@ async function main() {
     ],
   });
 
+  await prisma.nbStudent.createMany({
+    data: [
+      {
+        number: '1 - 250',
+      },
+      {
+        number: '250 - 500',
+      },
+      {
+        number: '500 - 750',
+      },
+      {
+        number: '750 - 1000',
+      },
+      {
+        number: '1000 - 1500',
+      },
+      {
+        number: '1500 - 2000',
+      },
+      {
+        number: '2000 - 3000',
+      },
+      {
+        number: '3000 - 4000',
+      },
+      {
+        number: '4000 - 5000',
+      },
+    ],
+  });
+
   console.log('Seed terminé !');
 }
 

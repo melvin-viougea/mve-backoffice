@@ -14,6 +14,7 @@ export async function GET(request: Request, {params}: { params: { id: string } }
     where: {id},
     include: {
       campusType: {select: {id: true, name: true}},
+      nbStudent: {select: {id: true, number: true}},
     },
   });
 
@@ -47,10 +48,17 @@ export async function PUT(request: Request, {params}: { params: { id: string } }
         description: json.description || null,
         city: json.city || null,
         address: json.address || null,
+        firstname: json.firstname || null,
+        lastname: json.lastname || null,
+        email: json.email || null,
+        phone: json.phone || null,
+        role: json.role || null,
         campusTypeId: json.campusTypeId || null,
+        nbStudentId: json.nbStudentId || null,
       },
       include: {
         campusType: {select: {id: true, name: true}},
+        nbStudent: {select: {id: true, number: true}},
       },
     });
 
@@ -79,10 +87,17 @@ export async function PATCH(request: Request, {params}: { params: { id: string }
         ...(json.description !== undefined && {description: json.description}),
         ...(json.address !== undefined && {address: json.address}),
         ...(json.city !== undefined && {city: json.city}),
+        ...(json.firstname !== undefined && {firstname: json.firstname}),
+        ...(json.lastname !== undefined && {lastname: json.lastname}),
+        ...(json.email !== undefined && {email: json.email}),
+        ...(json.phone !== undefined && {phone: json.phone}),
+        ...(json.role !== undefined && {role: json.role}),
         ...(json.campusTypeId !== undefined && {campusTypeId: json.campusTypeId}),
+        ...(json.nbStudentId !== undefined && {nbStudentId: json.nbStudentId}),
       },
       include: {
         campusType: {select: {id: true, name: true}},
+        nbStudent: {select: {id: true, number: true}},
       },
     });
 
@@ -107,6 +122,7 @@ export async function DELETE(request: Request, {params}: { params: { id: string 
       where: {id},
       include: {
         campusType: {select: {id: true, name: true}},
+        nbStudent: {select: {id: true, number: true}},
       },
     });
 
