@@ -17,6 +17,28 @@ export async function GET(request: Request, {params}: { params: { id: string } }
       eventType: {select: {id: true, name: true}},
       subEventType: {select: {id: true, name: true}},
       displayType: {select: {id: true, name: true}},
+      eventTicket: {select: {id: true, name: true, price: true }},
+      eventPeople: {
+        select: {
+          id: true,
+          firstname: true,
+          lastname: true,
+          email: true,
+          date: true,
+          eventTicket: {
+            select: {
+              id: true,
+              name: true
+            }
+          },
+          payment: {
+            select: {
+              id: true,
+              name: true
+            }
+          }
+        }
+      }
     },
   });
 
@@ -26,6 +48,7 @@ export async function GET(request: Request, {params}: { params: { id: string } }
 
   try {
     const eventData = await getEventData(event);
+
     return new NextResponse(JSON.stringify(eventData), {status: 200});
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
@@ -73,6 +96,28 @@ export async function PUT(request: Request, {params}: { params: { id: string } }
         eventType: {select: {id: true, name: true}},
         subEventType: {select: {id: true, name: true}},
         displayType: {select: {id: true, name: true}},
+        eventTicket: {select: {id: true, name: true, price: true }},
+        eventPeople: {
+          select: {
+            id: true,
+            firstname: true,
+            lastname: true,
+            email: true,
+            date: true,
+            eventTicket: {
+              select: {
+                id: true,
+                name: true
+              }
+            },
+            payment: {
+              select: {
+                id: true,
+                name: true
+              }
+            }
+          }
+        }
       },
     });
 
@@ -124,6 +169,28 @@ export async function PATCH(request: Request, {params}: { params: { id: string }
         eventType: {select: {id: true, name: true}},
         subEventType: {select: {id: true, name: true}},
         displayType: {select: {id: true, name: true}},
+        eventTicket: {select: {id: true, name: true, price: true }},
+        eventPeople: {
+          select: {
+            id: true,
+            firstname: true,
+            lastname: true,
+            email: true,
+            date: true,
+            eventTicket: {
+              select: {
+                id: true,
+                name: true
+              }
+            },
+            payment: {
+              select: {
+                id: true,
+                name: true
+              }
+            }
+          }
+        }
       },
     });
 
@@ -151,6 +218,28 @@ export async function DELETE(request: Request, {params}: { params: { id: string 
         eventType: {select: {id: true, name: true}},
         subEventType: {select: {id: true, name: true}},
         displayType: {select: {id: true, name: true}},
+        eventTicket: {select: {id: true, name: true, price: true }},
+        eventPeople: {
+          select: {
+            id: true,
+            firstname: true,
+            lastname: true,
+            email: true,
+            date: true,
+            eventTicket: {
+              select: {
+                id: true,
+                name: true
+              }
+            },
+            payment: {
+              select: {
+                id: true,
+                name: true
+              }
+            }
+          }
+        }
       },
     });
 

@@ -1,9 +1,16 @@
 'use client'
 
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table"
-import {EventPrice, EventPriceTableProps} from "@/types";
+import {EventTicket, EventTicketTableProps} from "@/types";
+import {useRouter} from "next/navigation";
 
-const EventPriceTable = ({eventPrice}: EventPriceTableProps) => {
+const EventTicketTable = ({eventTicket}: EventTicketTableProps) => {
+  const router = useRouter();
+
+  const handleRowClick = (id: number) => {
+    router.push(`/evenement/ticket/${id}`);
+  };
+
   return (
     <Table>
       <TableHeader className="bg-[#f9fafb]">
@@ -13,9 +20,9 @@ const EventPriceTable = ({eventPrice}: EventPriceTableProps) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {eventPrice.map((ep: EventPrice) => {
+        {eventTicket.map((ep: EventTicket) => {
           return (
-            <TableRow key={ep.id} className='bg-[#FFFBFA] cursor-pointer'>
+            <TableRow key={ep.id} className='bg-[#FFFBFA] cursor-pointer' onClick={() => handleRowClick(parseInt(ep.id.toString(), 10))}>
               <TableCell className="max-w-[250px] pl-2 pr-10">
                 {ep.name}
               </TableCell>
@@ -30,4 +37,4 @@ const EventPriceTable = ({eventPrice}: EventPriceTableProps) => {
   )
 }
 
-export default EventPriceTable
+export default EventTicketTable

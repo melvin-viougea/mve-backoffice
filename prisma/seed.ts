@@ -264,7 +264,21 @@ async function main() {
         number: '3000 - 4000',
       },
       {
-        number: '4000 - 5000',
+        number: '4000+',
+      },
+    ],
+  });
+
+  await prisma.payment.createMany({
+    data: [
+      {
+        name: 'Cash',
+      },
+      {
+        name: 'Lydia',
+      },
+      {
+        name: 'Paylib',
       },
     ],
   });

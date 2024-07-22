@@ -89,8 +89,10 @@ declare type Events = {
   address: string;
   isPeopleLimit: boolean;
   peopleLimit: number;
-  price: EventPrice[];
+  ticket: EventTicket[];
   people: EventPeople[];
+  eventTicket: EventTicket[];
+  eventPeople: EventPeople[];
 };
 
 declare interface CreateEventParams {
@@ -129,10 +131,6 @@ declare interface EventFormProps {
 
 declare interface EventTableProps {
   events: Events[];
-}
-
-declare interface EventPriceTableProps {
-  eventPrice: EventPrice[];
 }
 
 declare interface EventPeopleTableProps {
@@ -265,14 +263,34 @@ declare type DisplayType = {
   name: string;
 };
 
-// EVENT PRICE
+// EVENT TICKET
 
-declare type EventPrice = {
+declare type EventTicket = {
   id: number;
   $id: number;
   name: string;
-  price: string;
+  price: number;
+  event: Events;
 };
+
+declare interface EventTicketTableProps {
+  eventTicket: EventTicket[];
+}
+
+declare interface CreateEventTicketParams {
+  name: string;
+  price?: number;
+}
+
+declare interface UpdateEventTicketParams {
+  id: number;
+  eventTicket: CreateEventTicketParams;
+}
+
+declare interface EventTicketFormProps {
+  eventId?: number;
+  eventTicket?: EventTicket;
+}
 
 // EVENT PEOPLE
 
@@ -282,7 +300,8 @@ declare type EventPeople = {
   firstname: string;
   lastname: string;
   email: string;
-  ticket: EventPrice;
+  date: Date;
+  eventTicket: EventTicket;
   payment: Payment;
 };
 

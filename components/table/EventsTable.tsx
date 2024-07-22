@@ -29,6 +29,7 @@ const EventsTable = ({events}: EventTableProps) => {
   const handleRowClick = (id: number) => {
     router.push(`/evenement/${id}`);
   };
+  
   return (
     <Table>
       <TableHeader className="bg-[#f9fafb]">

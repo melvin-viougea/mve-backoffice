@@ -1,3 +1,5 @@
+import {EventPeople, EventTicket} from "@/types";
+
 export async function getEventData(event: any) {
   return {
     id: event.id,
@@ -24,6 +26,26 @@ export async function getEventData(event: any) {
       id: event.association.id,
       name: event.association.name,
     },
+    eventTicket: event.eventTicket.map((ticket: EventTicket) => ({
+      id: ticket.id,
+      name: ticket.name,
+      price: ticket.price,
+    })),
+    eventPeople: event.eventPeople.map((people: EventPeople) => ({
+      id: people.id,
+      firstname: people.firstname,
+      lastname: people.lastname,
+      email: people.email,
+      date: people.date,
+      eventTicket: people.eventTicket ? {
+        id: people.eventTicket.id,
+        name: people.eventTicket.name,
+      } : null,
+      payment: people.payment ? {
+        id: people.payment.id,
+        name: people.payment.name,
+      } : null,
+    })),
     eventType: {
       id: event.eventType.id,
       name: event.eventType.name,
@@ -102,6 +124,18 @@ export async function getCampusData(campus: any) {
     nbStudent: {
       id: campus.nbStudent.id,
       name: campus.nbStudent.name,
+    },
+  };
+}
+
+export async function getEventTicketData(eventTicket: any) {
+  return {
+    id: eventTicket.id,
+    name: eventTicket.name,
+    price: eventTicket.price,
+    event: {
+      id: eventTicket.event.id,
+      title: eventTicket.event.title,
     },
   };
 }

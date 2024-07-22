@@ -16,6 +16,29 @@ export async function GET(request: Request) {
         eventType: {select: {id: true, name: true}},
         subEventType: {select: {id: true, name: true}},
         displayType: {select: {id: true, name: true}},
+        eventTicket: {select: {id: true, name: true, price: true }},
+        eventPeople: {
+          select: {
+            id: true,
+            firstname: true,
+            lastname: true,
+            email: true,
+            date: true,
+            eventTicket: {
+              select: {
+                id: true,
+                name: true,
+                price: true
+              }
+            },
+            payment: {
+              select: {
+                id: true,
+                name: true
+              }
+            }
+          }
+        }
       },
     });
 
@@ -44,8 +67,42 @@ export async function POST(request: Request) {
         eventType: {select: {id: true, name: true}},
         subEventType: {select: {id: true, name: true}},
         displayType: {select: {id: true, name: true}},
+        eventTicket: {select: {id: true, name: true, price:true }},
+        eventPeople: {
+          select: {
+            id: true,
+            firstname: true,
+            lastname: true,
+            email: true,
+            date: true,
+            eventTicket: {
+              select: {
+                id: true,
+                name: true,
+                price: true
+              }
+            },
+            payment: {
+              select: {
+                id: true,
+                name: true
+              }
+            }
+          }
+        }
       },
     });
+
+    const eventTickets = [
+      { name: 'Cotisant', price: 0, eventId: created.id },
+      { name: 'Non cotisant', price: 0, eventId: created.id }
+    ];
+
+    for (const ticket of eventTickets) {
+      await prisma.eventTicket.create({
+        data: ticket
+      });
+    }
 
     const eventData = await getEventData(created);
     return new NextResponse(JSON.stringify(eventData), {status: 201});

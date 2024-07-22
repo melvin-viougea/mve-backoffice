@@ -33,34 +33,36 @@ model SuperUser {
 }
 
 model Event {
-  id             Int          @id @default(autoincrement())
+  id             Int           @id @default(autoincrement())
   title          String
   description    String
   logo           String?
-  date           DateTime     @db.Date
-  isPublished    Boolean      @default(false)
-  isPlace        Boolean      @default(false)
+  date           DateTime      @db.Date
+  isPublished    Boolean       @default(false)
+  isPlace        Boolean       @default(false)
   place          String?
-  isEndDate      Boolean      @default(false)
-  endDate        DateTime?    @db.Date
-  isHour         Boolean      @default(false)
-  hour           DateTime?    @db.Time
-  isEndHour      Boolean      @default(false)
-  endHour        DateTime?    @db.Time
-  isAddress      Boolean      @default(false)
+  isEndDate      Boolean       @default(false)
+  endDate        DateTime?     @db.Date
+  isHour         Boolean       @default(false)
+  hour           DateTime?     @db.Time
+  isEndHour      Boolean       @default(false)
+  endHour        DateTime?     @db.Time
+  isAddress      Boolean       @default(false)
   address        String?
-  isPeopleLimit  Boolean      @default(false)
+  isPeopleLimit  Boolean       @default(false)
   peopleLimit    Int?
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
-  association    Association  @relation(fields: [associationId], references: [id])
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  association    Association   @relation(fields: [associationId], references: [id])
   associationId  Int
-  displayType    DisplayType  @relation(fields: [displayTypeId], references: [id])
+  displayType    DisplayType   @relation(fields: [displayTypeId], references: [id])
   displayTypeId  Int
-  eventType      EventType    @relation(fields: [eventTypeId], references: [id])
+  eventType      EventType     @relation(fields: [eventTypeId], references: [id])
   eventTypeId    Int
-  subEventType   SubEventType @relation(fields: [subEventTypeId], references: [id])
+  subEventType   SubEventType  @relation(fields: [subEventTypeId], references: [id])
   subEventTypeId Int
+  eventPeople    EventPeople[]
+  eventTicket    EventTicket[]
 }
 
 model Association {
@@ -151,4 +153,39 @@ model NbStudent {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
   campus    Campus[]
+}
+
+model EventTicket {
+  id          Int           @id @default(autoincrement())
+  name        String
+  price       Int
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @default(now())
+  event       Event?        @relation(fields: [eventId], references: [id])
+  eventId     Int?
+  eventPeople EventPeople[]
+}
+
+model Payment {
+  id          Int           @id @default(autoincrement())
+  name        String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @default(now())
+  eventPeople EventPeople[]
+}
+
+model EventPeople {
+  id            Int          @id @default(autoincrement())
+  firstname     String
+  lastname      String
+  date          DateTime     @db.Date
+  email         String
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @default(now())
+  eventTicket   EventTicket? @relation(fields: [eventTicketId], references: [id])
+  eventTicketId Int?
+  payment       Payment?     @relation(fields: [paymentId], references: [id])
+  paymentId     Int?
+  Event         Event?       @relation(fields: [eventId], references: [id])
+  eventId       Int?
 }

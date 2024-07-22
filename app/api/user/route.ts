@@ -27,7 +27,7 @@ export async function GET(request: Request) {
         }
       }
     });
-    console.log(users);
+
     const allUsers = await Promise.all(users.map(async (user) => await getUserData(user)));
 
     return new NextResponse(JSON.stringify(allUsers), { status: 200 });
