@@ -186,6 +186,6 @@ model EventPeople {
   eventTicketId Int?
   payment       Payment?     @relation(fields: [paymentId], references: [id])
   paymentId     Int?
-  Event         Event?       @relation(fields: [eventId], references: [id])
+  event         Event?       @relation(fields: [eventId], references: [id])
   eventId       Int?
 }

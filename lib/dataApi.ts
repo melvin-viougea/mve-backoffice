@@ -40,6 +40,7 @@ export async function getEventData(event: any) {
       eventTicket: people.eventTicket ? {
         id: people.eventTicket.id,
         name: people.eventTicket.name,
+        price: people.eventTicket.price
       } : null,
       payment: people.payment ? {
         id: people.payment.id,
@@ -139,3 +140,27 @@ export async function getEventTicketData(eventTicket: any) {
     },
   };
 }
+
+export async function getEventPeopleData(eventPeople: any) {
+  return {
+    id: eventPeople.id,
+    firstname: eventPeople.firstname,
+    lastname: eventPeople.lastname,
+    email: eventPeople.email,
+    date: eventPeople.date,
+    event: {
+      id: eventPeople.event.id,
+      title: eventPeople.event.title,
+    },
+    eventTicket: eventPeople.eventTicket ? {
+      id: eventPeople.eventTicket.id,
+      name: eventPeople.eventTicket.name,
+      price: eventPeople.eventTicket.price,
+    } : null,
+    payment: eventPeople.payment ? {
+      id: eventPeople.payment.id,
+      name: eventPeople.payment.name,
+    } : null,
+  };
+}
+

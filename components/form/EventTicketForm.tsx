@@ -3,7 +3,7 @@
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Loader2} from "lucide-react";
 import {useRouter} from "next/navigation";
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {useForm} from "react-hook-form";
 import * as z from "zod";
 import {Button} from "@/components/ui/button";

@@ -28,7 +28,8 @@ export async function GET(request: Request, {params}: { params: { id: string } }
           eventTicket: {
             select: {
               id: true,
-              name: true
+              name: true,
+              price: true
             }
           },
           payment: {
@@ -107,7 +108,8 @@ export async function PUT(request: Request, {params}: { params: { id: string } }
             eventTicket: {
               select: {
                 id: true,
-                name: true
+                name: true,
+                price: true
               }
             },
             payment: {
@@ -137,7 +139,7 @@ export async function PATCH(request: Request, {params}: { params: { id: string }
 
   const id = parseInt(params.id, 10);
   const json = await request.json();
-
+  console.log(json)
   try {
     const updated = await prisma.event.update({
       where: {id},
@@ -180,7 +182,8 @@ export async function PATCH(request: Request, {params}: { params: { id: string }
             eventTicket: {
               select: {
                 id: true,
-                name: true
+                name: true,
+                price: true
               }
             },
             payment: {
@@ -229,7 +232,8 @@ export async function DELETE(request: Request, {params}: { params: { id: string 
             eventTicket: {
               select: {
                 id: true,
-                name: true
+                name: true,
+                price: true
               }
             },
             payment: {

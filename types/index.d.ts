@@ -303,9 +303,34 @@ declare type EventPeople = {
   date: Date;
   eventTicket: EventTicket;
   payment: Payment;
+  event: Events;
 };
 
-// EVENT PEOPLE
+declare interface EventPeopleTableProps {
+  eventPeople: EventPeople[];
+}
+
+declare interface CreateEventPeopleParams {
+  firstname: string;
+  lastname: string;
+  email: string;
+  date: Date;
+  eventTicketId: number;
+  paymentId: number;
+  eventId: number;
+}
+
+declare interface EventPeopleFormProps {
+  eventId?: number;
+  eventPeople?: EventPeople;
+}
+
+declare interface UpdateEventPeopleParams {
+  id: number;
+  eventPeople: CreateEventPeopleParams;
+}
+
+// PAYMENT
 
 declare type Payment = {
   id: number;

@@ -574,7 +574,7 @@ const EventForm = ({event, associationId}: EventFormProps) => {
               <AccordionContent>
                 <div className="flex w-full flex-col items-start justify-between gap-8 md:flex-row mb-3">
                   <Link
-                    href={"/evenement/ajout/participant"}
+                    href={`/evenement/ajout/participant/${event?.id}`}
                     className="text-[14px] leading-[20px] rounded-lg border border-gray-300 px-4 py-2.5 font-semibold text-gray-700"
                   >
                     Ajouter un participant
