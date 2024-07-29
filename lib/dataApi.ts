@@ -164,3 +164,37 @@ export async function getEventPeopleData(eventPeople: any) {
   };
 }
 
+export async function getPartnerData(partner: any) {
+  return {
+    id: partner.id,
+    name: partner.name,
+    date: partner.date,
+    description: partner.description,
+    firstname: partner.firstname,
+    lastname: partner.lastname,
+    email: partner.email,
+    phone: partner.phone,
+    role: partner.role,
+    price: partner.price,
+    percentage: partner.percentage,
+    reduction: partner.reduction,
+    link: partner.link,
+    place: partner.place,
+    address: partner.address,
+    offerLimit: partner.offerLimit,
+    offerTemp: partner.offerTemp,
+    partnerType: {
+      id: partner.partnerType.id,
+      name: partner.partnerType.name,
+    },
+    subPartnerType: {
+      id: partner.subPartnerType.id,
+      name: partner.subPartnerType.name,
+    },
+    displayType: {
+      id: partner.displayType.id,
+      name: partner.displayType.name,
+    },
+  };
+}
+

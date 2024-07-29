@@ -87,11 +87,12 @@ model Association {
 }
 
 model DisplayType {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   events    Event[]
+  partner   Partner[]
 }
 
 model EventType {
@@ -188,4 +189,48 @@ model EventPeople {
   paymentId     Int?
   event         Event?       @relation(fields: [eventId], references: [id])
   eventId       Int?
+}
+
+model Partner {
+  id               Int             @id @default(autoincrement())
+  name             String
+  date             DateTime        @db.Date
+  description      String
+  firstname        String
+  lastname         String
+  role             String
+  email            String
+  phone            String
+  price            Int
+  percentage       Int
+  reduction        Int
+  link             String
+  place            String
+  address          String
+  offerLimit       Int
+  offerTemp        Int
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @default(now())
+  partnerType      PartnerType?    @relation(fields: [partnerTypeId], references: [id])
+  partnerTypeId    Int?
+  subPartnerType   SubPartnerType? @relation(fields: [subPartnerTypeId], references: [id])
+  subPartnerTypeId Int?
+  displayType      DisplayType?    @relation(fields: [displayTypeId], references: [id])
+  displayTypeId    Int?
+}
+
+model PartnerType {
+  id        Int       @id @default(autoincrement())
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+  partner   Partner[]
+}
+
+model SubPartnerType {
+  id        Int       @id @default(autoincrement())
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+  partner   Partner[]
 }

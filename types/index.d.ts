@@ -338,6 +338,67 @@ declare type Payment = {
   name: string;
 };
 
+// PARTNER
+
+declare type Partner = {
+  id: number;
+  name: string;
+  date: Date;
+  description: string;
+  price: number;
+  firstname: string;
+  lastname: string;
+  email: string;
+  phone: string;
+  role: string;
+  percentage: number;
+  reduction: number;
+  link: string;
+  place: string;
+  address: string ;
+  offerLimit: number;
+  offerTemp: Date;
+  partnerType: PartnerType;
+  subPartnerType: SubPartnerType;
+  displayType: DisplayType;
+};
+
+declare type PartnerType = {
+  id: number;
+  $id: number;
+  name: string;
+};
+
+declare type SubPartnerType = {
+  id: number;
+  $id: number;
+  name: string;
+};
+
+declare interface PartnerTableProps {
+  partners: Partner[];
+}
+
+declare interface CreatePartnerParams {
+  firstname: string;
+  lastname: string;
+  email: string;
+  date: Date;
+  eventTicketId: number;
+  paymentId: number;
+  eventId: number;
+}
+
+declare interface PartnerFormProps {
+  eventId?: number;
+  partner?: Partner;
+}
+
+declare interface UpdatePartnerParams {
+  id: number;
+  partner: CreatePartnerParams;
+}
+
 // OTHER
 
 declare interface pageProps {

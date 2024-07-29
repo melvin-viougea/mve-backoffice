@@ -1,60 +1,24 @@
-// import HeaderBox from '@/components/HeaderBox'
-// import RecentTransactions from '@/components/RecentTransactions';
-// import RightSidebar from '@/components/RightSidebar';
-// import TotalBalanceBox from '@/components/TotalBalanceBox';
-// import { getAccount, getAccounts } from '@/lib/actions/bank.actions';
-// import { getLoggedInUser } from '@/lib/actions/user.actions';
-
 import {SearchParamProps} from "@/types";
+import Image from "next/image";
+import React from "react";
+import HeaderBox from "@/components/HeaderBox";
+import Link from "next/link";
 
 const Calendar = async ({searchParams: {id, page}}: SearchParamProps) => {
-  // const currentPage = Number(page as string) || 1;
-  // const loggedIn = await getLoggedInUser();
-  // const accounts = await getAccounts({
-  //   userId: loggedIn.$id
-  // })
-  //
-  // if(!accounts) return;
-  //
-  // const accountsData = accounts?.data;
-  // const appwriteItemId = (id as string) || accountsData[0]?.appwriteItemId;
-  //
-  // const account = await getAccount({ appwriteItemId })
 
   return (
-    <section className="home">
-      <div className="home-content">
-        <header className="home-header">
-          Calendrier
-          {/*<HeaderBox*/}
-          {/*  type="greeting"*/}
-          {/*  title="Welcome"*/}
-          {/*  user={loggedIn?.firstName || 'Guest'}*/}
-          {/*  subtext="Access and manage your account and transactions efficiently."*/}
-          {/*/>*/}
-
-          {/*<TotalBalanceBox*/}
-          {/*  accounts={accountsData}*/}
-          {/*  totalBanks={accounts?.totalBanks}*/}
-          {/*  totalCurrentBalance={accounts?.totalCurrentBalance}*/}
-          {/*/>*/}
-        </header>
-
-        {/*<RecentTransactions*/}
-        {/*  accounts={accountsData}*/}
-        {/*  transactions={account?.transactions}*/}
-        {/*  appwriteItemId={appwriteItemId}*/}
-        {/*  page={currentPage}*/}
-        {/*/>*/}
+    <div className="flex max-h-screen w-full flex-col gap-8 overflow-y-scroll bg-gray-25 p-8 xl:py-12">
+      <div className="flex w-full flex-col items-start justify-between gap-8 md:flex-row">
+        <HeaderBox
+          title="Calendrier"
+          subtext="WIP"
+        />
       </div>
-
-      {/*<RightSidebar*/}
-      {/*  user={loggedIn}*/}
-      {/*  transactions={account?.transactions}*/}
-      {/*  banks={accountsData?.slice(0, 2)}*/}
-      {/*/>*/}
-    </section>
-  )
+      <div className="space-y-6 mx-auto">
+        <Image src="/mve/wip.png" alt="WIP" width={400} height={400}/>
+      </div>
+    </div>
+)
 }
 
 export default Calendar
