@@ -11,18 +11,16 @@ import {Button} from "@/components/ui/button";
 import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
 import {Textarea} from "@/components/ui/textarea";
-import {createEvent, getAllEvent, updateEvent} from "@/lib/actions/event.actions";
+import {createEvent, updateEvent} from "@/lib/actions/event.actions";
 import {SubEventTypeDropdown} from "@/components/dropdown/SubEventTypeDropdown";
 import {DisplayTypeDropdown} from "@/components/dropdown/DisplayTypeDropdown";
 import {Switch} from "@/components/ui/switch";
 import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion";
 import {EventFormProps} from "@/types";
-import EventsTable from "@/components/table/EventsTable";
 import {Pagination} from "@/components/Pagination";
-import EventPriceTable from "@/components/table/form/EventPriceTable";
+import EventTicketTable from "@/components/table/form/EventTicketTable";
 import EventPeopleTable from "@/components/table/form/EventPeopleTable";
 import Link from "next/link";
-import HeaderBox from "@/components/HeaderBox";
 
 const EventForm = ({event, associationId}: EventFormProps) => {
   const router = useRouter();
@@ -139,20 +137,20 @@ const EventForm = ({event, associationId}: EventFormProps) => {
   }
 
   const currentPagePrice = 1;
-  const eventPrice = event ? event.price : [];
+  const eventTicket = event ? event.eventTicket : [];
 
   const rowsPerPagePrice = 10;
-  const totalPagesPrice = Math.ceil(eventPrice.length / rowsPerPagePrice);
+  const totalPagesPrice = Math.ceil(eventTicket.length / rowsPerPagePrice);
 
-  const indexOfLastEventPrice = currentPagePrice * rowsPerPagePrice;
-  const indexOfFirstEventPrice = indexOfLastEventPrice - rowsPerPagePrice;
+  const indexOfLastEventTicket = currentPagePrice * rowsPerPagePrice;
+  const indexOfFirstEventTicket = indexOfLastEventTicket - rowsPerPagePrice;
 
-  const currentEventPrice = eventPrice.slice(
-    indexOfFirstEventPrice, indexOfLastEventPrice
+  const currentEventTicket = eventTicket.slice(
+    indexOfFirstEventTicket, indexOfLastEventTicket
   )
 
   const currentPagePeople = 1;
-  const eventPeople = event ? event.people : [];
+  const eventPeople = event ? event.eventPeople : [];
 
   const rowsPerPagePeople = 10;
   const totalPagesPeople = Math.ceil(eventPeople.length / rowsPerPagePeople);
@@ -425,7 +423,7 @@ const EventForm = ({event, associationId}: EventFormProps) => {
               <div className="flex w-full max-w-[850px] flex-col gap-3 md:flex-row lg:gap-8 pb-6 pt-5">
                 <div className="flex w-full max-w-[280px] flex-col gap-2">
                   <FormLabel className="text-[14px] leading-[20px] font-medium text-gray-700">
-                    Hour
+                    Heure
                   </FormLabel>
                 </div>
                 <div className="flex flex-col">
@@ -476,12 +474,12 @@ const EventForm = ({event, associationId}: EventFormProps) => {
             <FormItem className="border-t border-gray-200">
               <div className="flex w-full max-w-[850px] flex-col gap-3 md:flex-row lg:gap-8 pb-5 pt-6">
                 <FormLabel className="text-[14px] leading-[20px] w-full max-w-[280px] font-medium text-gray-700">
-                  Lieu
+                  Nom du lieu
                 </FormLabel>
                 <div className="flex w-full flex-col">
                   <FormControl>
                     <Input
-                      placeholder="Entrez le lieu"
+                      placeholder="Entrez le nom du lieu"
                       className="text-[16px] leading-[24px] placeholder:text-[16px] placeholder:leading-[24px] rounded-lg border border-gray-300 text-gray-900 placeholder:text-gray-500"
                       {...field}
                     />
@@ -551,15 +549,15 @@ const EventForm = ({event, associationId}: EventFormProps) => {
               <AccordionContent>
                 <div className="flex w-full flex-col items-start justify-between gap-8 md:flex-row mb-3">
                   <Link
-                    href={"/evenement/ajout/ticket"}
+                    href={`/evenement/ajout/ticket/${event?.id}`}
                     className="text-[14px] leading-[20px] rounded-lg border border-gray-300 px-4 py-2.5 font-semibold text-gray-700"
                   >
                     Ajouter un ticket
                   </Link>
                 </div>
                 <section className="flex w-full flex-col gap-6">
-                  <EventPriceTable
-                    eventPrice={currentEventPrice}
+                  <EventTicketTable
+                    eventTicket={currentEventTicket}
                   />
                   {totalPagesPrice > 1 && (
                     <div className="my-4 w-full">
@@ -576,7 +574,7 @@ const EventForm = ({event, associationId}: EventFormProps) => {
               <AccordionContent>
                 <div className="flex w-full flex-col items-start justify-between gap-8 md:flex-row mb-3">
                   <Link
-                    href={"/evenement/ajout/participant"}
+                    href={`/evenement/ajout/participant/${event?.id}`}
                     className="text-[14px] leading-[20px] rounded-lg border border-gray-300 px-4 py-2.5 font-semibold text-gray-700"
                   >
                     Ajouter un participant

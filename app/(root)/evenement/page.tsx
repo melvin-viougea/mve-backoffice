@@ -9,7 +9,7 @@ import {SearchParamProps} from "@/types";
 const Event = async ({searchParams: {id, page}}: SearchParamProps) => {
   const currentPage = Number(page as string) || 1;
   const events = await getAllEvent();
-
+  
   const rowsPerPage = 10;
   const totalPages = Math.ceil(events.length / rowsPerPage);
 

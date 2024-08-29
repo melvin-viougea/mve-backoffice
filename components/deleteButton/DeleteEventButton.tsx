@@ -6,7 +6,7 @@ import {Button} from "@/components/ui/button";
 import {deleteEvent} from "@/lib/actions/event.actions";
 import {useRouter} from "next/navigation";
 
-const DeleteEventButton = (event: any) => {
+const DeleteEventButton = ({event}: any) => {
   const router = useRouter();
 
   const handleDelete = async (id: number) => {

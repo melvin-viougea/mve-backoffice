@@ -89,8 +89,10 @@ declare type Events = {
   address: string;
   isPeopleLimit: boolean;
   peopleLimit: number;
-  price: EventPrice[];
+  ticket: EventTicket[];
   people: EventPeople[];
+  eventTicket: EventTicket[];
+  eventPeople: EventPeople[];
 };
 
 declare interface CreateEventParams {
@@ -129,10 +131,6 @@ declare interface EventFormProps {
 
 declare interface EventTableProps {
   events: Events[];
-}
-
-declare interface EventPriceTableProps {
-  eventPrice: EventPrice[];
 }
 
 declare interface EventPeopleTableProps {
@@ -265,14 +263,34 @@ declare type DisplayType = {
   name: string;
 };
 
-// EVENT PRICE
+// EVENT TICKET
 
-declare type EventPrice = {
+declare type EventTicket = {
   id: number;
   $id: number;
   name: string;
-  price: string;
+  price: number;
+  event: Events;
 };
+
+declare interface EventTicketTableProps {
+  eventTicket: EventTicket[];
+}
+
+declare interface CreateEventTicketParams {
+  name: string;
+  price?: number;
+}
+
+declare interface UpdateEventTicketParams {
+  id: number;
+  eventTicket: CreateEventTicketParams;
+}
+
+declare interface EventTicketFormProps {
+  eventId?: number;
+  eventTicket?: EventTicket;
+}
 
 // EVENT PEOPLE
 
@@ -282,17 +300,199 @@ declare type EventPeople = {
   firstname: string;
   lastname: string;
   email: string;
-  ticket: EventPrice;
+  date: Date;
+  eventTicket: EventTicket;
   payment: Payment;
+  event: Events;
 };
 
-// EVENT PEOPLE
+declare interface EventPeopleTableProps {
+  eventPeople: EventPeople[];
+}
+
+declare interface CreateEventPeopleParams {
+  firstname: string;
+  lastname: string;
+  email: string;
+  date: Date;
+  eventTicketId: number;
+  paymentId: number;
+  eventId: number;
+}
+
+declare interface EventPeopleFormProps {
+  eventId?: number;
+  eventPeople?: EventPeople;
+}
+
+declare interface UpdateEventPeopleParams {
+  id: number;
+  eventPeople: CreateEventPeopleParams;
+}
+
+// PAYMENT
 
 declare type Payment = {
   id: number;
   $id: number;
   name: string;
 };
+
+// PARTNER
+
+declare type Partner = {
+  id: number;
+  name: string;
+  date: Date;
+  description: string;
+  price: number;
+  firstname: string;
+  lastname: string;
+  email: string;
+  phone: string;
+  role: string;
+  percentage: number;
+  reduction: number;
+  link: string;
+  place?: string;
+  address: string ;
+  offerLimit: number;
+  offerTemp: Date;
+  isPublished: boolean;
+  association: Association;
+  partnerType: PartnerType;
+  subPartnerType: SubPartnerType;
+  displayType: DisplayType;
+};
+
+declare type PartnerType = {
+  id: number;
+  $id: number;
+  name: string;
+};
+
+declare type SubPartnerType = {
+  id: number;
+  $id: number;
+  name: string;
+};
+
+declare interface PartnerTableProps {
+  partners: Partner[];
+}
+
+declare interface CreatePartnerParams {
+  name: string;
+  date: Date;
+  description: string;
+  price: number;
+  firstname: string;
+  lastname: string;
+  email: string;
+  phone: string;
+  role: string;
+  percentage: number;
+  reduction: number;
+  link: string;
+  place?: string;
+  address: string ;
+  offerLimit: number;
+  offerTemp: Date;
+  isPublished: boolean;
+  associationId: number;
+  partnerTypeId: number;
+  subPartnerTypeId: number;
+  displayTypeId: number;
+}
+
+declare interface PartnerFormProps {
+  partner?: Partner;
+  associationId: number;
+}
+
+declare interface UpdatePartnerParams {
+  id: number;
+  partner: CreatePartnerParams;
+}
+
+//DEAL
+
+declare type Deal = {
+  id: number;
+  title: string;
+  isPublished: boolean;
+  association: Association;
+  company: Company;
+  format: Format;
+  offerType: OfferType;
+  dealType: DealType;
+  dealCategory: DealCategory
+  subDealCategory: SubDealCategory;
+  displayType: DisplayType;
+};
+
+declare type Company = {
+  id: number;
+  $id: number;
+  name: string;
+};
+
+declare type Format = {
+  id: number;
+  $id: number;
+  name: string;
+};
+
+declare type OfferType = {
+  id: number;
+  $id: number;
+  name: string;
+};
+
+declare type DealType = {
+  id: number;
+  $id: number;
+  name: string;
+};
+
+declare type DealCategory = {
+  id: number;
+  $id: number;
+  name: string;
+};
+
+declare type SubDealCategory = {
+  id: number;
+  $id: number;
+  name: string;
+};
+
+declare interface DealTableProps {
+  deals: Deal[];
+}
+
+declare interface CreateDealParams {
+  title: string;
+  isPublished: boolean;
+  associationId: number;
+  companyId: number;
+  formatId: number;
+  offerTypeId: number;
+  dealTypeId: number;
+  dealCategoryId: number;
+  subDealCategoryId: number;
+  displayTypeId: number;
+}
+
+declare interface DealFormProps {
+  deal?: Deal;
+  associationId: number;
+}
+
+declare interface UpdateDealParams {
+  id: number;
+  deal: CreateDealParams;
+}
 
 // OTHER
 

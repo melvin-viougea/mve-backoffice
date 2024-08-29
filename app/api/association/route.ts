@@ -34,7 +34,7 @@ export async function POST(request: Request) {
   }
 
   const json = await request.json();
-  console.log(json)
+
   try {
     const created = await prisma.association.create({
       data: json,

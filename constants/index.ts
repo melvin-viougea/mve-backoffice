@@ -26,8 +26,8 @@ export const sidebarLinks = [
   },
   {
     imgURL: "/icons/sidebar/data.svg",
-    route: "/partenaires",
-    label: "Partenaires",
+    route: "/bon-plans",
+    label: "Bon Plans",
   },
   {
     imgURL: "/icons/sidebar/home.svg",
@@ -76,6 +76,11 @@ export const sidebarAdminLinks = [
     imgURL: "/icons/sidebar/plus.svg",
     route: "/admin/campus",
     label: "Campus",
+  },
+  {
+    imgURL: "/icons/sidebar/data.svg",
+    route: "/admin/bon-plans",
+    label: "Bon plans",
   },
 ];
 

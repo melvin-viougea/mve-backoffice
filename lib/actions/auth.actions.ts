@@ -14,7 +14,7 @@ export const login = async ({email, password}: SignInParams) => {
   try {
     const response = await KyInstance.post(`${baseUrl}/login`, {json: {email, password}}).json<AuthResponse>();
     const {token, user} = response;
-    console.log(user)
+
     if (token) {
       const cookieStore = cookies();
       cookieStore.set('auth', token, {maxAge});

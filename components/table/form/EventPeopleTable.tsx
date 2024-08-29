@@ -1,9 +1,17 @@
 'use client'
 
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table"
-import {EventPeople, EventPeopleTableProps, EventPrice} from "@/types";
+import {EventPeople, EventPeopleTableProps} from "@/types";
+import {formatDateTime} from "@/lib/utils";
+import {useRouter} from "next/navigation";
 
 const EventPeopleTable = ({eventPeople}: EventPeopleTableProps) => {
+  const router = useRouter();
+
+  const handleRowClick = (id: number) => {
+    router.push(`/evenement/participant/${id}`);
+  };
+
   return (
     <Table>
       <TableHeader className="bg-[#f9fafb]">
@@ -20,9 +28,9 @@ const EventPeopleTable = ({eventPeople}: EventPeopleTableProps) => {
       <TableBody>
         {eventPeople.map((ep: EventPeople) => {
           return (
-            <TableRow key={ep.id} className='bg-[#FFFBFA] cursor-pointer'>
+            <TableRow key={ep.id} className='bg-[#FFFBFA] cursor-pointer' onClick={() => handleRowClick(parseInt(ep.id.toString(), 10))}>
               <TableCell className="max-w-[250px] pl-2 pr-10">
-                {ep.firstname}
+                {formatDateTime(new Date(ep.date)).dateOnly}
               </TableCell>
               <TableCell className="min-w-32 pl-2 pr-10">
                 {ep.firstname}
@@ -34,10 +42,10 @@ const EventPeopleTable = ({eventPeople}: EventPeopleTableProps) => {
                 {ep.email}
               </TableCell>
               <TableCell className="min-w-32 pl-2 pr-10">
-                {ep.ticket.name}
+                {ep.eventTicket.name}
               </TableCell>
               <TableCell className="min-w-32 pl-2 pr-10">
-                {ep.ticket.price}
+                {ep.eventTicket.price}
               </TableCell>
               <TableCell className="min-w-32 pl-2 pr-10">
                 {ep.payment.name}

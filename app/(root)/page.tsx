@@ -1,6 +1,8 @@
 import HeaderBox from '@/components/HeaderBox'
 import {getLoggedInUser} from '@/lib/actions/auth.actions';
 import {SearchParamProps} from "@/types";
+import Image from "next/image";
+import React from "react";
 
 const Home = async ({searchParams: {id, page}}: SearchParamProps) => {
   const currentPage = Number(page as string) || 1;
@@ -17,6 +19,9 @@ const Home = async ({searchParams: {id, page}}: SearchParamProps) => {
             subtext="Bienvenue"
           />
         </header>
+        <div className="space-y-6 mx-auto">
+          <Image src="/mve/wip.png" alt="WIP" width={400} height={400}/>
+        </div>
       </div>
     </section>
   )
