@@ -8,6 +8,6 @@ export async function GET(request: Request) {
     return new NextResponse(JSON.stringify({error: authResult.message}), {status: 401});
   }
 
-  const subPartnerTypes = await prisma.subPartnerType.findMany()
-  return NextResponse.json(subPartnerTypes)
+  const formats = await prisma.format.findMany()
+  return NextResponse.json(formats)
 }

@@ -1,7 +1,7 @@
 import {prisma} from "@/lib/prisma";
 import {NextResponse} from "next/server";
 import {authenticate} from "@/middleware/auth";
-import {getPartnerData} from "@/lib/dataApi";
+import {getDealData} from "@/lib/dataApi";
 
 export async function GET(request: Request, {params}: { params: { id: string } }) {
   const authResult = authenticate(request);
@@ -10,24 +10,28 @@ export async function GET(request: Request, {params}: { params: { id: string } }
   }
 
   const id = parseInt(params.id, 10);
-  const partner = await prisma.partner.findUnique({
+  const deal = await prisma.deal.findUnique({
     where: {id},
     include: {
       association: {select: {id: true, name: true}},
-      partnerType: {select: {id: true, name: true}},
-      subPartnerType: {select: {id: true, name: true}},
+      company: {select: {id: true, name: true}},
+      format: {select: {id: true, name: true}},
+      offerType: {select: {id: true, name: true}},
+      dealType: {select: {id: true, name: true}},
+      dealCategory: {select: {id: true, name: true}},
+      subDealCategory: {select: {id: true, name: true}},
       displayType: {select: {id: true, name: true}},
     },
   });
 
-  if (!partner) {
-    return new NextResponse(JSON.stringify({error: "Partner not found"}), {status: 404});
+  if (!deal) {
+    return new NextResponse(JSON.stringify({error: "Deal not found"}), {status: 404});
   }
 
   try {
-    const partnerData = await getPartnerData(partner);
+    const dealData = await getDealData(deal);
 
-    return new NextResponse(JSON.stringify(partnerData), {status: 200});
+    return new NextResponse(JSON.stringify(dealData), {status: 200});
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
     return new NextResponse(JSON.stringify({error: errorMessage}), {status: 500});
@@ -44,7 +48,7 @@ export async function PATCH(request: Request, {params}: { params: { id: string }
   const json = await request.json();
 
   try {
-    const updated = await prisma.partner.update({
+    const updated = await prisma.deal.update({
       where: {id},
       data: {
         ...(json.name !== undefined && {name: json.name}),
@@ -63,21 +67,25 @@ export async function PATCH(request: Request, {params}: { params: { id: string }
         ...(json.address !== undefined && {address: json.address}),
         ...(json.offerLimit !== undefined && {offerLimit: json.offerLimit}),
         ...(json.offerTemp !== undefined && {offerTemp: json.offerTemp}),
-        ...(json.partnerTypeId !== undefined && {partnerTypeId: json.partnerTypeId}),
-        ...(json.subPartnerTypeId !== undefined && {subPartnerTypeId: json.subPartnerTypeId}),
+        ...(json.dealTypeId !== undefined && {dealTypeId: json.dealTypeId}),
+        ...(json.subDealTypeId !== undefined && {subDealTypeId: json.subDealTypeId}),
         ...(json.displayTypeId !== undefined && {displayTypeId: json.displayTypeId}),
         ...(json.associationId !== undefined && {associationId: json.associationId}),
       },
       include: {
         association: {select: {id: true, name: true}},
-        partnerType: {select: {id: true, name: true}},
-        subPartnerType: {select: {id: true, name: true}},
+        company: {select: {id: true, name: true}},
+        format: {select: {id: true, name: true}},
+        offerType: {select: {id: true, name: true}},
+        dealType: {select: {id: true, name: true}},
+        dealCategory: {select: {id: true, name: true}},
+        subDealCategory: {select: {id: true, name: true}},
         displayType: {select: {id: true, name: true}},
       },
     });
 
-    const partnerData = await getPartnerData(updated);
-    return new NextResponse(JSON.stringify(partnerData), {status: 200});
+    const dealData = await getDealData(updated);
+    return new NextResponse(JSON.stringify(dealData), {status: 200});
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
     return new NextResponse(JSON.stringify({error: errorMessage}), {status: 500});
@@ -93,18 +101,22 @@ export async function DELETE(request: Request, {params}: { params: { id: string 
   const id = parseInt(params.id, 10);
 
   try {
-    const deleted = await prisma.partner.delete({
+    const deleted = await prisma.deal.delete({
       where: {id},
       include: {
         association: {select: {id: true, name: true}},
-        partnerType: {select: {id: true, name: true}},
-        subPartnerType: {select: {id: true, name: true}},
+        company: {select: {id: true, name: true}},
+        format: {select: {id: true, name: true}},
+        offerType: {select: {id: true, name: true}},
+        dealType: {select: {id: true, name: true}},
+        dealCategory: {select: {id: true, name: true}},
+        subDealCategory: {select: {id: true, name: true}},
         displayType: {select: {id: true, name: true}},
       },
     });
 
-    const partnerData = await getPartnerData(deleted);
-    return new NextResponse(JSON.stringify(partnerData), {status: 200});
+    const dealData = await getDealData(deleted);
+    return new NextResponse(JSON.stringify(dealData), {status: 200});
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
     return new NextResponse(JSON.stringify({error: errorMessage}), {status: 500});

@@ -183,6 +183,7 @@ export async function getPartnerData(partner: any) {
     address: partner.address,
     offerLimit: partner.offerLimit,
     offerTemp: partner.offerTemp,
+    isPublished: partner.isPublished,
     partnerType: {
       id: partner.partnerType.id,
       name: partner.partnerType.name,
@@ -195,6 +196,49 @@ export async function getPartnerData(partner: any) {
       id: partner.displayType.id,
       name: partner.displayType.name,
     },
+    association: {
+      id: partner.association.id,
+      name: partner.association.name,
+    },
   };
 }
 
+export async function getDealData(deal: any) {
+  return {
+    id: deal.id,
+    title: deal.title,
+    isPublished: deal.isPublished,
+    format: {
+      id: deal.format.id,
+      name: deal.format.name,
+    },
+    company: {
+      id: deal.company.id,
+      name: deal.company.name,
+    },
+    offerType: {
+      id: deal.offerType.id,
+      name: deal.offerType.name,
+    },
+    dealType: {
+      id: deal.dealType.id,
+      name: deal.dealType.name,
+    },
+    dealCategory: {
+      id: deal.dealCategory.id,
+      name: deal.dealCategory.name,
+    },
+    displayType: {
+      id: deal.displayType.id,
+      name: deal.displayType.name,
+    },
+    subDealCategory: deal.subDealCategory ? {
+      id: deal.subDealCategory.id,
+      name: deal.subDealCategory.name,
+    } : null,
+    association: deal.association ? {
+      id: deal.association.id,
+      name: deal.association.name,
+    } : null,
+  };
+}

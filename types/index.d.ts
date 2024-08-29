@@ -354,10 +354,12 @@ declare type Partner = {
   percentage: number;
   reduction: number;
   link: string;
-  place: string;
+  place?: string;
   address: string ;
   offerLimit: number;
   offerTemp: Date;
+  isPublished: boolean;
+  association: Association;
   partnerType: PartnerType;
   subPartnerType: SubPartnerType;
   displayType: DisplayType;
@@ -380,23 +382,116 @@ declare interface PartnerTableProps {
 }
 
 declare interface CreatePartnerParams {
+  name: string;
+  date: Date;
+  description: string;
+  price: number;
   firstname: string;
   lastname: string;
   email: string;
-  date: Date;
-  eventTicketId: number;
-  paymentId: number;
-  eventId: number;
+  phone: string;
+  role: string;
+  percentage: number;
+  reduction: number;
+  link: string;
+  place?: string;
+  address: string ;
+  offerLimit: number;
+  offerTemp: Date;
+  isPublished: boolean;
+  associationId: number;
+  partnerTypeId: number;
+  subPartnerTypeId: number;
+  displayTypeId: number;
 }
 
 declare interface PartnerFormProps {
-  eventId?: number;
   partner?: Partner;
+  associationId: number;
 }
 
 declare interface UpdatePartnerParams {
   id: number;
   partner: CreatePartnerParams;
+}
+
+//DEAL
+
+declare type Deal = {
+  id: number;
+  title: string;
+  isPublished: boolean;
+  association: Association;
+  company: Company;
+  format: Format;
+  offerType: OfferType;
+  dealType: DealType;
+  dealCategory: DealCategory
+  subDealCategory: SubDealCategory;
+  displayType: DisplayType;
+};
+
+declare type Company = {
+  id: number;
+  $id: number;
+  name: string;
+};
+
+declare type Format = {
+  id: number;
+  $id: number;
+  name: string;
+};
+
+declare type OfferType = {
+  id: number;
+  $id: number;
+  name: string;
+};
+
+declare type DealType = {
+  id: number;
+  $id: number;
+  name: string;
+};
+
+declare type DealCategory = {
+  id: number;
+  $id: number;
+  name: string;
+};
+
+declare type SubDealCategory = {
+  id: number;
+  $id: number;
+  name: string;
+};
+
+declare interface DealTableProps {
+  deals: Deal[];
+}
+
+declare interface CreateDealParams {
+  title: string;
+  isPublished: boolean;
+  associationId: number;
+  companyId: number;
+  formatId: number;
+  offerTypeId: number;
+  dealTypeId: number;
+  dealCategoryId: number;
+  subDealCategoryId: number;
+  displayTypeId: number;
+}
+
+declare interface DealFormProps {
+  deal?: Deal;
+  associationId: number;
+}
+
+declare interface UpdateDealParams {
+  id: number;
+  deal: CreateDealParams;
 }
 
 // OTHER
