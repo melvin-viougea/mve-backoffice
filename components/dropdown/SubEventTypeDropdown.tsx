@@ -52,7 +52,7 @@ export const SubEventTypeDropdown = ({setValue, defaultValue, otherStyles}: Drop
       </SelectTrigger>
       <SelectContent className={`w-full bg-white md:w-[300px] ${otherStyles}`} align="end">
         <SelectGroup>
-          <SelectLabel className="py-2 font-normal text-gray-500">Select a sub event type</SelectLabel>
+          <SelectLabel className="py-2 font-normal text-gray-500">Séléctionner le sous-type d&apos;événement</SelectLabel>
           {subEventTypes.map((subEventType: SubEventType) => (
             <SelectItem key={subEventType.id} value={subEventType.id.toString()} className="cursor-pointer border-t">
               {subEventType.name}

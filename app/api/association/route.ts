@@ -1,7 +1,7 @@
 import {prisma} from "@/lib/prisma"
 import {NextResponse} from "next/server";
 import {authenticate} from "@/middleware/auth";
-import {getAssociationData, getEventData} from "@/lib/dataApi";
+import {getAssociationData} from "@/lib/dataApi";
 import {hash} from "bcrypt";
 
 export async function GET(request: Request) {
@@ -46,8 +46,14 @@ export async function POST(request: Request) {
 
     const associationName = created.name;
     const campusName = created.campus?.name || '';
-    const supportPassword = `${associationName.toLowerCase()}${campusName.toLowerCase()}`;
+    let supportPassword = `${associationName.toLowerCase()}${campusName.toLowerCase()}`;
 
+    supportPassword = supportPassword.replace(/\s+/g, '');
+    console.log("//////////////////");
+    console.log("//////////////////");
+    console.log(supportPassword);
+    console.log("//////////////////");
+    console.log("//////////////////");
     const hashedPassword = await hash(supportPassword, 10);
 
     const supportUser = await prisma.user.create({

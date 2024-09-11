@@ -52,7 +52,7 @@ export const EventTicketDropdown = ({setValue, defaultValue, otherStyles}: Dropd
       </SelectTrigger>
       <SelectContent className={`w-full bg-white md:w-[300px] ${otherStyles}`} align="end">
         <SelectGroup>
-          <SelectLabel className="py-2 font-normal text-gray-500">Séléctionner un type d&apos;événement</SelectLabel>
+          <SelectLabel className="py-2 font-normal text-gray-500">Séléctionner le type de ticket pour l&apos;événement</SelectLabel>
           {eventTickets.map((eventTicket: EventTicket) => (
             <SelectItem key={eventTicket.id} value={eventTicket.id.toString()} className="cursor-pointer border-t">
               {eventTicket.name}

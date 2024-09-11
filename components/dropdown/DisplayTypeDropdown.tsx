@@ -52,7 +52,7 @@ export const DisplayTypeDropdown = ({setValue, defaultValue, otherStyles}: Dropd
       </SelectTrigger>
       <SelectContent className={`w-full bg-white md:w-[300px] ${otherStyles}`} align="end">
         <SelectGroup>
-          <SelectLabel className="py-2 font-normal text-gray-500">Select a display type</SelectLabel>
+          <SelectLabel className="py-2 font-normal text-gray-500">Séléctionner le type d&apos;affichage</SelectLabel>
           {displayTypes.map((displayType: DisplayType) => (
             <SelectItem key={displayType.id} value={displayType.id.toString()} className="cursor-pointer border-t">
               {displayType.name}

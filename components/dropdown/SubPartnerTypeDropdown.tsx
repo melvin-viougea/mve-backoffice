@@ -52,7 +52,7 @@ export const SubPartnerTypeDropdown = ({setValue, defaultValue, otherStyles}: Dr
       </SelectTrigger>
       <SelectContent className={`w-full bg-white md:w-[300px] ${otherStyles}`} align="end">
         <SelectGroup>
-          <SelectLabel className="py-2 font-normal text-gray-500">Select a sub event type</SelectLabel>
+          <SelectLabel className="py-2 font-normal text-gray-500">Séléctionner la sous-type de partenaire</SelectLabel>
           {subPartnerTypes.map((subPartnerType: SubPartnerType) => (
             <SelectItem key={subPartnerType.id} value={subPartnerType.id.toString()} className="cursor-pointer border-t">
               {subPartnerType.name}

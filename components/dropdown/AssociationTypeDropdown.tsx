@@ -52,7 +52,7 @@ export const AssociationTypeDropdown = ({setValue, defaultValue, otherStyles}: D
       </SelectTrigger>
       <SelectContent className={`w-full bg-white md:w-[300px] ${otherStyles}`} align="end">
         <SelectGroup>
-          <SelectLabel className="py-2 font-normal text-gray-500">Séléctionner un type d&apos;association</SelectLabel>
+          <SelectLabel className="py-2 font-normal text-gray-500">Séléctionner le type d&apos;association</SelectLabel>
           {associationTypes.map((associationType: AssociationType) => (
             <SelectItem key={associationType.id} value={associationType.id.toString()} className="cursor-pointer border-t">
               {associationType.name}
