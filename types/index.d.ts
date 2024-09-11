@@ -420,6 +420,7 @@ declare interface UpdatePartnerParams {
 declare type Deal = {
   id: number;
   title: string;
+  description: string;
   isPublished: boolean;
   association: Association;
   company: Company;
@@ -473,6 +474,7 @@ declare interface DealTableProps {
 
 declare interface CreateDealParams {
   title: string;
+  description: string;
   isPublished: boolean;
   associationId: number;
   companyId: number;

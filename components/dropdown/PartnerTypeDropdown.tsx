@@ -52,7 +52,7 @@ export const PartnerTypeDropdown = ({setValue, defaultValue, otherStyles}: Dropd
       </SelectTrigger>
       <SelectContent className={`w-full bg-white md:w-[300px] ${otherStyles}`} align="end">
         <SelectGroup>
-          <SelectLabel className="py-2 font-normal text-gray-500">Séléctionner un type d&apos;événement</SelectLabel>
+          <SelectLabel className="py-2 font-normal text-gray-500">Séléctionner le type de partenaire</SelectLabel>
           {partnerTypes.map((partnerType: PartnerType) => (
             <SelectItem key={partnerType.id} value={partnerType.id.toString()} className="cursor-pointer border-t">
               {partnerType.name}

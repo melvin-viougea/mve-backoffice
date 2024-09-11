@@ -52,7 +52,7 @@ export const PaymentDropdown = ({setValue, defaultValue, otherStyles}: DropdownP
       </SelectTrigger>
       <SelectContent className={`w-full bg-white md:w-[300px] ${otherStyles}`} align="end">
         <SelectGroup>
-          <SelectLabel className="py-2 font-normal text-gray-500">Séléctionner un type d&apos;événement</SelectLabel>
+          <SelectLabel className="py-2 font-normal text-gray-500">Séléctionner le type de paiement</SelectLabel>
           {payments.map((payment: Payment) => (
             <SelectItem key={payment.id} value={payment.id.toString()} className="cursor-pointer border-t">
               {payment.name}

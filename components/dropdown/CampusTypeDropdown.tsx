@@ -52,7 +52,7 @@ export const CampusTypeDropdown = ({setValue, defaultValue, otherStyles}: Dropdo
       </SelectTrigger>
       <SelectContent className={`w-full bg-white md:w-[300px] ${otherStyles}`} align="end">
         <SelectGroup>
-          <SelectLabel className="py-2 font-normal text-gray-500">Séléctionner un type de campus</SelectLabel>
+          <SelectLabel className="py-2 font-normal text-gray-500">Séléctionner le type de campus</SelectLabel>
           {campusTypes.map((campusType: CampusType) => (
             <SelectItem key={campusType.id} value={campusType.id.toString()} className="cursor-pointer border-t">
               {campusType.name}

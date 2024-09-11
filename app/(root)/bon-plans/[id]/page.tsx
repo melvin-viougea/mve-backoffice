@@ -1,13 +1,13 @@
 import HeaderBox from '@/components/HeaderBox'
-import PartnerForm from '@/components/form/PartnerForm'
+import DealForm from '@/components/form/DealForm'
 import React from 'react'
 import {pageProps} from "@/types";
-import {getOnePartner} from "@/lib/actions/partner.actions";
-import DeletePartnerButton from "@/components/deleteButton/DeletePartnerButton";
+import {getOneDeal} from "@/lib/actions/deal.actions";
+import DeleteDealButton from "@/components/deleteButton/DeleteDealButton";
 import {cookies} from "next/headers";
 
-const PartnerUpdate = async (props: pageProps) => {
-  const partner = await getOnePartner(props.params.id);
+const DealUpdate = async (props: pageProps) => {
+  const deal = await getOneDeal(props.params.id);
   const cookieStore = cookies();
   const associationId = parseInt(cookieStore.get('associationId')?.value ?? '0', 10)
 
@@ -15,16 +15,16 @@ const PartnerUpdate = async (props: pageProps) => {
     <section className="no-scrollbar flex flex-col overflow-y-scroll bg-gray-25 p-8 md:max-h-screen xl:py-12">
       <div className="flex items-center justify-between">
         <HeaderBox
-          title={partner.name}
+          title={deal.name}
           subtext="Merci d'ajuster les informations ci-dessous pour modifier un événement."
         />
-        <DeletePartnerButton partner={partner} />
+        <DeleteDealButton deal={deal} />
       </div>
       <section className="size-full pt-5">
-        <PartnerForm partner={partner}  associationId={associationId} />
+        <DealForm deal={deal}  associationId={associationId} />
       </section>
     </section>
   );
 };
 
-export default PartnerUpdate;
+export default DealUpdate;
